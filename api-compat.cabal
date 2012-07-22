@@ -1,0 +1,33 @@
+Name:                api-compat
+Version:             0.0.1
+Synopsis:            Extracts the export interface of Haskell modules.
+Description:
+License:             BSD3
+License-file:        LICENSE
+Author:              Michael Sloan
+Maintainer:          Michael Sloan <mgsloan at gmail>
+Homepage:            http://github.com/mgsloan/api-compat
+Copyright:           Michael Sloan 2012
+Category:            Distribution
+Build-type:          Simple
+Stability:           experimental
+Cabal-version:       >=1.6
+Bug-Reports:         http://github.com/mgsloan/api-compat
+Source-Repository head
+  Type: git
+  Location: git://github.com/mgsloan/api-compat
+
+Library
+  Hs-Source-Dirs:    src
+  ghc-options:       -Wall
+  Exposed-modules:   ApiCompat.GhcApi
+                     ApiCompat.ShowInfo
+  Build-depends:     base >= 3.0 && < 6,
+                     containers,
+                     directory,
+                     filepath,
+                     mtl,
+                     template-haskell == 2.7.*,
+                     th-orphans == 0.5.*,
+                     th-lift == 0.5.*,
+                     hint
