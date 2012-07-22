@@ -1,736 +1,1147 @@
 ----------------------------------------
 module Graphics.Rendering.Diagrams
 
-class ()
- => (Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable) a_0 where
-  (Graphics.Rendering.Diagrams.Juxtapose.juxtapose) ::
-    forall a_0. ((Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable) (a_0)) =>
-      (Graphics.Rendering.Diagrams.V.V) ->
-      (a_0) ->
-      (a_0) ->
-      (a_0)
-
-class ()
- => (Graphics.Rendering.Diagrams.Names.Qualifiable) q_0 where
-  (Graphics.Rendering.Diagrams.Names.|>) ::
-    forall q_0. ((Graphics.Rendering.Diagrams.Names.Qualifiable) (q_0)) =>
-      forall a_1. ((Graphics.Rendering.Diagrams.Names.IsName) (a_1)) =>
-        (a_1) ->
-        (q_0) ->
-        (q_0)
-
-class ()
- => (Graphics.Rendering.Diagrams.Style.HasStyle) a_0 where
-  (Graphics.Rendering.Diagrams.Style.applyStyle) ::
-    forall a_0. ((Graphics.Rendering.Diagrams.Style.HasStyle) (a_0)) =>
-      (Graphics.Rendering.Diagrams.Style.Style) ->
-      (a_0) ->
-      (a_0)
-
-class ((Data.Typeable.Internal.Typeable) (a_0), (Data.Semigroup.Semigroup) (a_0))
- => (Graphics.Rendering.Diagrams.Style.AttributeClass) a_0 where
-
-class ((Data.Typeable.Internal.Typeable) (a_0), (GHC.Show.Show) (a_0), (GHC.Classes.Ord) (a_0))
- => (Graphics.Rendering.Diagrams.Names.IsName) a_0 where
-  (Graphics.Rendering.Diagrams.Names.toName) ::
-    forall a_0. ((Graphics.Rendering.Diagrams.Names.IsName) (a_0)) =>
-      (a_0) ->
-      (Graphics.Rendering.Diagrams.Names.Name)
-
-class ((GHC.Float.Floating) (s_0), (GHC.Real.Fractional) (s_0), (GHC.Classes.Ord) (s_0), (Data.AdditiveGroup.AdditiveGroup) (s_0))
- => (Graphics.Rendering.Diagrams.Envelope.OrderedField) s_0 where
-
-class ((Graphics.Rendering.Diagrams.Core.Backend) (b_0) (v_1))
- => (Graphics.Rendering.Diagrams.Core.MultiBackend) b_0 v_1 where
-  (Graphics.Rendering.Diagrams.Core.renderDias) ::
-    forall b_0 v_1. ((Graphics.Rendering.Diagrams.Core.MultiBackend) (b_0) (v_1)) =>
-      forall m_2. () =>
-        (b_0) ->
-        (Graphics.Rendering.Diagrams.Core.Options) ->
-        [(Graphics.Rendering.Diagrams.Core.QDiagram)] ->
-        (Graphics.Rendering.Diagrams.Core.Result)
-
-class ((Data.Monoid.Monoid) (Graphics.Rendering.Diagrams.Core.Render), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0))
- => (Graphics.Rendering.Diagrams.Core.Backend) b_1 v_0 where
-  (Graphics.Rendering.Diagrams.Core.withStyle) ::
-    forall b_1 v_0. ((Graphics.Rendering.Diagrams.Core.Backend) (b_1) (v_0)) =>
-      (b_1) ->
-      (Graphics.Rendering.Diagrams.Style.Style) ->
-      (Graphics.Rendering.Diagrams.Transform.Transformation) ->
-      (Graphics.Rendering.Diagrams.Core.Render) ->
-      (Graphics.Rendering.Diagrams.Core.Render)
-  (Graphics.Rendering.Diagrams.Core.doRender) ::
-    forall b_1 v_0. ((Graphics.Rendering.Diagrams.Core.Backend) (b_1) (v_0)) =>
-      (b_1) ->
-      (Graphics.Rendering.Diagrams.Core.Options) ->
-      (Graphics.Rendering.Diagrams.Core.Render) ->
-      (Graphics.Rendering.Diagrams.Core.Result)
-  (Graphics.Rendering.Diagrams.Core.adjustDia) ::
-    forall b_1 v_0. ((Graphics.Rendering.Diagrams.Core.Backend) (b_1) (v_0)) =>
-      forall m_2. ((Data.Monoid.WithSemigroup.Monoid') (m_2)) =>
-        (b_1) ->
-        (Graphics.Rendering.Diagrams.Core.Options) ->
-        (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-        ((Graphics.Rendering.Diagrams.Core.Options), (Graphics.Rendering.Diagrams.Core.QDiagram))
-  (Graphics.Rendering.Diagrams.Core.renderDia) ::
-    forall b_1 v_0. ((Graphics.Rendering.Diagrams.Core.Backend) (b_1) (v_0)) =>
-      forall m_3. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Data.Monoid.WithSemigroup.Monoid') (m_3), (Data.VectorSpace.InnerSpace) (v_0)) =>
-        (b_1) ->
-        (Graphics.Rendering.Diagrams.Core.Options) ->
-        (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-        (Graphics.Rendering.Diagrams.Core.Result)
-
-class ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (Graphics.Rendering.Diagrams.V.V))
- => (Graphics.Rendering.Diagrams.Transform.Transformable) t_0 where
-  (Graphics.Rendering.Diagrams.Transform.transform) ::
-    forall t_0. ((Graphics.Rendering.Diagrams.Transform.Transformable) (t_0)) =>
-      (Graphics.Rendering.Diagrams.Transform.Transformation) ->
-      (t_0) ->
-      (t_0)
-
-class ((Graphics.Rendering.Diagrams.Transform.Transformable) (t_0))
- => (Graphics.Rendering.Diagrams.Core.Renderable) t_0 b_1 where
-  (Graphics.Rendering.Diagrams.Core.render) ::
-    forall t_0 b_1. ((Graphics.Rendering.Diagrams.Core.Renderable) (t_0) (b_1)) =>
-      (b_1) ->
-      (t_0) ->
-      (Graphics.Rendering.Diagrams.Core.Render)
-
-class ((GHC.Classes.Ord) (Data.VectorSpace.Scalar), (Data.VectorSpace.VectorSpace) (Graphics.Rendering.Diagrams.V.V))
- => (Graphics.Rendering.Diagrams.Trace.Traced) a_0 where
-  (Graphics.Rendering.Diagrams.Trace.getTrace) ::
-    forall a_0. ((Graphics.Rendering.Diagrams.Trace.Traced) (a_0)) =>
-      (a_0) ->
-      (Graphics.Rendering.Diagrams.Trace.Trace)
-
-class ((Data.Monoid.Monoid) (m_0), (Data.Semigroup.Semigroup) (m_0))
- => (Data.Monoid.WithSemigroup.Monoid') m_0 where
-
-class ((Data.MemoTrie.HasTrie) (Data.Basis.Basis), (Data.Basis.HasBasis) (v_0), (Data.VectorSpace.VectorSpace) (v_0))
- => (Graphics.Rendering.Diagrams.Transform.HasLinearMap) v_0 where
-
-class ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Data.VectorSpace.InnerSpace) (Graphics.Rendering.Diagrams.V.V))
- => (Graphics.Rendering.Diagrams.Envelope.Enveloped) a_0 where
-  (Graphics.Rendering.Diagrams.Envelope.getEnvelope) ::
-    forall a_0. ((Graphics.Rendering.Diagrams.Envelope.Enveloped) (a_0)) =>
-      (a_0) ->
-      (Graphics.Rendering.Diagrams.Envelope.Envelope)
-
-class ((Data.VectorSpace.VectorSpace) (Graphics.Rendering.Diagrams.V.V))
- => (Graphics.Rendering.Diagrams.HasOrigin.HasOrigin) t_0 where
-  (Graphics.Rendering.Diagrams.HasOrigin.moveOriginTo) ::
-    forall t_0. ((Graphics.Rendering.Diagrams.HasOrigin.HasOrigin) (t_0)) =>
-      (Data.AffineSpace.Point.Point) ->
-      (t_0) ->
-      (t_0)
-
-data 
-()
- => (Graphics.Rendering.Diagrams.Core.NullBackend) 
-deriving  ()
-
-data 
-()
- => (Graphics.Rendering.Diagrams.Core.Prim) b_0 v_1 =
-forall t_2 . (v_1 ~ Graphics.Rendering.Diagrams.V.V t_2,
-              Graphics.Rendering.Diagrams.Core.Renderable t_2 b_0) =>
-             Graphics.Rendering.Diagrams.Core.Prim t_2
-deriving  ()
-
-data 
-()
- => (Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope) v_0 =
-Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope (Data.AffineSpace.Point.Point v_0)
-                                                     (Graphics.Rendering.Diagrams.Transform.TransInv (Graphics.Rendering.Diagrams.Envelope.Envelope v_0))
-deriving  ()
-
-data 
-()
- => (Graphics.Rendering.Diagrams.Names.AName)  =
-forall a_0 . (Data.Typeable.Internal.Typeable a_0,
-              GHC.Classes.Ord a_0,
-              GHC.Show.Show a_0) =>
-             Graphics.Rendering.Diagrams.Names.AName a_0
-deriving  ()
-
-data 
-()
- => (Graphics.Rendering.Diagrams.Style.Attribute) v_0 =
-forall a_1 . Graphics.Rendering.Diagrams.Style.AttributeClass a_1 =>
-             Graphics.Rendering.Diagrams.Style.Attribute a_1 |
-forall a_2 . (Graphics.Rendering.Diagrams.Style.AttributeClass a_2,
-              Graphics.Rendering.Diagrams.Transform.Transformable a_2,
-              Graphics.Rendering.Diagrams.V.V a_2 ~ v_0) =>
-             Graphics.Rendering.Diagrams.Style.TAttribute a_2
-deriving  ()
-
-data 
-()
- => (Graphics.Rendering.Diagrams.Transform.:-:) u_0 v_1 =
-(Data.LinearMap.:-* u_0
-                    v_1) Graphics.Rendering.Diagrams.Transform.:-: (Data.LinearMap.:-* v_1
-                                                                                       u_0)
-deriving  ()
-
-data 
-()
- => (Graphics.Rendering.Diagrams.Transform.Transformation) v_0 =
-Graphics.Rendering.Diagrams.Transform.Transformation (Graphics.Rendering.Diagrams.Transform.:-: v_0
-                                                                                                v_0)
-                                                     (Graphics.Rendering.Diagrams.Transform.:-: v_0
-                                                                                                v_0)
-                                                     v_0
-deriving  ()
-
-newtype 
-()
- => (Graphics.Rendering.Diagrams.Core.QDiagram) b_0 v_1 m_2 =
-Graphics.Rendering.Diagrams.Core.QD {Graphics.Rendering.Diagrams.Core.unQD :: (Data.Tree.DUBL.DUBLTree (Graphics.Rendering.Diagrams.Core.DownAnnots v_1)
-                                                                                                       (Graphics.Rendering.Diagrams.Core.UpAnnots v_1
-                                                                                                                                                  m_2)
-                                                                                                       ()
-                                                                                                       (Graphics.Rendering.Diagrams.Core.Prim b_0
-                                                                                                                                              v_1))}
-deriving  ()
-
-newtype 
-()
- => (Graphics.Rendering.Diagrams.Envelope.Envelope) v_0 =
-Graphics.Rendering.Diagrams.Envelope.Envelope {Graphics.Rendering.Diagrams.Envelope.unEnvelope :: (Data.Semigroup.Option (v_0 ->
-                                                                                                                          Data.Semigroup.Max (Data.VectorSpace.Scalar v_0)))}
-deriving  ()
-
-newtype 
-()
- => (Graphics.Rendering.Diagrams.Names.Name)  =
-Graphics.Rendering.Diagrams.Names.Name ([Graphics.Rendering.Diagrams.Names.AName])
-deriving  ()
-
-newtype 
-()
- => (Graphics.Rendering.Diagrams.Names.NameMap) v_0 =
-Graphics.Rendering.Diagrams.Names.NameMap (Data.Map.Map Graphics.Rendering.Diagrams.Names.Name
-                                                        ([Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope v_0]))
-deriving  ()
-
-newtype 
-()
- => (Graphics.Rendering.Diagrams.Query.Query) v_0 m_1 =
-Graphics.Rendering.Diagrams.Query.Query {Graphics.Rendering.Diagrams.Query.runQuery :: (Data.AffineSpace.Point.Point v_0 ->
-                                                                                        m_1)}
-deriving  ()
-
-newtype 
-()
- => (Graphics.Rendering.Diagrams.Style.Style) v_0 =
-Graphics.Rendering.Diagrams.Style.Style (Data.Map.Map GHC.Base.String
-                                                      (Graphics.Rendering.Diagrams.Style.Attribute v_0))
-deriving  ()
-
-newtype 
-()
- => (Graphics.Rendering.Diagrams.Trace.Trace) v_0 =
-Graphics.Rendering.Diagrams.Trace.Trace {Graphics.Rendering.Diagrams.Trace.appTrace :: (Data.AffineSpace.Point.Point v_0 ->
-                                                                                        v_0 ->
-                                                                                        Data.Monoid.PosInf.PosInf (Data.VectorSpace.Scalar v_0))}
-deriving  ()
-
-newtype 
-()
- => (Graphics.Rendering.Diagrams.Transform.TransInv) t_0 =
-Graphics.Rendering.Diagrams.Transform.TransInv {Graphics.Rendering.Diagrams.Transform.unTransInv :: t_0}
-deriving  ()
-
-newtype 
-()
- => (Data.AffineSpace.Point.Point) v_0 =
-Data.AffineSpace.Point.P v_0
-deriving  ()
-
-
-
-
-
-
-
-
-
-
-
-
-
-infixl 6 (Graphics.Rendering.Diagrams.Core.atop)
-(Graphics.Rendering.Diagrams.Core.atop) ::
-  forall v_0 m_1 b_2. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0), (Data.Semigroup.Semigroup) (m_1), (Data.VectorSpace.InnerSpace) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.clearValue)
-(Graphics.Rendering.Diagrams.Core.clearValue) ::
-  forall b_0 v_1 m_2. () =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.envelope)
-(Graphics.Rendering.Diagrams.Core.envelope) ::
-  forall v_0 b_1 m_2. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0), (Data.VectorSpace.InnerSpace) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Envelope.Envelope)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.freeze)
-(Graphics.Rendering.Diagrams.Core.freeze) ::
-  forall v_0 b_1 m_2. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0), (Data.VectorSpace.InnerSpace) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.mkQD)
-(Graphics.Rendering.Diagrams.Core.mkQD) ::
-  forall b_0 v_1 m_2. () =>
-    (Graphics.Rendering.Diagrams.Core.Prim) ->
-    (Graphics.Rendering.Diagrams.Envelope.Envelope) ->
-    (Graphics.Rendering.Diagrams.Trace.Trace) ->
-    (Graphics.Rendering.Diagrams.Names.NameMap) ->
-    (Graphics.Rendering.Diagrams.Query.Query) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.namePoint)
-(Graphics.Rendering.Diagrams.Core.namePoint) ::
-  forall v_0 b_1 n_2 m_3. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Names.IsName) (n_2), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0), (Data.Semigroup.Semigroup) (m_3), (Data.VectorSpace.InnerSpace) (v_0)) =>
-    ((Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope)) ->
-    (n_2) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.named)
-(Graphics.Rendering.Diagrams.Core.named) ::
-  forall v_0 b_1 n_2 m_3. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Names.IsName) (n_2), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0), (Data.Semigroup.Semigroup) (m_3), (Data.VectorSpace.InnerSpace) (v_0)) =>
-    (n_2) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.names)
-(Graphics.Rendering.Diagrams.Core.names) ::
-  forall v_0 b_1 m_2. ((GHC.Float.Floating) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0), (Data.AdditiveGroup.AdditiveGroup) (Data.VectorSpace.Scalar), (Data.VectorSpace.InnerSpace) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Names.NameMap)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.nullPrim)
-(Graphics.Rendering.Diagrams.Core.nullPrim) ::
-  forall v_0 b_1. ((Data.Monoid.Monoid) (Graphics.Rendering.Diagrams.Core.Render), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.Prim)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.prims)
-(Graphics.Rendering.Diagrams.Core.prims) ::
-  forall v_0 b_1 m_2. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0), (Data.VectorSpace.InnerSpace) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    [((Graphics.Rendering.Diagrams.Core.Prim), ((Data.Monoid.Split.Split), (Graphics.Rendering.Diagrams.Style.Style)))]
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.query)
-(Graphics.Rendering.Diagrams.Core.query) ::
-  forall v_0 m_1 b_2. ((Data.Monoid.Monoid) (m_1), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Query.Query)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.resetValue)
-(Graphics.Rendering.Diagrams.Core.resetValue) ::
-  forall m_0 b_1 v_2. ((Data.Monoid.Monoid) (m_0), (GHC.Classes.Eq) (m_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.sample)
-(Graphics.Rendering.Diagrams.Core.sample) ::
-  forall v_0 m_1 b_2. ((Data.Monoid.Monoid) (m_1), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Data.AffineSpace.Point.Point) ->
-    (m_1)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.setEnvelope)
-(Graphics.Rendering.Diagrams.Core.setEnvelope) ::
-  forall b_0 v_1 m_2. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_1), (Data.Monoid.WithSemigroup.Monoid') (m_2), (Data.VectorSpace.InnerSpace) (v_1)) =>
-    (Graphics.Rendering.Diagrams.Envelope.Envelope) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.setTrace)
-(Graphics.Rendering.Diagrams.Core.setTrace) ::
-  forall b_0 v_1 m_2. ((Graphics.Rendering.Diagrams.Envelope.OrderedField) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_1), (Data.Monoid.WithSemigroup.Monoid') (m_2), (Data.VectorSpace.InnerSpace) (v_1)) =>
-    (Graphics.Rendering.Diagrams.Trace.Trace) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.trace)
-(Graphics.Rendering.Diagrams.Core.trace) ::
-  forall v_0 b_1 m_2. ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0), (GHC.Classes.Ord) (Data.VectorSpace.Scalar), (Data.VectorSpace.VectorSpace) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Trace.Trace)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.value)
-(Graphics.Rendering.Diagrams.Core.value) ::
-  forall m_0 b_1 v_2. ((Data.Monoid.Monoid) (m_0)) =>
-    (m_0) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.withName)
-(Graphics.Rendering.Diagrams.Core.withName) ::
-  forall n_0 v_1 b_2 m_3. ((GHC.Float.Floating) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Names.IsName) (n_0), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_1), (Data.AdditiveGroup.AdditiveGroup) (Data.VectorSpace.Scalar), (Data.VectorSpace.InnerSpace) (v_1)) =>
-    (n_0) ->
-    ((Graphics.Rendering.Diagrams.Core.QDiagram) -> (Graphics.Rendering.Diagrams.Core.QDiagram)) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.withNameAll)
-(Graphics.Rendering.Diagrams.Core.withNameAll) ::
-  forall n_0 v_1 b_2 m_3. ((GHC.Float.Floating) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Names.IsName) (n_0), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_1), (Data.AdditiveGroup.AdditiveGroup) (Data.VectorSpace.Scalar), (Data.VectorSpace.InnerSpace) (v_1)) =>
-    (n_0) ->
-    ((Graphics.Rendering.Diagrams.Core.QDiagram) -> (Graphics.Rendering.Diagrams.Core.QDiagram)) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Core.withNames)
-(Graphics.Rendering.Diagrams.Core.withNames) ::
-  forall n_0 v_1 b_2 m_3. ((GHC.Float.Floating) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Names.IsName) (n_0), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_1), (Data.AdditiveGroup.AdditiveGroup) (Data.VectorSpace.Scalar), (Data.VectorSpace.InnerSpace) (v_1)) =>
-    [(n_0)] ->
-    ((Graphics.Rendering.Diagrams.Core.QDiagram) -> (Graphics.Rendering.Diagrams.Core.QDiagram)) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram) ->
-    (Graphics.Rendering.Diagrams.Core.QDiagram)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.appEnvelope)
-(Graphics.Rendering.Diagrams.Envelope.appEnvelope) ::
-  forall v_0. () =>
-    (Graphics.Rendering.Diagrams.Envelope.Envelope) ->
-    (Data.Maybe.Maybe)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.diameter)
-(Graphics.Rendering.Diagrams.Envelope.diameter) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Envelope.Enveloped) (a_0)) =>
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (Data.VectorSpace.Scalar)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.envelopeP)
-(Graphics.Rendering.Diagrams.Envelope.envelopeP) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Envelope.Enveloped) (a_0)) =>
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (Data.AffineSpace.Point.Point)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.envelopeV)
-(Graphics.Rendering.Diagrams.Envelope.envelopeV) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Envelope.Enveloped) (a_0)) =>
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (Graphics.Rendering.Diagrams.V.V)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.inEnvelope)
-(Graphics.Rendering.Diagrams.Envelope.inEnvelope) ::
-  forall v_0. () =>
-    ((Data.Semigroup.Option)) ->
-    (Graphics.Rendering.Diagrams.Envelope.Envelope) ->
-    (Graphics.Rendering.Diagrams.Envelope.Envelope)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.locateEnvelope)
-(Graphics.Rendering.Diagrams.Envelope.locateEnvelope) ::
-  forall v_0. () =>
-    (Data.AffineSpace.Point.Point) ->
-    (Graphics.Rendering.Diagrams.Envelope.Envelope) ->
-    (Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.location)
-(Graphics.Rendering.Diagrams.Envelope.location) ::
-  forall v_0. () =>
-    (Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope) ->
-    (Data.AffineSpace.Point.Point)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.mkEnvelope)
-(Graphics.Rendering.Diagrams.Envelope.mkEnvelope) ::
-  forall v_0. () =>
-    ((Data.VectorSpace.Scalar)) ->
-    (Graphics.Rendering.Diagrams.Envelope.Envelope)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.onEnvelope)
-(Graphics.Rendering.Diagrams.Envelope.onEnvelope) ::
-  forall v_0. () =>
-    ((v_0) -> (Data.VectorSpace.Scalar)) ->
-    (Graphics.Rendering.Diagrams.Envelope.Envelope) ->
-    (Graphics.Rendering.Diagrams.Envelope.Envelope)
-
-infixl 9 (Graphics.Rendering.Diagrams.Envelope.radius)
-(Graphics.Rendering.Diagrams.Envelope.radius) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Envelope.Enveloped) (a_0)) =>
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (Data.VectorSpace.Scalar)
-
-infixl 9 (Graphics.Rendering.Diagrams.HasOrigin.moveOriginBy)
-(Graphics.Rendering.Diagrams.HasOrigin.moveOriginBy) ::
-  forall t_0. ((Graphics.Rendering.Diagrams.HasOrigin.HasOrigin) (t_0)) =>
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (t_0) ->
-    (t_0)
-
-infixl 9 (Graphics.Rendering.Diagrams.HasOrigin.moveTo)
-(Graphics.Rendering.Diagrams.HasOrigin.moveTo) ::
-  forall t_0. ((Graphics.Rendering.Diagrams.HasOrigin.HasOrigin) (t_0)) =>
-    (Data.AffineSpace.Point.Point) ->
-    (t_0) ->
-    (t_0)
-
-infixl 9 (Graphics.Rendering.Diagrams.HasOrigin.place)
-(Graphics.Rendering.Diagrams.HasOrigin.place) ::
-  forall t_0. ((Graphics.Rendering.Diagrams.HasOrigin.HasOrigin) (t_0)) =>
-    (t_0) ->
-    (Data.AffineSpace.Point.Point) ->
-    (t_0)
-
-infixl 9 (Graphics.Rendering.Diagrams.Juxtapose.juxtaposeDefault)
-(Graphics.Rendering.Diagrams.Juxtapose.juxtaposeDefault) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Envelope.Enveloped) (a_0), (Graphics.Rendering.Diagrams.HasOrigin.HasOrigin) (a_0)) =>
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (a_0) ->
-    (a_0)
+class () =>
+  Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a where
+    Graphics.Rendering.Diagrams.Juxtapose.juxtapose ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+         ) =>
+        a ->
+        a ->
+        a ->
+        a
+
+class () =>
+  Graphics.Rendering.Diagrams.Names.Qualifiable q where
+    (Graphics.Rendering.Diagrams.Names.|>) ::
+      forall q.
+        (
+         Graphics.Rendering.Diagrams.Names.Qualifiable q
+         ) =>
+        forall a.
+          (
+           Graphics.Rendering.Diagrams.Names.IsName a
+           ) =>
+          a ->
+          q ->
+          q
+
+class () =>
+  Graphics.Rendering.Diagrams.Style.HasStyle a where
+    Graphics.Rendering.Diagrams.Style.applyStyle ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Style.HasStyle a
+         ) =>
+        a ->
+        a ->
+        a
+
+class (
+       Data.Typeable.Internal.Typeable a
+       ,
+       Data.Semigroup.Semigroup a
+       ) =>
+  Graphics.Rendering.Diagrams.Style.AttributeClass a where
+
+class (
+       Data.Typeable.Internal.Typeable a
+       ,
+       GHC.Show.Show a
+       ,
+       GHC.Classes.Ord a
+       ) =>
+  Graphics.Rendering.Diagrams.Names.IsName a where
+    Graphics.Rendering.Diagrams.Names.toName ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Names.IsName a
+         ) =>
+        a ->
+        Graphics.Rendering.Diagrams.Names.Name
+
+class (
+       GHC.Float.Floating s
+       ,
+       GHC.Real.Fractional s
+       ,
+       GHC.Classes.Ord s
+       ,
+       Data.AdditiveGroup.AdditiveGroup s
+       ) =>
+  Graphics.Rendering.Diagrams.Envelope.OrderedField s where
+
+class (
+       Graphics.Rendering.Diagrams.Core.Backend b v
+       ) =>
+  Graphics.Rendering.Diagrams.Core.MultiBackend b v where
+    Graphics.Rendering.Diagrams.Core.renderDias ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.MultiBackend b v
+         ) =>
+        forall m.
+          () =>
+          b ->
+          b v ->
+          [b v m] ->
+          b v
+
+class (
+       Data.Monoid.Monoid b v
+       ,
+       Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+       ) =>
+  Graphics.Rendering.Diagrams.Core.Backend b v where
+    Graphics.Rendering.Diagrams.Core.withStyle ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.Backend b v
+         ) =>
+        b ->
+        v ->
+        v ->
+        b v ->
+        b v
+    Graphics.Rendering.Diagrams.Core.doRender ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.Backend b v
+         ) =>
+        b ->
+        b v ->
+        b v ->
+        b v
+    Graphics.Rendering.Diagrams.Core.adjustDia ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.Backend b v
+         ) =>
+        forall m.
+          (
+           Data.Monoid.WithSemigroup.Monoid' m
+           ) =>
+          b ->
+          b v ->
+          b v m ->
+          (b v, b v m)
+    Graphics.Rendering.Diagrams.Core.renderDia ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.Backend b v
+         ) =>
+        forall m'.
+          (
+           Graphics.Rendering.Diagrams.Envelope.OrderedField v
+           ,
+           Data.Monoid.WithSemigroup.Monoid' m'
+           ,
+           Data.VectorSpace.InnerSpace v
+           ) =>
+          b ->
+          b v ->
+          b v m' ->
+          b v
+
+class (
+       Graphics.Rendering.Diagrams.Transform.HasLinearMap t
+       ) =>
+  Graphics.Rendering.Diagrams.Transform.Transformable t where
+    Graphics.Rendering.Diagrams.Transform.transform ::
+      forall t.
+        (
+         Graphics.Rendering.Diagrams.Transform.Transformable t
+         ) =>
+        t ->
+        t ->
+        t
+
+class (
+       Graphics.Rendering.Diagrams.Transform.Transformable t
+       ) =>
+  Graphics.Rendering.Diagrams.Core.Renderable t b where
+    Graphics.Rendering.Diagrams.Core.render ::
+      forall t b.
+        (
+         Graphics.Rendering.Diagrams.Core.Renderable t b
+         ) =>
+        b ->
+        t ->
+        b t
+
+class (
+       GHC.Classes.Ord a
+       ,
+       Data.VectorSpace.VectorSpace a
+       ) =>
+  Graphics.Rendering.Diagrams.Trace.Traced a where
+    Graphics.Rendering.Diagrams.Trace.getTrace ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Trace.Traced a
+         ) =>
+        a ->
+        a
+
+class (
+       Data.Monoid.Monoid m
+       ,
+       Data.Semigroup.Semigroup m
+       ) =>
+  Data.Monoid.WithSemigroup.Monoid' m where
+
+class (
+       Data.MemoTrie.HasTrie v
+       ,
+       Data.Basis.HasBasis v
+       ,
+       Data.VectorSpace.VectorSpace v
+       ) =>
+  Graphics.Rendering.Diagrams.Transform.HasLinearMap v where
+
+class (
+       Graphics.Rendering.Diagrams.Envelope.OrderedField a
+       ,
+       Data.VectorSpace.InnerSpace a
+       ) =>
+  Graphics.Rendering.Diagrams.Envelope.Enveloped a where
+    Graphics.Rendering.Diagrams.Envelope.getEnvelope ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Envelope.Enveloped a
+         ) =>
+        a ->
+        a
+
+class (
+       Data.VectorSpace.VectorSpace t
+       ) =>
+  Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t where
+    Graphics.Rendering.Diagrams.HasOrigin.moveOriginTo ::
+      forall t.
+        (
+         Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+         ) =>
+        t ->
+        t ->
+        t
+
+data () =>
+  Graphics.Rendering.Diagrams.Core.NullBackend 
+  deriving ()
+
+data () =>
+  Prim' b v =
+    forall t. 
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable t b
+     ,
+     v ~ t
+     ) =>
+      Prim
+        t
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope v =
+    Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope
+      v
+      v
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Names.AName  =
+    forall a. 
+    (
+     Data.Typeable.Internal.Typeable a
+     ,
+     GHC.Show.Show a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+      Graphics.Rendering.Diagrams.Names.AName
+        a
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Style.Attribute v =
+    forall a. 
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+      Graphics.Rendering.Diagrams.Style.Attribute
+        a
+  | forall a'. 
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a'
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable a'
+     ,
+     a' ~ v
+     ) =>
+      Graphics.Rendering.Diagrams.Style.TAttribute
+        a'
+  deriving ()
+
+data () =>
+  (:-:') u v =
+    (:-:)
+      u v
+      v u
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Transform.Transformation v =
+    Graphics.Rendering.Diagrams.Transform.Transformation
+      v v
+      v v
+      v
+  deriving ()
+
+newtype () =>
+  Graphics.Rendering.Diagrams.Core.QDiagram b v m =
+    Graphics.Rendering.Diagrams.Core.QD
+      Graphics.Rendering.Diagrams.Core.unQD :: v v m () b v
+  deriving ()
+
+newtype () =>
+  Envelope' v =
+    Envelope
+      Graphics.Rendering.Diagrams.Envelope.unEnvelope :: (v -> v)
+  deriving ()
+
+newtype () =>
+  Graphics.Rendering.Diagrams.Names.Name  =
+    Graphics.Rendering.Diagrams.Names.Name
+      [Graphics.Rendering.Diagrams.Names.AName]
+  deriving ()
+
+newtype () =>
+  Graphics.Rendering.Diagrams.Names.NameMap v =
+    Graphics.Rendering.Diagrams.Names.NameMap
+      Graphics.Rendering.Diagrams.Names.Name [v]
+  deriving ()
+
+newtype () =>
+  Query' v m =
+    Query
+      Graphics.Rendering.Diagrams.Query.runQuery :: (v -> m)
+  deriving ()
+
+newtype () =>
+  Graphics.Rendering.Diagrams.Style.Style v =
+    Graphics.Rendering.Diagrams.Style.Style
+      GHC.Base.String v
+  deriving ()
+
+newtype () =>
+  Trace' v =
+    Trace
+      Graphics.Rendering.Diagrams.Trace.appTrace :: (v -> v -> v)
+  deriving ()
+
+newtype () =>
+  TransInv' t =
+    TransInv
+      Graphics.Rendering.Diagrams.Transform.unTransInv :: t
+  deriving ()
+
+newtype () =>
+  Data.AffineSpace.Point.Point v =
+    Data.AffineSpace.Point.P
+      v
+  deriving ()
+
+
+
+
+
+
+
+
+
+
+
+
+
+infixl 6 Graphics.Rendering.Diagrams.Core.atop
+Graphics.Rendering.Diagrams.Core.atop ::
+  forall v m b.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Semigroup.Semigroup m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    b v m ->
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.clearValue
+Graphics.Rendering.Diagrams.Core.clearValue ::
+  forall b v m.
+    () =>
+    b v m ->
+    b v Data.Monoid.Any
+
+infixl 9 Graphics.Rendering.Diagrams.Core.envelope
+Graphics.Rendering.Diagrams.Core.envelope ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    b v m ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Core.freeze
+Graphics.Rendering.Diagrams.Core.freeze ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.mkQD
+Graphics.Rendering.Diagrams.Core.mkQD ::
+  forall b v m.
+    () =>
+    b v ->
+    v ->
+    v ->
+    v ->
+    v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.namePoint
+Graphics.Rendering.Diagrams.Core.namePoint ::
+  forall v b n m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Semigroup.Semigroup m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    (b v m -> v) ->
+    n ->
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.named
+Graphics.Rendering.Diagrams.Core.named ::
+  forall v b n m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Semigroup.Semigroup m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    n ->
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.names
+Graphics.Rendering.Diagrams.Core.names ::
+  forall v b m.
+    (
+     GHC.Float.Floating v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    b v m ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Core.nullPrim
+Graphics.Rendering.Diagrams.Core.nullPrim ::
+  forall v b.
+    (
+     Data.Monoid.Monoid b v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    b v
+
+infixl 9 Graphics.Rendering.Diagrams.Core.prims
+Graphics.Rendering.Diagrams.Core.prims ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    b v m ->
+    [(b v, (v, v))]
+
+infixl 9 Graphics.Rendering.Diagrams.Core.query
+Graphics.Rendering.Diagrams.Core.query ::
+  forall v m b.
+    (
+     Data.Monoid.Monoid m
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    b v m ->
+    v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.resetValue
+Graphics.Rendering.Diagrams.Core.resetValue ::
+  forall m b v.
+    (
+     Data.Monoid.Monoid m
+     ,
+     GHC.Classes.Eq m
+     ) =>
+    b v m ->
+    b v Data.Monoid.Any
+
+infixl 9 Graphics.Rendering.Diagrams.Core.sample
+Graphics.Rendering.Diagrams.Core.sample ::
+  forall v m b.
+    (
+     Data.Monoid.Monoid m
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    b v m ->
+    v ->
+    m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.setEnvelope
+Graphics.Rendering.Diagrams.Core.setEnvelope ::
+  forall b v m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    v ->
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.setTrace
+Graphics.Rendering.Diagrams.Core.setTrace ::
+  forall b v m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    v ->
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.trace
+Graphics.Rendering.Diagrams.Core.trace ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     GHC.Classes.Ord v
+     ,
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    b v m ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Core.value
+Graphics.Rendering.Diagrams.Core.value ::
+  forall m b v.
+    (
+     Data.Monoid.Monoid m
+     ) =>
+    m ->
+    b v Data.Monoid.Any ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.withName
+Graphics.Rendering.Diagrams.Core.withName ::
+  forall n v b m.
+    (
+     GHC.Float.Floating v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    n ->
+    (v -> b v m -> b v m) ->
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.withNameAll
+Graphics.Rendering.Diagrams.Core.withNameAll ::
+  forall n v b m.
+    (
+     GHC.Float.Floating v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    n ->
+    ([v] -> b v m -> b v m) ->
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.withNames
+Graphics.Rendering.Diagrams.Core.withNames ::
+  forall n v b m.
+    (
+     GHC.Float.Floating v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    [n] ->
+    ([v] -> b v m -> b v m) ->
+    b v m ->
+    b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.appEnvelope
+Graphics.Rendering.Diagrams.Envelope.appEnvelope ::
+  forall v.
+    () =>
+    v ->
+    (v -> v)
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.diameter
+Graphics.Rendering.Diagrams.Envelope.diameter ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ) =>
+    a ->
+    a ->
+    a
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.envelopeP
+Graphics.Rendering.Diagrams.Envelope.envelopeP ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ) =>
+    a ->
+    a ->
+    a
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.envelopeV
+Graphics.Rendering.Diagrams.Envelope.envelopeV ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ) =>
+    a ->
+    a ->
+    a
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.inEnvelope
+Graphics.Rendering.Diagrams.Envelope.inEnvelope ::
+  forall v.
+    () =>
+    ((v -> v) -> (v -> v)) ->
+    v ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.locateEnvelope
+Graphics.Rendering.Diagrams.Envelope.locateEnvelope ::
+  forall v.
+    () =>
+    v ->
+    v ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.location
+Graphics.Rendering.Diagrams.Envelope.location ::
+  forall v.
+    () =>
+    v ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.mkEnvelope
+Graphics.Rendering.Diagrams.Envelope.mkEnvelope ::
+  forall v.
+    () =>
+    (v -> v) ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.onEnvelope
+Graphics.Rendering.Diagrams.Envelope.onEnvelope ::
+  forall v.
+    () =>
+    ((v -> v) -> v -> v) ->
+    v ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.radius
+Graphics.Rendering.Diagrams.Envelope.radius ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ) =>
+    a ->
+    a ->
+    a
+
+infixl 9 Graphics.Rendering.Diagrams.HasOrigin.moveOriginBy
+Graphics.Rendering.Diagrams.HasOrigin.moveOriginBy ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+     ) =>
+    t ->
+    t ->
+    t
+
+infixl 9 Graphics.Rendering.Diagrams.HasOrigin.moveTo
+Graphics.Rendering.Diagrams.HasOrigin.moveTo ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+     ) =>
+    t ->
+    t ->
+    t
+
+infixl 9 Graphics.Rendering.Diagrams.HasOrigin.place
+Graphics.Rendering.Diagrams.HasOrigin.place ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+     ) =>
+    t ->
+    t ->
+    t
+
+infixl 9 Graphics.Rendering.Diagrams.Juxtapose.juxtaposeDefault
+Graphics.Rendering.Diagrams.Juxtapose.juxtaposeDefault ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ) =>
+    a ->
+    a ->
+    a ->
+    a
 
 infixr 5 (Graphics.Rendering.Diagrams.Names..>)
 (Graphics.Rendering.Diagrams.Names..>) ::
-  forall a1_0 a2_1. ((Graphics.Rendering.Diagrams.Names.IsName) (a1_0), (Graphics.Rendering.Diagrams.Names.IsName) (a2_1)) =>
-    (a1_0) ->
-    (a2_1) ->
-    (Graphics.Rendering.Diagrams.Names.Name)
+  forall a1 a2.
+    (
+     Graphics.Rendering.Diagrams.Names.IsName a1
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName a2
+     ) =>
+    a1 ->
+    a2 ->
+    Graphics.Rendering.Diagrams.Names.Name
 
-infixl 9 (Graphics.Rendering.Diagrams.Names.fromNames)
-(Graphics.Rendering.Diagrams.Names.fromNames) ::
-  forall v_0 a_1. ((GHC.Float.Floating) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Names.IsName) (a_1), (GHC.Classes.Ord) (Data.VectorSpace.Scalar), (Data.AdditiveGroup.AdditiveGroup) (Data.VectorSpace.Scalar), (Data.VectorSpace.InnerSpace) (v_0)) =>
-    [((a_1), (Data.AffineSpace.Point.Point))] ->
-    (Graphics.Rendering.Diagrams.Names.NameMap)
+infixl 9 Graphics.Rendering.Diagrams.Names.fromNames
+Graphics.Rendering.Diagrams.Names.fromNames ::
+  forall v a.
+    (
+     GHC.Float.Floating v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName a
+     ,
+     GHC.Classes.Ord v
+     ,
+     Data.AdditiveGroup.AdditiveGroup v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    [(a, v)] ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Names.fromNamesB)
-(Graphics.Rendering.Diagrams.Names.fromNamesB) ::
-  forall a_0 v_1. ((Graphics.Rendering.Diagrams.Names.IsName) (a_0)) =>
-    [((a_0), (Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope))] ->
-    (Graphics.Rendering.Diagrams.Names.NameMap)
+infixl 9 Graphics.Rendering.Diagrams.Names.fromNamesB
+Graphics.Rendering.Diagrams.Names.fromNamesB ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Names.IsName a
+     ) =>
+    [(a, v)] ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Names.lookupN)
-(Graphics.Rendering.Diagrams.Names.lookupN) ::
-  forall n_0 v_1. ((Graphics.Rendering.Diagrams.Names.IsName) (n_0)) =>
-    (n_0) ->
-    (Graphics.Rendering.Diagrams.Names.NameMap) ->
-    (Data.Maybe.Maybe)
+infixl 9 Graphics.Rendering.Diagrams.Names.lookupN
+Graphics.Rendering.Diagrams.Names.lookupN ::
+  forall n v.
+    (
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ) =>
+    n ->
+    v ->
+    [v]
 
-infixl 9 (Graphics.Rendering.Diagrams.Names.rememberAs)
-(Graphics.Rendering.Diagrams.Names.rememberAs) ::
-  forall a_0 v_1. ((Graphics.Rendering.Diagrams.Names.IsName) (a_0)) =>
-    (a_0) ->
-    (Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope) ->
-    (Graphics.Rendering.Diagrams.Names.NameMap) ->
-    (Graphics.Rendering.Diagrams.Names.NameMap)
+infixl 9 Graphics.Rendering.Diagrams.Names.rememberAs
+Graphics.Rendering.Diagrams.Names.rememberAs ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Names.IsName a
+     ) =>
+    a ->
+    v ->
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Query.runQuery)
-(Graphics.Rendering.Diagrams.Query.runQuery) ::
-  forall v_0 m_1. () =>
-    (Graphics.Rendering.Diagrams.Query.Query) ->
-    (Data.AffineSpace.Point.Point) ->
-    (m_1)
+infixl 9 Graphics.Rendering.Diagrams.Query.runQuery
+Graphics.Rendering.Diagrams.Query.runQuery ::
+  forall v m.
+    () =>
+    v m ->
+    v ->
+    m
 
-infixl 9 (Graphics.Rendering.Diagrams.Style.applyAttr)
-(Graphics.Rendering.Diagrams.Style.applyAttr) ::
-  forall a_0 d_1. ((Graphics.Rendering.Diagrams.Style.AttributeClass) (a_0), (Graphics.Rendering.Diagrams.Style.HasStyle) (d_1)) =>
-    (a_0) ->
-    (d_1) ->
-    (d_1)
+infixl 9 Graphics.Rendering.Diagrams.Style.applyAttr
+Graphics.Rendering.Diagrams.Style.applyAttr ::
+  forall a d.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ,
+     Graphics.Rendering.Diagrams.Style.HasStyle d
+     ) =>
+    a ->
+    d ->
+    d
 
-infixl 9 (Graphics.Rendering.Diagrams.Style.applyTAttr)
-(Graphics.Rendering.Diagrams.Style.applyTAttr) ::
-  forall a_0 d_1. ((Graphics.Rendering.Diagrams.Style.AttributeClass) (a_0), (Graphics.Rendering.Diagrams.Style.HasStyle) (d_1), (Graphics.Rendering.Diagrams.Transform.Transformable) (a_0), (Graphics.Rendering.Diagrams.V.V)  ~  (Graphics.Rendering.Diagrams.V.V)) =>
-    (a_0) ->
-    (d_1) ->
-    (d_1)
+infixl 9 Graphics.Rendering.Diagrams.Style.applyTAttr
+Graphics.Rendering.Diagrams.Style.applyTAttr ::
+  forall a d.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ,
+     Graphics.Rendering.Diagrams.Style.HasStyle d
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable a
+     ,
+     a ~ d
+     ) =>
+    a ->
+    d ->
+    d
 
-infixl 9 (Graphics.Rendering.Diagrams.Style.combineAttr)
-(Graphics.Rendering.Diagrams.Style.combineAttr) ::
-  forall a_0 v_1. ((Graphics.Rendering.Diagrams.Style.AttributeClass) (a_0)) =>
-    (a_0) ->
-    (Graphics.Rendering.Diagrams.Style.Style) ->
-    (Graphics.Rendering.Diagrams.Style.Style)
+infixl 9 Graphics.Rendering.Diagrams.Style.combineAttr
+Graphics.Rendering.Diagrams.Style.combineAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+    a ->
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Style.getAttr)
-(Graphics.Rendering.Diagrams.Style.getAttr) ::
-  forall a_0 v_1. ((Graphics.Rendering.Diagrams.Style.AttributeClass) (a_0)) =>
-    (Graphics.Rendering.Diagrams.Style.Style) ->
-    (Data.Maybe.Maybe)
+infixl 9 Graphics.Rendering.Diagrams.Style.getAttr
+Graphics.Rendering.Diagrams.Style.getAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+    v ->
+    a
 
-infixl 9 (Graphics.Rendering.Diagrams.Style.mkAttr)
-(Graphics.Rendering.Diagrams.Style.mkAttr) ::
-  forall a_0 v_1. ((Graphics.Rendering.Diagrams.Style.AttributeClass) (a_0)) =>
-    (a_0) ->
-    (Graphics.Rendering.Diagrams.Style.Attribute)
+infixl 9 Graphics.Rendering.Diagrams.Style.mkAttr
+Graphics.Rendering.Diagrams.Style.mkAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+    a ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Style.mkTAttr)
-(Graphics.Rendering.Diagrams.Style.mkTAttr) ::
-  forall a_0 v_1. ((Graphics.Rendering.Diagrams.Style.AttributeClass) (a_0), (Graphics.Rendering.Diagrams.Transform.Transformable) (a_0), (Graphics.Rendering.Diagrams.V.V)  ~  (v_1)) =>
-    (a_0) ->
-    (Graphics.Rendering.Diagrams.Style.Attribute)
+infixl 9 Graphics.Rendering.Diagrams.Style.mkTAttr
+Graphics.Rendering.Diagrams.Style.mkTAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable a
+     ,
+     a ~ v
+     ) =>
+    a ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Style.unwrapAttr)
-(Graphics.Rendering.Diagrams.Style.unwrapAttr) ::
-  forall a_0 v_1. ((Graphics.Rendering.Diagrams.Style.AttributeClass) (a_0)) =>
-    (Graphics.Rendering.Diagrams.Style.Attribute) ->
-    (Data.Maybe.Maybe)
+infixl 9 Graphics.Rendering.Diagrams.Style.unwrapAttr
+Graphics.Rendering.Diagrams.Style.unwrapAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+    v ->
+    a
 
-infixl 9 (Graphics.Rendering.Diagrams.Trace.appTrace)
-(Graphics.Rendering.Diagrams.Trace.appTrace) ::
-  forall v_0. () =>
-    (Graphics.Rendering.Diagrams.Trace.Trace) ->
-    (Data.AffineSpace.Point.Point) ->
-    (v_0) ->
-    (Data.Monoid.PosInf.PosInf)
+infixl 9 Graphics.Rendering.Diagrams.Trace.appTrace
+Graphics.Rendering.Diagrams.Trace.appTrace ::
+  forall v.
+    () =>
+    v ->
+    v ->
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Trace.inTrace)
-(Graphics.Rendering.Diagrams.Trace.inTrace) ::
-  forall v_0. () =>
-    ((Data.AffineSpace.Point.Point) -> (v_0) -> (Data.Monoid.PosInf.PosInf)) ->
-    (Graphics.Rendering.Diagrams.Trace.Trace) ->
-    (Graphics.Rendering.Diagrams.Trace.Trace)
+infixl 9 Graphics.Rendering.Diagrams.Trace.inTrace
+Graphics.Rendering.Diagrams.Trace.inTrace ::
+  forall v.
+    () =>
+    ((v -> v -> v) -> v -> v -> v) ->
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Trace.maxTraceP)
-(Graphics.Rendering.Diagrams.Trace.maxTraceP) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Trace.Traced) (a_0)) =>
-    (Data.AffineSpace.Point.Point) ->
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (Data.Maybe.Maybe)
+infixl 9 Graphics.Rendering.Diagrams.Trace.maxTraceP
+Graphics.Rendering.Diagrams.Trace.maxTraceP ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ) =>
+    a ->
+    a ->
+    a ->
+    a
 
-infixl 9 (Graphics.Rendering.Diagrams.Trace.maxTraceV)
-(Graphics.Rendering.Diagrams.Trace.maxTraceV) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Trace.Traced) (a_0)) =>
-    (Data.AffineSpace.Point.Point) ->
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (Data.Maybe.Maybe)
+infixl 9 Graphics.Rendering.Diagrams.Trace.maxTraceV
+Graphics.Rendering.Diagrams.Trace.maxTraceV ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ) =>
+    a ->
+    a ->
+    a ->
+    a
 
-infixl 9 (Graphics.Rendering.Diagrams.Trace.mkTrace)
-(Graphics.Rendering.Diagrams.Trace.mkTrace) ::
-  forall v_0. () =>
-    ((v_0) -> (Data.Monoid.PosInf.PosInf)) ->
-    (Graphics.Rendering.Diagrams.Trace.Trace)
+infixl 9 Graphics.Rendering.Diagrams.Trace.mkTrace
+Graphics.Rendering.Diagrams.Trace.mkTrace ::
+  forall v.
+    () =>
+    (v -> v -> v) ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Trace.traceP)
-(Graphics.Rendering.Diagrams.Trace.traceP) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Trace.Traced) (a_0)) =>
-    (Data.AffineSpace.Point.Point) ->
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (Data.Maybe.Maybe)
+infixl 9 Graphics.Rendering.Diagrams.Trace.traceP
+Graphics.Rendering.Diagrams.Trace.traceP ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ) =>
+    a ->
+    a ->
+    a ->
+    a
 
-infixl 9 (Graphics.Rendering.Diagrams.Trace.traceV)
-(Graphics.Rendering.Diagrams.Trace.traceV) ::
-  forall a_0. ((Graphics.Rendering.Diagrams.Trace.Traced) (a_0)) =>
-    (Data.AffineSpace.Point.Point) ->
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (a_0) ->
-    (Data.Maybe.Maybe)
+infixl 9 Graphics.Rendering.Diagrams.Trace.traceV
+Graphics.Rendering.Diagrams.Trace.traceV ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ) =>
+    a ->
+    a ->
+    a ->
+    a
 
 infixl 9 (Graphics.Rendering.Diagrams.Transform.<->)
 (Graphics.Rendering.Diagrams.Transform.<->) ::
-  forall u_0 v_1. ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (u_0), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_1)) =>
-    ((v_1)) ->
-    ((u_0)) ->
-    (Graphics.Rendering.Diagrams.Transform.:-:)
+  forall u v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap u
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    (u -> v) ->
+    (v -> u) ->
+    u v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.apply)
-(Graphics.Rendering.Diagrams.Transform.apply) ::
-  forall v_0. ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Transform.Transformation) ->
-    (v_0) ->
-    (v_0)
+infixl 9 Graphics.Rendering.Diagrams.Transform.apply
+Graphics.Rendering.Diagrams.Transform.apply ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    v ->
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.fromLinear)
-(Graphics.Rendering.Diagrams.Transform.fromLinear) ::
-  forall v_0. ((Data.AdditiveGroup.AdditiveGroup) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Transform.:-:) ->
-    (Graphics.Rendering.Diagrams.Transform.:-:) ->
-    (Graphics.Rendering.Diagrams.Transform.Transformation)
+infixl 9 Graphics.Rendering.Diagrams.Transform.fromLinear
+Graphics.Rendering.Diagrams.Transform.fromLinear ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    v v ->
+    v v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.inv)
-(Graphics.Rendering.Diagrams.Transform.inv) ::
-  forall v_0. ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Transform.Transformation) ->
-    (Graphics.Rendering.Diagrams.Transform.Transformation)
+infixl 9 Graphics.Rendering.Diagrams.Transform.inv
+Graphics.Rendering.Diagrams.Transform.inv ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.lapp)
-(Graphics.Rendering.Diagrams.Transform.lapp) ::
-  forall v_0 u_1. ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (u_1), (Data.VectorSpace.VectorSpace) (v_0), (Data.VectorSpace.Scalar)  ~  (Data.VectorSpace.Scalar)) =>
-    (Graphics.Rendering.Diagrams.Transform.:-:) ->
-    (u_1) ->
-    (v_0)
+infixl 9 Graphics.Rendering.Diagrams.Transform.lapp
+Graphics.Rendering.Diagrams.Transform.lapp ::
+  forall v u.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap u
+     ,
+     Data.VectorSpace.VectorSpace v
+     ,
+     u ~ v
+     ) =>
+    u v ->
+    u ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.linv)
-(Graphics.Rendering.Diagrams.Transform.linv) ::
-  forall u_0 v_1. () =>
-    (Graphics.Rendering.Diagrams.Transform.:-:) ->
-    (Graphics.Rendering.Diagrams.Transform.:-:)
+infixl 9 Graphics.Rendering.Diagrams.Transform.linv
+Graphics.Rendering.Diagrams.Transform.linv ::
+  forall u v.
+    () =>
+    u v ->
+    v u
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.papply)
-(Graphics.Rendering.Diagrams.Transform.papply) ::
-  forall v_0. ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0)) =>
-    (Graphics.Rendering.Diagrams.Transform.Transformation) ->
-    (Data.AffineSpace.Point.Point) ->
-    (Data.AffineSpace.Point.Point)
+infixl 9 Graphics.Rendering.Diagrams.Transform.papply
+Graphics.Rendering.Diagrams.Transform.papply ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    v ->
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.scale)
-(Graphics.Rendering.Diagrams.Transform.scale) ::
-  forall t_0. ((GHC.Real.Fractional) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.Transformable) (t_0), (GHC.Classes.Eq) (Data.VectorSpace.Scalar)) =>
-    (Data.VectorSpace.Scalar) ->
-    (t_0) ->
-    (t_0)
+infixl 9 Graphics.Rendering.Diagrams.Transform.scale
+Graphics.Rendering.Diagrams.Transform.scale ::
+  forall t.
+    (
+     GHC.Real.Fractional t
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     GHC.Classes.Eq t
+     ) =>
+    t ->
+    t ->
+    t
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.scaling)
-(Graphics.Rendering.Diagrams.Transform.scaling) ::
-  forall v_0. ((GHC.Real.Fractional) (Data.VectorSpace.Scalar), (Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0)) =>
-    (Data.VectorSpace.Scalar) ->
-    (Graphics.Rendering.Diagrams.Transform.Transformation)
+infixl 9 Graphics.Rendering.Diagrams.Transform.scaling
+Graphics.Rendering.Diagrams.Transform.scaling ::
+  forall v.
+    (
+     GHC.Real.Fractional v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.transl)
-(Graphics.Rendering.Diagrams.Transform.transl) ::
-  forall v_0. () =>
-    (Graphics.Rendering.Diagrams.Transform.Transformation) ->
-    (v_0)
+infixl 9 Graphics.Rendering.Diagrams.Transform.transl
+Graphics.Rendering.Diagrams.Transform.transl ::
+  forall v.
+    () =>
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.translate)
-(Graphics.Rendering.Diagrams.Transform.translate) ::
-  forall t_0. ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (Graphics.Rendering.Diagrams.V.V), (Graphics.Rendering.Diagrams.Transform.Transformable) (t_0)) =>
-    (Graphics.Rendering.Diagrams.V.V) ->
-    (t_0) ->
-    (t_0)
+infixl 9 Graphics.Rendering.Diagrams.Transform.translate
+Graphics.Rendering.Diagrams.Transform.translate ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap t
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ) =>
+    t ->
+    t ->
+    t
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.translation)
-(Graphics.Rendering.Diagrams.Transform.translation) ::
-  forall v_0. ((Graphics.Rendering.Diagrams.Transform.HasLinearMap) (v_0)) =>
-    (v_0) ->
-    (Graphics.Rendering.Diagrams.Transform.Transformation)
+infixl 9 Graphics.Rendering.Diagrams.Transform.translation
+Graphics.Rendering.Diagrams.Transform.translation ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    v ->
+    v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.transp)
-(Graphics.Rendering.Diagrams.Transform.transp) ::
-  forall v_0. () =>
-    (Graphics.Rendering.Diagrams.Transform.Transformation) ->
-    (Graphics.Rendering.Diagrams.Transform.:-:)
+infixl 9 Graphics.Rendering.Diagrams.Transform.transp
+Graphics.Rendering.Diagrams.Transform.transp ::
+  forall v.
+    () =>
+    v ->
+    v v
 
-infixl 9 (Graphics.Rendering.Diagrams.Transform.unTransInv)
-(Graphics.Rendering.Diagrams.Transform.unTransInv) ::
-  forall t_0. () =>
-    (Graphics.Rendering.Diagrams.Transform.TransInv) ->
-    (t_0)
+infixl 9 Graphics.Rendering.Diagrams.Transform.unTransInv
+Graphics.Rendering.Diagrams.Transform.unTransInv ::
+  forall t.
+    () =>
+    t ->
+    t
 
 infixl 9 (Data.AffineSpace.Point.*.)
 (Data.AffineSpace.Point.*.) ::
-  forall v_0. ((Data.VectorSpace.VectorSpace) (v_0)) =>
-    (Data.VectorSpace.Scalar) ->
-    (Data.AffineSpace.Point.Point) ->
-    (Data.AffineSpace.Point.Point)
+  forall v.
+    (
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    v ->
+    v ->
+    v
 
-infixl 9 (Data.AffineSpace.Point.origin)
-(Data.AffineSpace.Point.origin) ::
-  forall v_0. ((Data.AdditiveGroup.AdditiveGroup) (v_0)) =>
-    (Data.AffineSpace.Point.Point)
+infixl 9 Data.AffineSpace.Point.origin
+Data.AffineSpace.Point.origin ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    v
 
