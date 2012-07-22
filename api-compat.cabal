@@ -20,7 +20,7 @@ Source-Repository head
 Library
   Hs-Source-Dirs:    src
   ghc-options:       -Wall
-  Exposed-modules:   ApiCompat.GhcApi
+  Exposed-modules:   ApiCompat.GetApi
                      ApiCompat.ShowInfo
   Build-depends:     base >= 3.0 && < 6,
                      containers,

@@ -1,6 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 
-module ApiCompat.GhcApi where
+module ApiCompat.GetApi
+  ( getApi ) where
 
 import Control.Applicative                 ( (<$>) )
 import Control.Arrow                       ( (***) )
@@ -15,7 +16,7 @@ import System.Directory                    ( removeFile )
 import System.FilePath                     ( takeFileName, dropExtension )
 import System.IO                           ( openTempFile, hClose, hPutStr )
 
-getApis pkgs mods
+getApi pkgs mods
   = fail_left =<< unsafeRunInterpreterWithArgs (map ("-package "++) pkgs) exec
  where
   exec = do
