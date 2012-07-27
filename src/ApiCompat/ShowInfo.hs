@@ -17,6 +17,11 @@ import Language.Haskell.TH.Syntax    (Name(..), NameFlavour(..))
 --TODO: remove contexts from methods
 --TODO: list instances next to classes / datatypes
 
+{-
+reifies :: [Name] -> Q (Maybe Info)
+reifies ns = recover (return Nothing) (Just . reify)
+-}
+
 showInfos :: [(String, [Name])] -> ExpQ
 showInfos ms = lift . unlines . concat =<< mapM show_info ms
  where
@@ -32,15 +37,15 @@ showInfos ms = lift . unlines . concat =<< mapM show_info ms
 
 infoDoc :: Info -> Doc
 infoDoc info = case info of
-  (ClassI d _)                 -> dec $ deUnique d
---  (ClassOpI)                 ->
-  (TyConI d)                   -> dec $ deUnique d
-  (FamilyI d _)                -> dec $ deUnique d
---  (PrimTyConI n i b)         ->
---  (DataConI )                ->
-  (VarI n t _ f)               -> vcat [fixity f n, dec . SigD n $ deUnique t]
---  (TyVarI n t)               ->
-  _                            -> empty
+  (ClassI d _)       -> dec $ deUnique d
+--(ClassOpI)         ->
+  (TyConI d)         -> dec $ deUnique d
+  (FamilyI d _)      -> dec $ deUnique d
+--(PrimTyConI n i b) ->
+--(DataConI )        ->
+  (VarI n t _ f)     -> vcat [fixity f n, dec . SigD n $ deUnique t]
+--(TyVarI n t)       ->
+  _                  -> empty
  where
   tyvars = hcat . punctuate space . map ppr
 
@@ -55,7 +60,7 @@ infoDoc info = case info of
   prd (EqualP l r) = flat_typ l <+> text "~" <+> flat_typ r
 
   prds [] = text "()"
-  prds xs = parens . foldl1 ($$)
+  prds xs = parens . nest 1 . foldl1 ($$)
           $ [nl] ++ (intersperse (text ",") . map prd $ sort xs) ++ [nl]
    where nl = text ""
 
@@ -82,7 +87,7 @@ infoDoc info = case info of
   flat_typ t = case f of
     (TupleT        i) -> parens (tup_txt i)
     (UnboxedTupleT i) -> parens $ hcat [text "# ", tup_txt i, text " #"]
-    _                 -> hcat $ punctuate space flats
+    _                 -> hcat $ punctuate space (flat_typ f : flats)
    where
     (f:rs) = tyUnApp t
     flats = map flat_typ rs
@@ -118,7 +123,7 @@ infoDoc info = case info of
 
 --  dec (TySynD n tvs t) = hcat 
 
-  dec _ = empty
+  dec x = text $ "-- can't pretty-diff-ify:\n" ++ pprint x
 
   strict s = text $ case s of
     NotStrict -> ""

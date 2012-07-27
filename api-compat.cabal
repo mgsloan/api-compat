@@ -27,6 +27,7 @@ Library
                      directory,
                      filepath,
                      mtl,
+                     process,
                      syb,
                      template-haskell == 2.7.*,
                      th-orphans == 0.5.*,
