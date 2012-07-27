@@ -1,6 +1,7 @@
---- diagrams-core-0.4.api	2012-07-22 16:51:41.898382792 -0700
-+++ diagrams-core-0.5.1.api	2012-07-22 15:39:59.428383564 -0700
-@@ -2,6 +2,18 @@
+--- diagrams-core-0.4.api	2012-07-27 12:32:50.246665738 -0700
++++ diagrams-core-0.5.1.api	2012-07-27 12:19:47.146665937 -0700
+@@ -1,10 +1,22 @@
+ ----------------------------------------
  module Graphics.Rendering.Diagrams
  
  class () =>
@@ -19,7 +20,28 @@
    Graphics.Rendering.Diagrams.Names.Qualifiable q where
      (Graphics.Rendering.Diagrams.Names.|>) ::
        forall q.
-@@ -59,7 +71,7 @@
+         (
+          Graphics.Rendering.Diagrams.Names.Qualifiable q
+          ) =>
+@@ -20,13 +32,13 @@
+   Graphics.Rendering.Diagrams.Style.HasStyle a where
+     Graphics.Rendering.Diagrams.Style.applyStyle ::
+       forall a.
+         (
+          Graphics.Rendering.Diagrams.Style.HasStyle a
+          ) =>
+-        Graphics.Rendering.Diagrams.Style.Style Graphics.Rendering.Diagrams.V.V a ->
++        a ->
+         a ->
+         a
+ 
+ class (
+        Data.Typeable.Internal.Typeable a
+        ,
+@@ -56,13 +68,13 @@
+        GHC.Real.Fractional s
+        ,
+        GHC.Classes.Ord s
         ,
         Data.AdditiveGroup.AdditiveGroup s
         ) =>
@@ -28,7 +50,60 @@
  
  class (
         Graphics.Rendering.Diagrams.Core.Backend b v
-@@ -109,12 +121,12 @@
+        ) =>
+   Graphics.Rendering.Diagrams.Core.MultiBackend b v where
+     Graphics.Rendering.Diagrams.Core.renderDias ::
+@@ -70,82 +82,82 @@
+         (
+          Graphics.Rendering.Diagrams.Core.MultiBackend b v
+          ) =>
+         forall m.
+           () =>
+           b ->
+-          Graphics.Rendering.Diagrams.Core.Options b v ->
+-          [Graphics.Rendering.Diagrams.Core.AnnDiagram b v m] ->
+-          Graphics.Rendering.Diagrams.Core.Result b v
++          b v ->
++          [b v m] ->
++          b v
+ 
+ class (
+-       Data.Monoid.Monoid Graphics.Rendering.Diagrams.Core.Render b v
++       Data.Monoid.Monoid b v
+        ,
+        Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+        ) =>
+   Graphics.Rendering.Diagrams.Core.Backend b v where
+     Graphics.Rendering.Diagrams.Core.withStyle ::
+       forall b v.
+         (
+          Graphics.Rendering.Diagrams.Core.Backend b v
+          ) =>
+         b ->
+-        Graphics.Rendering.Diagrams.Style.Style v ->
+-        Graphics.Rendering.Diagrams.Transform.Transformation v ->
+-        Graphics.Rendering.Diagrams.Core.Render b v ->
+-        Graphics.Rendering.Diagrams.Core.Render b v
++        v ->
++        v ->
++        b v ->
++        b v
+     Graphics.Rendering.Diagrams.Core.doRender ::
+       forall b v.
+         (
+          Graphics.Rendering.Diagrams.Core.Backend b v
+          ) =>
+         b ->
+-        Graphics.Rendering.Diagrams.Core.Options b v ->
+-        Graphics.Rendering.Diagrams.Core.Render b v ->
+-        Graphics.Rendering.Diagrams.Core.Result b v
++        b v ->
++        b v ->
++        b v
+     Graphics.Rendering.Diagrams.Core.adjustDia ::
+       forall b v.
+         (
+          Graphics.Rendering.Diagrams.Core.Backend b v
           ) =>
          forall m.
            (
@@ -36,29 +111,64 @@
 +           Data.Monoid.WithSemigroup.Monoid' m
             ) =>
            b ->
-           b v ->
-           b v m ->
--          b v m
+-          Graphics.Rendering.Diagrams.Core.Options b v ->
+-          Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-          Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++          b v ->
++          b v m ->
 +          (b v, b v m)
      Graphics.Rendering.Diagrams.Core.renderDia ::
        forall b v.
          (
-@@ -122,9 +134,9 @@
+          Graphics.Rendering.Diagrams.Core.Backend b v
           ) =>
          forall m'.
            (
 -           Data.Monoid.Monoid m'
 +           Graphics.Rendering.Diagrams.Envelope.OrderedField v
             ,
--           Graphics.Rendering.Diagrams.Bounds.OrderedField v
+-           Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar v
 +           Data.Monoid.WithSemigroup.Monoid' m'
             ,
             Data.VectorSpace.InnerSpace v
             ) =>
-@@ -160,6 +172,27 @@
-         b t
+           b ->
+-          Graphics.Rendering.Diagrams.Core.Options b v ->
+-          Graphics.Rendering.Diagrams.Core.AnnDiagram b v m' ->
+-          Graphics.Rendering.Diagrams.Core.Result b v
++          b v ->
++          b v m' ->
++          b v
  
  class (
+-       Graphics.Rendering.Diagrams.Transform.HasLinearMap Graphics.Rendering.Diagrams.V.V t
++       Graphics.Rendering.Diagrams.Transform.HasLinearMap t
+        ) =>
+   Graphics.Rendering.Diagrams.Transform.Transformable t where
+     Graphics.Rendering.Diagrams.Transform.transform ::
+       forall t.
+         (
+          Graphics.Rendering.Diagrams.Transform.Transformable t
+          ) =>
+-        Graphics.Rendering.Diagrams.Transform.Transformation Graphics.Rendering.Diagrams.V.V t ->
++        t ->
+         t ->
+         t
+ 
+ class (
+        Graphics.Rendering.Diagrams.Transform.Transformable t
+        ) =>
+@@ -154,60 +166,92 @@
+       forall t b.
+         (
+          Graphics.Rendering.Diagrams.Core.Renderable t b
+          ) =>
+         b ->
+         t ->
+-        Graphics.Rendering.Diagrams.Core.Render b Graphics.Rendering.Diagrams.V.V t
++        b t
++
++class (
 +       GHC.Classes.Ord a
 +       ,
 +       Data.VectorSpace.VectorSpace a
@@ -78,19 +188,22 @@
 +       Data.Semigroup.Semigroup m
 +       ) =>
 +  Data.Monoid.WithSemigroup.Monoid' m where
-+
-+class (
-        Data.MemoTrie.HasTrie v
+ 
+ class (
+-       Data.MemoTrie.HasTrie Data.Basis.Basis v
++       Data.MemoTrie.HasTrie v
         ,
         Data.Basis.HasBasis v
-@@ -169,18 +202,18 @@
+        ,
+        Data.VectorSpace.VectorSpace v
+        ) =>
    Graphics.Rendering.Diagrams.Transform.HasLinearMap v where
  
  class (
--       Graphics.Rendering.Diagrams.Bounds.OrderedField b
+-       Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V b
 +       Graphics.Rendering.Diagrams.Envelope.OrderedField a
         ,
--       Data.VectorSpace.InnerSpace b
+-       Data.VectorSpace.InnerSpace Graphics.Rendering.Diagrams.V.V b
 +       Data.VectorSpace.InnerSpace a
         ) =>
 -  Graphics.Rendering.Diagrams.Bounds.Boundable b where
@@ -104,13 +217,23 @@
 +         Graphics.Rendering.Diagrams.Envelope.Enveloped a
           ) =>
 -        b ->
--        b
+-        Graphics.Rendering.Diagrams.Bounds.Bounds Graphics.Rendering.Diagrams.V.V b
 +        a ->
 +        a
  
  class (
-        Data.VectorSpace.VectorSpace t
-@@ -196,6 +229,10 @@
+-       Data.VectorSpace.VectorSpace Graphics.Rendering.Diagrams.V.V t
++       Data.VectorSpace.VectorSpace t
+        ) =>
+   Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t where
+     Graphics.Rendering.Diagrams.HasOrigin.moveOriginTo ::
+       forall t.
+         (
+          Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+          ) =>
+-        Graphics.Rendering.Diagrams.Points.Point Graphics.Rendering.Diagrams.V.V t ->
++        t ->
+         t ->
          t
  
  data () =>
@@ -119,50 +242,101 @@
 +
 +data () =>
    Prim' b v =
-     forall t. 
+-    forall t. 
++    forall p. 
      (
-@@ -208,6 +245,13 @@
-   deriving ()
- 
- data () =>
-+  Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope v =
-+    Graphics.Rendering.Diagrams.Envelope.LocatedEnvelope
-+      v
-+      v
+-     Graphics.Rendering.Diagrams.Core.Renderable t b
++     Graphics.Rendering.Diagrams.Core.Renderable p b
+      ,
+-     v ~ Graphics.Rendering.Diagrams.V.V t
++     v ~ p
+      ) =>
+       Prim
+-        t
++        p
 +  deriving ()
 +
 +data () =>
++  Graphics.Rendering.Diagrams.Core.Subdiagram b v m =
++    Graphics.Rendering.Diagrams.Core.Subdiagram
++      b v m
++      v
+   deriving ()
+ 
+ data () =>
    Graphics.Rendering.Diagrams.Names.AName  =
      forall a. 
      (
-@@ -257,15 +301,15 @@
+@@ -232,522 +276,615 @@
+   | forall a'. 
+     (
+      Graphics.Rendering.Diagrams.Style.AttributeClass a'
+      ,
+      Graphics.Rendering.Diagrams.Transform.Transformable a'
+      ,
+-     Graphics.Rendering.Diagrams.V.V a' ~ v
++     a' ~ v
+      ) =>
+       Graphics.Rendering.Diagrams.Style.TAttribute
+         a'
+   deriving ()
+ 
+ data () =>
+   (:-:') u v =
+     (:-:)
+-      (Data.LinearMap.:-*) u v
+-      (Data.LinearMap.:-*) v u
++      u v
++      v u
+   deriving ()
+ 
+ data () =>
+   Graphics.Rendering.Diagrams.Transform.Transformation v =
+     Graphics.Rendering.Diagrams.Transform.Transformation
+-      (Graphics.Rendering.Diagrams.Transform.:-:) v v
+-      (Graphics.Rendering.Diagrams.Transform.:-:) v v
++      v v
++      v v
+       v
    deriving ()
  
  newtype () =>
 -  Bounds' v =
 -    Bounds
--      Graphics.Rendering.Diagrams.Bounds.appBounds :: (v -> v)
+-      Graphics.Rendering.Diagrams.Bounds.appBounds :: (v -> Data.VectorSpace.Scalar v)
 +  Graphics.Rendering.Diagrams.Core.QDiagram b v m =
 +    Graphics.Rendering.Diagrams.Core.QD
-+      Graphics.Rendering.Diagrams.Core.unQD :: v v m () b v
++      Graphics.Rendering.Diagrams.Core.unQD :: v b v m () b v
    deriving ()
  
  newtype () =>
 -  Graphics.Rendering.Diagrams.Core.AnnDiagram b v m =
 -    Graphics.Rendering.Diagrams.Core.AD
--      Graphics.Rendering.Diagrams.Core.unAD :: v m v b v
+-      Graphics.Rendering.Diagrams.Core.unAD :: Graphics.Rendering.Diagrams.UDTree.UDTree Graphics.Rendering.Diagrams.Core.UpAnnots v m Graphics.Rendering.Diagrams.Core.DownAnnots v Graphics.Rendering.Diagrams.Core.Prim b v
++  Graphics.Rendering.Diagrams.Core.SubMap b v m =
++    Graphics.Rendering.Diagrams.Core.SubMap
++      Graphics.Rendering.Diagrams.Names.Name [b v m]
++  deriving ()
++
++newtype () =>
 +  Envelope' v =
 +    Envelope
 +      Graphics.Rendering.Diagrams.Envelope.unEnvelope :: (v -> v)
    deriving ()
  
  newtype () =>
-@@ -277,18 +321,12 @@
+   Graphics.Rendering.Diagrams.Names.Name  =
+     Graphics.Rendering.Diagrams.Names.Name
+       [Graphics.Rendering.Diagrams.Names.AName]
+   deriving ()
+ 
  newtype () =>
-   Graphics.Rendering.Diagrams.Names.NameMap v =
-     Graphics.Rendering.Diagrams.Names.NameMap
--      Graphics.Rendering.Diagrams.Names.Name [(v, v)]
-+      Graphics.Rendering.Diagrams.Names.Name [v]
+-  Graphics.Rendering.Diagrams.Names.NameMap v =
+-    Graphics.Rendering.Diagrams.Names.NameMap
+-      Data.Map.Map Graphics.Rendering.Diagrams.Names.Name [(Graphics.Rendering.Diagrams.Points.Point v, Graphics.Rendering.Diagrams.Transform.TransInv Graphics.Rendering.Diagrams.Bounds.Bounds v)]
++  Query' v m =
++    Query
++      Graphics.Rendering.Diagrams.Query.runQuery :: (v -> m)
    deriving ()
  
  newtype () =>
@@ -174,45 +348,58 @@
 -newtype () =>
 -  Graphics.Rendering.Diagrams.Query.Query v m =
 -    Graphics.Rendering.Diagrams.Query.Query
-+  Query' v m =
-+    Query
-       Graphics.Rendering.Diagrams.Query.runQuery :: (v -> m)
-   deriving ()
- 
-@@ -299,11 +337,22 @@
+-      Graphics.Rendering.Diagrams.Query.runQuery :: (Graphics.Rendering.Diagrams.Points.Point v -> m)
++  Graphics.Rendering.Diagrams.Style.Style v =
++    Graphics.Rendering.Diagrams.Style.Style
++      GHC.Base.String v
    deriving ()
  
  newtype () =>
+-  Graphics.Rendering.Diagrams.Style.Style v =
+-    Graphics.Rendering.Diagrams.Style.Style
+-      Data.Map.Map GHC.Base.String Graphics.Rendering.Diagrams.Style.Attribute v
 +  Trace' v =
 +    Trace
 +      Graphics.Rendering.Diagrams.Trace.appTrace :: (v -> v -> v)
-+  deriving ()
-+
-+newtype () =>
+   deriving ()
+ 
+ newtype () =>
    TransInv' t =
      TransInv
        Graphics.Rendering.Diagrams.Transform.unTransInv :: t
    deriving ()
  
+--- can't pretty-diff-ify:
+-type Graphics.Rendering.Diagrams.Core.Diagram b v = Graphics.Rendering.Diagrams.Core.AnnDiagram b
+-                                                                                                v
+-                                                                                                Data.Monoid.Any
 +newtype () =>
 +  Data.AffineSpace.Point.Point v =
 +    Data.AffineSpace.Point.P
 +      v
 +  deriving ()
++
++
  
+--- can't pretty-diff-ify:
+-type family Graphics.Rendering.Diagrams.Core.Result b v :: * -> * -> *
  
+--- can't pretty-diff-ify:
+-type family Graphics.Rendering.Diagrams.V.V a :: * -> *
  
-@@ -314,86 +363,37 @@
+--- can't pretty-diff-ify:
+-data family Graphics.Rendering.Diagrams.Core.Options b v :: * -> * -> *
  
- 
+--- can't pretty-diff-ify:
+-data family Graphics.Rendering.Diagrams.Core.Render b v :: * -> * -> *
  
 -infixl 9 Graphics.Rendering.Diagrams.Bounds.appBounds
 -Graphics.Rendering.Diagrams.Bounds.appBounds ::
 -  forall v.
 -    () =>
+-    Graphics.Rendering.Diagrams.Bounds.Bounds v ->
 -    v ->
--    v ->
--    v
+-    Data.VectorSpace.Scalar v
  
 -infixl 9 Graphics.Rendering.Diagrams.Bounds.boundary
 -Graphics.Rendering.Diagrams.Bounds.boundary ::
@@ -220,9 +407,9 @@
 -    (
 -     Graphics.Rendering.Diagrams.Bounds.Boundable a
 -     ) =>
+-    Graphics.Rendering.Diagrams.V.V a ->
 -    a ->
--    a ->
--    a
+-    Graphics.Rendering.Diagrams.Points.Point Graphics.Rendering.Diagrams.V.V a
  
 -infixl 9 Graphics.Rendering.Diagrams.Bounds.boundaryFrom
 -Graphics.Rendering.Diagrams.Bounds.boundaryFrom ::
@@ -230,40 +417,40 @@
 -    (
 -     Graphics.Rendering.Diagrams.Bounds.Boundable a
 -     ) =>
+-    Graphics.Rendering.Diagrams.Points.Point Graphics.Rendering.Diagrams.V.V a ->
+-    Graphics.Rendering.Diagrams.V.V a ->
 -    a ->
--    a ->
--    a ->
--    a
--
+-    Graphics.Rendering.Diagrams.Points.Point Graphics.Rendering.Diagrams.V.V a
+ 
 -infixl 9 Graphics.Rendering.Diagrams.Bounds.boundaryV
 -Graphics.Rendering.Diagrams.Bounds.boundaryV ::
 -  forall a.
 -    (
 -     Graphics.Rendering.Diagrams.Bounds.Boundable a
 -     ) =>
+-    Graphics.Rendering.Diagrams.V.V a ->
 -    a ->
--    a ->
--    a
--
+-    Graphics.Rendering.Diagrams.V.V a
+ 
 -infixl 9 Graphics.Rendering.Diagrams.Bounds.diameter
 -Graphics.Rendering.Diagrams.Bounds.diameter ::
 -  forall a.
 -    (
 -     Graphics.Rendering.Diagrams.Bounds.Boundable a
 -     ) =>
+-    Graphics.Rendering.Diagrams.V.V a ->
 -    a ->
--    a ->
--    a
--
+-    Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+ 
 -infixl 9 Graphics.Rendering.Diagrams.Bounds.radius
 -Graphics.Rendering.Diagrams.Bounds.radius ::
 -  forall a.
 -    (
 -     Graphics.Rendering.Diagrams.Bounds.Boundable a
 -     ) =>
+-    Graphics.Rendering.Diagrams.V.V a ->
 -    a ->
--    a ->
--    a
+-    Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
  
  infixl 6 Graphics.Rendering.Diagrams.Core.atop
  Graphics.Rendering.Diagrams.Core.atop ::
@@ -271,7 +458,7 @@
      (
 -     Data.Monoid.Monoid m
 -     ,
--     Graphics.Rendering.Diagrams.Bounds.OrderedField v
+-     Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar v
 +     Graphics.Rendering.Diagrams.Envelope.OrderedField v
       ,
       Graphics.Rendering.Diagrams.Transform.HasLinearMap v
@@ -280,96 +467,182 @@
 +     ,
       Data.VectorSpace.InnerSpace v
       ) =>
-     b v m ->
-     b v m ->
-     b v m
- 
--infixl 9 Graphics.Rendering.Diagrams.Core.bounds
--Graphics.Rendering.Diagrams.Core.bounds ::
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    b v m ->
++    b v m ->
++    b v m
++
 +infixl 9 Graphics.Rendering.Diagrams.Core.clearValue
 +Graphics.Rendering.Diagrams.Core.clearValue ::
 +  forall b v m.
 +    () =>
 +    b v m ->
 +    b v Data.Monoid.Any
-+
+ 
+-infixl 9 Graphics.Rendering.Diagrams.Core.bounds
+-Graphics.Rendering.Diagrams.Core.bounds ::
 +infixl 9 Graphics.Rendering.Diagrams.Core.envelope
 +Graphics.Rendering.Diagrams.Core.envelope ::
    forall v b m.
      (
--     Graphics.Rendering.Diagrams.Bounds.OrderedField v
+-     Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar v
 +     Graphics.Rendering.Diagrams.Envelope.OrderedField v
       ,
       Graphics.Rendering.Diagrams.Transform.HasLinearMap v
       ,
-@@ -402,20 +402,11 @@
-     b v m ->
-     v
- 
+      Data.VectorSpace.InnerSpace v
+      ) =>
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Bounds.Bounds v
+-
 -infixl 9 Graphics.Rendering.Diagrams.Core.clearValue
 -Graphics.Rendering.Diagrams.Core.clearValue ::
 -  forall b v m.
 -    () =>
--    b v m ->
--    b v Data.Monoid.Any
--
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v Data.Monoid.Any
++    b v m ->
++    v
+ 
  infixl 9 Graphics.Rendering.Diagrams.Core.freeze
  Graphics.Rendering.Diagrams.Core.freeze ::
    forall v b m.
      (
 -     Data.Monoid.Monoid m
--     ,
--     Graphics.Rendering.Diagrams.Bounds.OrderedField v
 +     Graphics.Rendering.Diagrams.Envelope.OrderedField v
+      ,
+-     Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar v
++     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
++     ,
++     Data.VectorSpace.InnerSpace v
++     ) =>
++    b v m ->
++    b v m
++
++infixl 9 Graphics.Rendering.Diagrams.Core.fromNames
++Graphics.Rendering.Diagrams.Core.fromNames ::
++  forall a b v m.
++    (
++     Graphics.Rendering.Diagrams.Names.IsName a
++     ) =>
++    [(a, b v m)] ->
++    b v m
++
++infixl 9 Graphics.Rendering.Diagrams.Core.getSub
++Graphics.Rendering.Diagrams.Core.getSub ::
++  forall v b m.
++    (
++     GHC.Float.Floating v
       ,
       Graphics.Rendering.Diagrams.Transform.HasLinearMap v
       ,
-@@ -424,13 +415,14 @@
-     b v m ->
-     b v m
++     Data.AdditiveGroup.AdditiveGroup v
++     ,
+      Data.VectorSpace.InnerSpace v
+      ) =>
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    b v m ->
++    b v m
++
++infixl 9 Graphics.Rendering.Diagrams.Core.location
++Graphics.Rendering.Diagrams.Core.location ::
++  forall v b m.
++    (
++     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
++     ) =>
++    b v m ->
++    v
++
++infixl 9 Graphics.Rendering.Diagrams.Core.lookupSub
++Graphics.Rendering.Diagrams.Core.lookupSub ::
++  forall n b v m.
++    (
++     Graphics.Rendering.Diagrams.Names.IsName n
++     ) =>
++    n ->
++    b v m ->
++    [b v m]
++
++infixl 9 Graphics.Rendering.Diagrams.Core.mkQD
++Graphics.Rendering.Diagrams.Core.mkQD ::
++  forall b v m.
++    () =>
++    b v ->
++    v ->
++    v ->
++    b v m ->
++    v m ->
++    b v m
  
 -infixl 9 Graphics.Rendering.Diagrams.Core.mkAD
 -Graphics.Rendering.Diagrams.Core.mkAD ::
-+infixl 9 Graphics.Rendering.Diagrams.Core.mkQD
-+Graphics.Rendering.Diagrams.Core.mkQD ::
++infixl 9 Graphics.Rendering.Diagrams.Core.mkSubdiagram
++Graphics.Rendering.Diagrams.Core.mkSubdiagram ::
    forall b v m.
      () =>
-     b v ->
-     v ->
-     v ->
-+    v ->
-     v m ->
-     b v m
+-    Graphics.Rendering.Diagrams.Core.Prim b v ->
+-    Graphics.Rendering.Diagrams.Bounds.Bounds v ->
+-    Graphics.Rendering.Diagrams.Names.NameMap v ->
+-    Graphics.Rendering.Diagrams.Query.Query v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    b v m ->
++    b v m
  
-@@ -438,17 +430,17 @@
+ infixl 9 Graphics.Rendering.Diagrams.Core.namePoint
  Graphics.Rendering.Diagrams.Core.namePoint ::
    forall v b n m.
      (
 -     Data.Monoid.Monoid m
--     ,
--     Graphics.Rendering.Diagrams.Bounds.OrderedField v
++     Graphics.Rendering.Diagrams.Core.Backend b v
+      ,
+-     Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar v
 +     Graphics.Rendering.Diagrams.Envelope.OrderedField v
       ,
       Graphics.Rendering.Diagrams.Names.IsName n
       ,
       Graphics.Rendering.Diagrams.Transform.HasLinearMap v
       ,
-+     Data.Semigroup.Semigroup m
++     Data.Monoid.WithSemigroup.Monoid' m
 +     ,
       Data.VectorSpace.InnerSpace v
       ) =>
--    (b v m -> (v, v)) ->
+-    (Graphics.Rendering.Diagrams.Core.AnnDiagram b v m -> (Graphics.Rendering.Diagrams.Points.Point v, Graphics.Rendering.Diagrams.Bounds.Bounds v)) ->
 +    (b v m -> v) ->
      n ->
-     b v m ->
-     b v m
-@@ -457,14 +449,14 @@
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    b v m ->
++    b v m
++
++infixl 9 Graphics.Rendering.Diagrams.Core.nameSub
++Graphics.Rendering.Diagrams.Core.nameSub ::
++  forall v b n m.
++    (
++     Graphics.Rendering.Diagrams.Envelope.OrderedField v
++     ,
++     Graphics.Rendering.Diagrams.Names.IsName n
++     ,
++     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
++     ,
++     Data.Semigroup.Semigroup m
++     ,
++     Data.VectorSpace.InnerSpace v
++     ) =>
++    (b v m -> b v m) ->
++    n ->
++    b v m ->
++    b v m
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Core.named
  Graphics.Rendering.Diagrams.Core.named ::
    forall v b n m.
      (
 -     Data.Monoid.Monoid m
 -     ,
--     Graphics.Rendering.Diagrams.Bounds.OrderedField v
+-     Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar v
 +     Graphics.Rendering.Diagrams.Envelope.OrderedField v
       ,
       Graphics.Rendering.Diagrams.Names.IsName n
@@ -381,7 +654,41 @@
       Data.VectorSpace.InnerSpace v
       ) =>
      n ->
-@@ -498,11 +490,9 @@
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    b v m ->
++    b v m
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Core.names
+ Graphics.Rendering.Diagrams.Core.names ::
+   forall v b m.
+     (
+-     GHC.Float.Floating Data.VectorSpace.Scalar v
++     GHC.Float.Floating v
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ,
+-     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
++     Data.AdditiveGroup.AdditiveGroup v
+      ,
+      Data.VectorSpace.InnerSpace v
+      ) =>
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Names.NameMap v
++    b v m ->
++    b v m
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Core.nullPrim
+ Graphics.Rendering.Diagrams.Core.nullPrim ::
+   forall v b.
+     (
+-     Data.Monoid.Monoid Graphics.Rendering.Diagrams.Core.Render b v
++     Data.Monoid.Monoid b v
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+-    Graphics.Rendering.Diagrams.Core.Prim b v
++    b v
  
  infixl 9 Graphics.Rendering.Diagrams.Core.prims
  Graphics.Rendering.Diagrams.Core.prims ::
@@ -390,13 +697,74 @@
      (
 -     Data.Monoid.Monoid m
 -     ,
--     Graphics.Rendering.Diagrams.Bounds.OrderedField v
+-     Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar v
 +     Graphics.Rendering.Diagrams.Envelope.OrderedField v
       ,
       Graphics.Rendering.Diagrams.Transform.HasLinearMap v
       ,
-@@ -545,22 +535,51 @@
-     v ->
+      Data.VectorSpace.InnerSpace v
+      ) =>
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    [(Graphics.Rendering.Diagrams.Core.Prim b v, (Graphics.Rendering.Diagrams.Monoids.Split Graphics.Rendering.Diagrams.Transform.Transformation v, Graphics.Rendering.Diagrams.Style.Style v))]
++    b v m ->
++    [(b v, (v, v))]
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Core.query
+ Graphics.Rendering.Diagrams.Core.query ::
+   forall v m b.
+     (
+      Data.Monoid.Monoid m
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Query.Query v m
++    b v m ->
++    v m
++
++infixl 9 Graphics.Rendering.Diagrams.Core.rawSub
++Graphics.Rendering.Diagrams.Core.rawSub ::
++  forall b v m.
++    () =>
++    b v m ->
++    b v m
++
++infixl 9 Graphics.Rendering.Diagrams.Core.rememberAs
++Graphics.Rendering.Diagrams.Core.rememberAs ::
++  forall a b v m.
++    (
++     Graphics.Rendering.Diagrams.Names.IsName a
++     ) =>
++    a ->
++    b v m ->
++    b v m ->
++    b v m
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Core.resetValue
+ Graphics.Rendering.Diagrams.Core.resetValue ::
+   forall m b v.
+     (
+      Data.Monoid.Monoid m
+      ,
+      GHC.Classes.Eq m
+      ) =>
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v Data.Monoid.Any
++    b v m ->
++    b v Data.Monoid.Any
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Core.sample
+ Graphics.Rendering.Diagrams.Core.sample ::
+   forall v m b.
+     (
+      Data.Monoid.Monoid m
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Points.Point v ->
++    b v m ->
++    v ->
      m
  
 -infixl 9 Graphics.Rendering.Diagrams.Core.setBounds
@@ -408,7 +776,7 @@
 -     Data.Monoid.Monoid m
 +     Graphics.Rendering.Diagrams.Envelope.OrderedField v
       ,
--     Graphics.Rendering.Diagrams.Bounds.OrderedField v
+-     Graphics.Rendering.Diagrams.Bounds.OrderedField Data.VectorSpace.Scalar v
 +     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
 +     ,
 +     Data.Monoid.WithSemigroup.Monoid' m
@@ -431,10 +799,28 @@
 +     ,
       Data.VectorSpace.InnerSpace v
       ) =>
-     v ->
-     b v m ->
-     b v m
- 
+-    Graphics.Rendering.Diagrams.Bounds.Bounds v ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    v ->
++    b v m ->
++    b v m
++
++infixl 9 Graphics.Rendering.Diagrams.Core.subPoint
++Graphics.Rendering.Diagrams.Core.subPoint ::
++  forall v m b.
++    (
++     Graphics.Rendering.Diagrams.Envelope.OrderedField v
++     ,
++     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
++     ,
++     Data.Semigroup.Semigroup m
++     ,
++     Data.VectorSpace.InnerSpace v
++     ) =>
++    v ->
++    b v m
++
 +infixl 9 Graphics.Rendering.Diagrams.Core.trace
 +Graphics.Rendering.Diagrams.Core.trace ::
 +  forall v b m.
@@ -447,37 +833,91 @@
 +     ) =>
 +    b v m ->
 +    v
-+
+ 
  infixl 9 Graphics.Rendering.Diagrams.Core.value
  Graphics.Rendering.Diagrams.Core.value ::
    forall m b v.
-@@ -586,7 +605,7 @@
+     (
+      Data.Monoid.Monoid m
+      ) =>
+     m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v Data.Monoid.Any ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    b v Data.Monoid.Any ->
++    b v m
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Core.withName
+ Graphics.Rendering.Diagrams.Core.withName ::
+   forall n v b m.
+     (
+-     GHC.Float.Floating Data.VectorSpace.Scalar v
++     GHC.Float.Floating v
+      ,
+      Graphics.Rendering.Diagrams.Names.IsName n
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ,
+-     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
++     Data.AdditiveGroup.AdditiveGroup v
+      ,
       Data.VectorSpace.InnerSpace v
       ) =>
      n ->
--    ((v, v) -> b v m -> b v m) ->
-+    (v -> b v m -> b v m) ->
-     b v m ->
-     b v m
+-    ((Graphics.Rendering.Diagrams.Points.Point v, Graphics.Rendering.Diagrams.Bounds.Bounds v) -> Graphics.Rendering.Diagrams.Core.AnnDiagram b v m -> Graphics.Rendering.Diagrams.Core.AnnDiagram b v m) ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    (b v m -> b v m -> b v m) ->
++    b v m ->
++    b v m
  
-@@ -605,7 +624,7 @@
+ infixl 9 Graphics.Rendering.Diagrams.Core.withNameAll
+ Graphics.Rendering.Diagrams.Core.withNameAll ::
+   forall n v b m.
+     (
+-     GHC.Float.Floating Data.VectorSpace.Scalar v
++     GHC.Float.Floating v
+      ,
+      Graphics.Rendering.Diagrams.Names.IsName n
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ,
+-     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
++     Data.AdditiveGroup.AdditiveGroup v
+      ,
       Data.VectorSpace.InnerSpace v
       ) =>
      n ->
--    ([(v, v)] -> b v m -> b v m) ->
-+    ([v] -> b v m -> b v m) ->
-     b v m ->
-     b v m
+-    ([(Graphics.Rendering.Diagrams.Points.Point v, Graphics.Rendering.Diagrams.Bounds.Bounds v)] -> Graphics.Rendering.Diagrams.Core.AnnDiagram b v m -> Graphics.Rendering.Diagrams.Core.AnnDiagram b v m) ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    ([b v m] -> b v m -> b v m) ->
++    b v m ->
++    b v m
  
-@@ -624,10 +643,95 @@
+ infixl 9 Graphics.Rendering.Diagrams.Core.withNames
+ Graphics.Rendering.Diagrams.Core.withNames ::
+   forall n v b m.
+     (
+-     GHC.Float.Floating Data.VectorSpace.Scalar v
++     GHC.Float.Floating v
+      ,
+      Graphics.Rendering.Diagrams.Names.IsName n
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ,
+-     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
++     Data.AdditiveGroup.AdditiveGroup v
+      ,
       Data.VectorSpace.InnerSpace v
       ) =>
      [n] ->
--    ([(v, v)] -> b v m -> b v m) ->
-+    ([v] -> b v m -> b v m) ->
-     b v m ->
-     b v m
- 
+-    ([(Graphics.Rendering.Diagrams.Points.Point v, Graphics.Rendering.Diagrams.Bounds.Bounds v)] -> Graphics.Rendering.Diagrams.Core.AnnDiagram b v m -> Graphics.Rendering.Diagrams.Core.AnnDiagram b v m) ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m ->
+-    Graphics.Rendering.Diagrams.Core.AnnDiagram b v m
++    ([b v m] -> b v m -> b v m) ->
++    b v m ->
++    b v m
++
 +infixl 9 Graphics.Rendering.Diagrams.Envelope.appEnvelope
 +Graphics.Rendering.Diagrams.Envelope.appEnvelope ::
 +  forall v.
@@ -523,21 +963,6 @@
 +    v ->
 +    v
 +
-+infixl 9 Graphics.Rendering.Diagrams.Envelope.locateEnvelope
-+Graphics.Rendering.Diagrams.Envelope.locateEnvelope ::
-+  forall v.
-+    () =>
-+    v ->
-+    v ->
-+    v
-+
-+infixl 9 Graphics.Rendering.Diagrams.Envelope.location
-+Graphics.Rendering.Diagrams.Envelope.location ::
-+  forall v.
-+    () =>
-+    v ->
-+    v
-+
 +infixl 9 Graphics.Rendering.Diagrams.Envelope.mkEnvelope
 +Graphics.Rendering.Diagrams.Envelope.mkEnvelope ::
 +  forall v.
@@ -562,12 +987,38 @@
 +    a ->
 +    a ->
 +    a
-+
+ 
  infixl 9 Graphics.Rendering.Diagrams.HasOrigin.moveOriginBy
  Graphics.Rendering.Diagrams.HasOrigin.moveOriginBy ::
    forall t.
-@@ -658,6 +762,19 @@
+     (
+      Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+      ) =>
+-    Graphics.Rendering.Diagrams.V.V t ->
++    t ->
      t ->
+     t
+ 
+ infixl 9 Graphics.Rendering.Diagrams.HasOrigin.moveTo
+ Graphics.Rendering.Diagrams.HasOrigin.moveTo ::
+   forall t.
+     (
+      Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+      ) =>
+-    Graphics.Rendering.Diagrams.Points.Point Graphics.Rendering.Diagrams.V.V t ->
++    t ->
+     t ->
+     t
+ 
+ infixl 9 Graphics.Rendering.Diagrams.HasOrigin.place
+ Graphics.Rendering.Diagrams.HasOrigin.place ::
+   forall t.
+     (
+      Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+      ) =>
+     t ->
+-    Graphics.Rendering.Diagrams.Points.Point Graphics.Rendering.Diagrams.V.V t ->
++    t ->
      t
  
 +infixl 9 Graphics.Rendering.Diagrams.Juxtapose.juxtaposeDefault
@@ -586,46 +1037,58 @@
  infixr 5 (Graphics.Rendering.Diagrams.Names..>)
  (Graphics.Rendering.Diagrams.Names..>) ::
    forall a1 a2.
-@@ -674,11 +791,15 @@
- Graphics.Rendering.Diagrams.Names.fromNames ::
-   forall v a.
      (
-+     GHC.Float.Floating v
-+     ,
-      Graphics.Rendering.Diagrams.Names.IsName a
+      Graphics.Rendering.Diagrams.Names.IsName a1
       ,
-      GHC.Classes.Ord v
-      ,
-      Data.AdditiveGroup.AdditiveGroup v
-+     ,
-+     Data.VectorSpace.InnerSpace v
+      Graphics.Rendering.Diagrams.Names.IsName a2
       ) =>
-     [(a, v)] ->
-     v
-@@ -689,7 +810,7 @@
-     (
-      Graphics.Rendering.Diagrams.Names.IsName a
-      ) =>
--    [(a, (v, v))] ->
-+    [(a, v)] ->
-     v
+     a1 ->
+     a2 ->
+     Graphics.Rendering.Diagrams.Names.Name
  
- infixl 9 Graphics.Rendering.Diagrams.Names.lookupN
-@@ -700,7 +821,7 @@
-      ) =>
-     n ->
-     v ->
--    [(v, v)]
-+    [v]
- 
- infixl 9 Graphics.Rendering.Diagrams.Names.rememberAs
- Graphics.Rendering.Diagrams.Names.rememberAs ::
-@@ -711,25 +832,6 @@
-     a ->
-     v ->
-     v ->
--    v ->
--    v
+-infixl 9 Graphics.Rendering.Diagrams.Names.fromNames
+-Graphics.Rendering.Diagrams.Names.fromNames ::
+-  forall v a.
+-    (
+-     Graphics.Rendering.Diagrams.Names.IsName a
+-     ,
+-     GHC.Classes.Ord Data.VectorSpace.Scalar v
+-     ,
+-     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+-     ) =>
+-    [(a, Graphics.Rendering.Diagrams.Points.Point v)] ->
+-    Graphics.Rendering.Diagrams.Names.NameMap v
+-
+-infixl 9 Graphics.Rendering.Diagrams.Names.fromNamesB
+-Graphics.Rendering.Diagrams.Names.fromNamesB ::
+-  forall a v.
+-    (
+-     Graphics.Rendering.Diagrams.Names.IsName a
+-     ) =>
+-    [(a, (Graphics.Rendering.Diagrams.Points.Point v, Graphics.Rendering.Diagrams.Bounds.Bounds v))] ->
+-    Graphics.Rendering.Diagrams.Names.NameMap v
+-
+-infixl 9 Graphics.Rendering.Diagrams.Names.lookupN
+-Graphics.Rendering.Diagrams.Names.lookupN ::
+-  forall n v.
+-    (
+-     Graphics.Rendering.Diagrams.Names.IsName n
+-     ) =>
+-    n ->
+-    Graphics.Rendering.Diagrams.Names.NameMap v ->
+-    Data.Maybe.Maybe [(Graphics.Rendering.Diagrams.Points.Point v, Graphics.Rendering.Diagrams.Bounds.Bounds v)]
+-
+-infixl 9 Graphics.Rendering.Diagrams.Names.rememberAs
+-Graphics.Rendering.Diagrams.Names.rememberAs ::
+-  forall a v.
+-    (
+-     Graphics.Rendering.Diagrams.Names.IsName a
+-     ) =>
+-    a ->
+-    Graphics.Rendering.Diagrams.Points.Point v ->
+-    Graphics.Rendering.Diagrams.Bounds.Bounds v ->
+-    Graphics.Rendering.Diagrams.Names.NameMap v ->
+-    Graphics.Rendering.Diagrams.Names.NameMap v
 -
 -infixl 9 (Graphics.Rendering.Diagrams.Points.*.)
 -(Graphics.Rendering.Diagrams.Points.*.) ::
@@ -633,9 +1096,9 @@
 -    (
 -     Data.VectorSpace.VectorSpace v
 -     ) =>
--    v ->
--    v ->
--    v
+-    Data.VectorSpace.Scalar v ->
+-    Graphics.Rendering.Diagrams.Points.Point v ->
+-    Graphics.Rendering.Diagrams.Points.Point v
 -
 -infixl 9 Graphics.Rendering.Diagrams.Points.origin
 -Graphics.Rendering.Diagrams.Points.origin ::
@@ -643,13 +1106,95 @@
 -    (
 -     Data.AdditiveGroup.AdditiveGroup v
 -     ) =>
-     v
- 
+-    Graphics.Rendering.Diagrams.Points.Point v
+-
  infixl 9 Graphics.Rendering.Diagrams.Query.runQuery
-@@ -818,6 +920,74 @@
-     v ->
-     a
+ Graphics.Rendering.Diagrams.Query.runQuery ::
+   forall v m.
+     () =>
+-    Graphics.Rendering.Diagrams.Query.Query v m ->
+-    Graphics.Rendering.Diagrams.Points.Point v ->
++    v m ->
++    v ->
+     m
  
+ infixl 9 Graphics.Rendering.Diagrams.Style.applyAttr
+ Graphics.Rendering.Diagrams.Style.applyAttr ::
+   forall a d.
+     (
+@@ -766,213 +903,287 @@
+      Graphics.Rendering.Diagrams.Style.AttributeClass a
+      ,
+      Graphics.Rendering.Diagrams.Style.HasStyle d
+      ,
+      Graphics.Rendering.Diagrams.Transform.Transformable a
+      ,
+-     Graphics.Rendering.Diagrams.V.V a ~ Graphics.Rendering.Diagrams.V.V d
++     a ~ d
+      ) =>
+     a ->
+     d ->
+     d
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Style.combineAttr
+ Graphics.Rendering.Diagrams.Style.combineAttr ::
+   forall a v.
+     (
+      Graphics.Rendering.Diagrams.Style.AttributeClass a
+      ) =>
+     a ->
+-    Graphics.Rendering.Diagrams.Style.Style v ->
+-    Graphics.Rendering.Diagrams.Style.Style v
++    v ->
++    v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Style.getAttr
+ Graphics.Rendering.Diagrams.Style.getAttr ::
+   forall a v.
+     (
+      Graphics.Rendering.Diagrams.Style.AttributeClass a
+      ) =>
+-    Graphics.Rendering.Diagrams.Style.Style v ->
+-    Data.Maybe.Maybe a
++    v ->
++    a
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Style.mkAttr
+ Graphics.Rendering.Diagrams.Style.mkAttr ::
+   forall a v.
+     (
+      Graphics.Rendering.Diagrams.Style.AttributeClass a
+      ) =>
+     a ->
+-    Graphics.Rendering.Diagrams.Style.Attribute v
++    v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Style.mkTAttr
+ Graphics.Rendering.Diagrams.Style.mkTAttr ::
+   forall a v.
+     (
+      Graphics.Rendering.Diagrams.Style.AttributeClass a
+      ,
+      Graphics.Rendering.Diagrams.Transform.Transformable a
+      ,
+-     Graphics.Rendering.Diagrams.V.V a ~ v
++     a ~ v
+      ) =>
+     a ->
+-    Graphics.Rendering.Diagrams.Style.Attribute v
++    v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Style.unwrapAttr
+ Graphics.Rendering.Diagrams.Style.unwrapAttr ::
+   forall a v.
+     (
+      Graphics.Rendering.Diagrams.Style.AttributeClass a
+      ) =>
+-    Graphics.Rendering.Diagrams.Style.Attribute v ->
+-    Data.Maybe.Maybe a
++    v ->
++    a
++
 +infixl 9 Graphics.Rendering.Diagrams.Trace.appTrace
 +Graphics.Rendering.Diagrams.Trace.appTrace ::
 +  forall v.
@@ -717,12 +1262,171 @@
 +    a ->
 +    a ->
 +    a
-+
+ 
  infixl 9 (Graphics.Rendering.Diagrams.Transform.<->)
  (Graphics.Rendering.Diagrams.Transform.<->) ::
    forall u v.
-@@ -957,15 +1127,21 @@
+     (
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap u
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+     (u -> v) ->
+     (v -> u) ->
+-    (Graphics.Rendering.Diagrams.Transform.:-:) u v
++    u v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.apply
+ Graphics.Rendering.Diagrams.Transform.apply ::
+   forall v.
+     (
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+-    Graphics.Rendering.Diagrams.Transform.Transformation v ->
++    v ->
+     v ->
+     v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.fromLinear
+ Graphics.Rendering.Diagrams.Transform.fromLinear ::
+   forall v.
+     (
+      Data.AdditiveGroup.AdditiveGroup v
+      ) =>
+-    (Graphics.Rendering.Diagrams.Transform.:-:) v v ->
+-    (Graphics.Rendering.Diagrams.Transform.:-:) v v ->
+-    Graphics.Rendering.Diagrams.Transform.Transformation v
++    v v ->
++    v v ->
++    v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.inv
+ Graphics.Rendering.Diagrams.Transform.inv ::
+   forall v.
+     (
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+-    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+-    Graphics.Rendering.Diagrams.Transform.Transformation v
++    v ->
++    v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.lapp
+ Graphics.Rendering.Diagrams.Transform.lapp ::
+   forall v u.
+     (
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap u
+      ,
+      Data.VectorSpace.VectorSpace v
+      ,
+-     Data.VectorSpace.Scalar u ~ Data.VectorSpace.Scalar v
++     u ~ v
+      ) =>
+-    (Graphics.Rendering.Diagrams.Transform.:-:) u v ->
++    u v ->
+     u ->
+     v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.linv
+ Graphics.Rendering.Diagrams.Transform.linv ::
+   forall u v.
+     () =>
+-    (Graphics.Rendering.Diagrams.Transform.:-:) u v ->
+-    (Graphics.Rendering.Diagrams.Transform.:-:) v u
++    u v ->
++    v u
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.papply
+ Graphics.Rendering.Diagrams.Transform.papply ::
+   forall v.
+     (
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+-    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+-    Graphics.Rendering.Diagrams.Points.Point v ->
+-    Graphics.Rendering.Diagrams.Points.Point v
++    v ->
++    v ->
++    v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.scale
+ Graphics.Rendering.Diagrams.Transform.scale ::
+   forall t.
+     (
+-     GHC.Real.Fractional Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V t
++     GHC.Real.Fractional t
+      ,
+      Graphics.Rendering.Diagrams.Transform.Transformable t
+      ,
+-     GHC.Classes.Eq Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V t
++     GHC.Classes.Eq t
+      ) =>
+-    Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V t ->
++    t ->
      t ->
+     t
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.scaling
+ Graphics.Rendering.Diagrams.Transform.scaling ::
+   forall v.
+     (
+-     GHC.Real.Fractional Data.VectorSpace.Scalar v
++     GHC.Real.Fractional v
+      ,
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+-    Data.VectorSpace.Scalar v ->
+-    Graphics.Rendering.Diagrams.Transform.Transformation v
++    v ->
++    v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.transl
+ Graphics.Rendering.Diagrams.Transform.transl ::
+   forall v.
+     () =>
+-    Graphics.Rendering.Diagrams.Transform.Transformation v ->
++    v ->
+     v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.translate
+ Graphics.Rendering.Diagrams.Transform.translate ::
+   forall t.
+     (
+-     Graphics.Rendering.Diagrams.Transform.HasLinearMap Graphics.Rendering.Diagrams.V.V t
++     Graphics.Rendering.Diagrams.Transform.HasLinearMap t
+      ,
+      Graphics.Rendering.Diagrams.Transform.Transformable t
+      ) =>
+-    Graphics.Rendering.Diagrams.V.V t ->
++    t ->
+     t ->
+     t
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.translation
+ Graphics.Rendering.Diagrams.Transform.translation ::
+   forall v.
+     (
+      Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+      ) =>
+     v ->
+-    Graphics.Rendering.Diagrams.Transform.Transformation v
++    v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.transp
+ Graphics.Rendering.Diagrams.Transform.transp ::
+   forall v.
+     () =>
+-    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+-    (Graphics.Rendering.Diagrams.Transform.:-:) v v
++    v ->
++    v v
+ 
+ infixl 9 Graphics.Rendering.Diagrams.Transform.unTransInv
+ Graphics.Rendering.Diagrams.Transform.unTransInv ::
+   forall t.
+     () =>
+-    Graphics.Rendering.Diagrams.Transform.TransInv t ->
++    t ->
      t
  
 -infixl 9 Graphics.Rendering.Diagrams.Util.withLength
@@ -731,20 +1435,21 @@
 +(Data.AffineSpace.Point.*.) ::
    forall v.
      (
--     GHC.Float.Floating v
+-     GHC.Float.Floating Data.VectorSpace.Scalar v
 -     ,
 -     Data.VectorSpace.InnerSpace v
 +     Data.VectorSpace.VectorSpace v
       ) =>
+-    Data.VectorSpace.Scalar v ->
      v ->
-     v ->
-     v
- 
++    v ->
++    v
++
 +infixl 9 Data.AffineSpace.Point.origin
 +Data.AffineSpace.Point.origin ::
 +  forall v.
 +    (
 +     Data.AdditiveGroup.AdditiveGroup v
 +     ) =>
-+    v
-+
+     v
+ 

@@ -1,0 +1,6708 @@
+----------------------------------------
+module Diagrams.Prelude
+
+class () =>
+  Data.Monoid.Monoid a where
+    Data.Monoid.mempty ::
+      forall a.
+        (
+         Data.Monoid.Monoid a
+         ) =>
+        a
+    Data.Monoid.mappend ::
+      forall a.
+        (
+         Data.Monoid.Monoid a
+         ) =>
+        a ->
+        a ->
+        a
+    Data.Monoid.mconcat ::
+      forall a.
+        (
+         Data.Monoid.Monoid a
+         ) =>
+        [a] ->
+        a
+
+class () =>
+  Data.Colour.Internal.ColourOps (f :: * -> *) where
+    Data.Colour.Internal.over ::
+      forall (f :: * -> *).
+        (
+         Data.Colour.Internal.ColourOps f
+         ) =>
+        forall a.
+          (
+           GHC.Num.Num a
+           ) =>
+          Data.Colour.Internal.AlphaColour a ->
+          f a ->
+          f a
+    Data.Colour.Internal.darken ::
+      forall (f :: * -> *).
+        (
+         Data.Colour.Internal.ColourOps f
+         ) =>
+        forall a'.
+          (
+           GHC.Num.Num a'
+           ) =>
+          a' ->
+          f a' ->
+          f a'
+
+class () =>
+  Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a where
+    Graphics.Rendering.Diagrams.Juxtapose.juxtapose ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+         ) =>
+        Graphics.Rendering.Diagrams.V.V a ->
+        a ->
+        a ->
+        a
+
+class () =>
+  Graphics.Rendering.Diagrams.Names.Qualifiable q where
+    (Graphics.Rendering.Diagrams.Names.|>) ::
+      forall q.
+        (
+         Graphics.Rendering.Diagrams.Names.Qualifiable q
+         ) =>
+        forall a.
+          (
+           Graphics.Rendering.Diagrams.Names.IsName a
+           ) =>
+          a ->
+          q ->
+          q
+
+class () =>
+  Graphics.Rendering.Diagrams.Style.HasStyle a where
+    Graphics.Rendering.Diagrams.Style.applyStyle ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Style.HasStyle a
+         ) =>
+        Graphics.Rendering.Diagrams.Style.Style Graphics.Rendering.Diagrams.V.V a ->
+        a ->
+        a
+
+class () =>
+  Diagrams.Align.Alignable a where
+    Diagrams.Align.alignBy ::
+      forall a.
+        (
+         Diagrams.Align.Alignable a
+         ) =>
+        Graphics.Rendering.Diagrams.V.V a ->
+        Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a ->
+        a ->
+        a
+
+class () =>
+  Diagrams.Attributes.Color c where
+    Diagrams.Attributes.colorToRGBA ::
+      forall c.
+        (
+         Diagrams.Attributes.Color c
+         ) =>
+        c ->
+        (GHC.Types.Double, GHC.Types.Double, GHC.Types.Double, GHC.Types.Double)
+
+class () =>
+  Data.Semigroup.Semigroup a where
+    (Data.Semigroup.<>) ::
+      forall a.
+        (
+         Data.Semigroup.Semigroup a
+         ) =>
+        a ->
+        a ->
+        a
+    Data.Semigroup.sconcat ::
+      forall a.
+        (
+         Data.Semigroup.Semigroup a
+         ) =>
+        Data.List.NonEmpty.NonEmpty a ->
+        a
+    Data.Semigroup.times1p ::
+      forall a.
+        (
+         Data.Semigroup.Semigroup a
+         ) =>
+        forall n.
+          (
+           Numeric.Natural.Internal.Whole n
+           ) =>
+          n ->
+          a ->
+          a
+
+class () =>
+  Data.AdditiveGroup.AdditiveGroup v where
+    Data.AdditiveGroup.zeroV ::
+      forall v.
+        (
+         Data.AdditiveGroup.AdditiveGroup v
+         ) =>
+        v
+    (Data.AdditiveGroup.^+^) ::
+      forall v.
+        (
+         Data.AdditiveGroup.AdditiveGroup v
+         ) =>
+        v ->
+        v ->
+        v
+    Data.AdditiveGroup.negateV ::
+      forall v.
+        (
+         Data.AdditiveGroup.AdditiveGroup v
+         ) =>
+        v ->
+        v
+
+class (
+       Data.Typeable.Internal.Typeable a
+       ,
+       Data.Semigroup.Semigroup a
+       ) =>
+  Graphics.Rendering.Diagrams.Style.AttributeClass a where
+
+class (
+       Data.Typeable.Internal.Typeable a
+       ,
+       GHC.Show.Show a
+       ,
+       GHC.Classes.Ord a
+       ) =>
+  Graphics.Rendering.Diagrams.Names.IsName a where
+    Graphics.Rendering.Diagrams.Names.toName ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Names.IsName a
+         ) =>
+        a ->
+        Graphics.Rendering.Diagrams.Names.Name
+
+class (
+       GHC.Base.Functor f
+       ) =>
+  Control.Applicative.Applicative (f :: * -> *) where
+    Control.Applicative.pure ::
+      forall (f :: * -> *).
+        (
+         Control.Applicative.Applicative f
+         ) =>
+        forall a.
+          () =>
+          a ->
+          f a
+    (Control.Applicative.<*>) ::
+      forall (f :: * -> *).
+        (
+         Control.Applicative.Applicative f
+         ) =>
+        forall a' b.
+          () =>
+          f (a' -> b) ->
+          f a' ->
+          f b
+    (Control.Applicative.*>) ::
+      forall (f :: * -> *).
+        (
+         Control.Applicative.Applicative f
+         ) =>
+        forall a b.
+          () =>
+          f a ->
+          f b ->
+          f b
+    (Control.Applicative.<*) ::
+      forall (f :: * -> *).
+        (
+         Control.Applicative.Applicative f
+         ) =>
+        forall a b.
+          () =>
+          f a ->
+          f b ->
+          f a
+
+class (
+       GHC.Num.Num a
+       ) =>
+  Diagrams.TwoD.Types.Angle a where
+    Diagrams.TwoD.Types.toCircleFrac ::
+      forall a.
+        (
+         Diagrams.TwoD.Types.Angle a
+         ) =>
+        a ->
+        Diagrams.TwoD.Types.CircleFrac
+    Diagrams.TwoD.Types.fromCircleFrac ::
+      forall a.
+        (
+         Diagrams.TwoD.Types.Angle a
+         ) =>
+        Diagrams.TwoD.Types.CircleFrac ->
+        a
+
+class (
+       GHC.Float.Floating s
+       ,
+       GHC.Real.Fractional s
+       ,
+       GHC.Classes.Ord s
+       ,
+       Data.AdditiveGroup.AdditiveGroup s
+       ) =>
+  Graphics.Rendering.Diagrams.Envelope.OrderedField s where
+
+class (
+       Graphics.Rendering.Diagrams.Core.Backend b v
+       ) =>
+  Graphics.Rendering.Diagrams.Core.MultiBackend b v where
+    Graphics.Rendering.Diagrams.Core.renderDias ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.MultiBackend b v
+         ) =>
+        forall m.
+          () =>
+          b ->
+          Graphics.Rendering.Diagrams.Core.Options b v ->
+          [Graphics.Rendering.Diagrams.Core.QDiagram b v m] ->
+          Graphics.Rendering.Diagrams.Core.Result b v
+
+class (
+       Data.Monoid.Monoid Graphics.Rendering.Diagrams.Core.Render b v
+       ,
+       Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+       ) =>
+  Graphics.Rendering.Diagrams.Core.Backend b v where
+    Graphics.Rendering.Diagrams.Core.withStyle ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.Backend b v
+         ) =>
+        b ->
+        Graphics.Rendering.Diagrams.Style.Style v ->
+        Graphics.Rendering.Diagrams.Transform.Transformation v ->
+        Graphics.Rendering.Diagrams.Core.Render b v ->
+        Graphics.Rendering.Diagrams.Core.Render b v
+    Graphics.Rendering.Diagrams.Core.doRender ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.Backend b v
+         ) =>
+        b ->
+        Graphics.Rendering.Diagrams.Core.Options b v ->
+        Graphics.Rendering.Diagrams.Core.Render b v ->
+        Graphics.Rendering.Diagrams.Core.Result b v
+    Graphics.Rendering.Diagrams.Core.adjustDia ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.Backend b v
+         ) =>
+        forall m.
+          (
+           Data.Monoid.WithSemigroup.Monoid' m
+           ) =>
+          b ->
+          Graphics.Rendering.Diagrams.Core.Options b v ->
+          Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+          (Graphics.Rendering.Diagrams.Core.Options b v, Graphics.Rendering.Diagrams.Core.QDiagram b v m)
+    Graphics.Rendering.Diagrams.Core.renderDia ::
+      forall b v.
+        (
+         Graphics.Rendering.Diagrams.Core.Backend b v
+         ) =>
+        forall m'.
+          (
+           Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+           ,
+           Data.Monoid.WithSemigroup.Monoid' m'
+           ,
+           Data.VectorSpace.InnerSpace v
+           ) =>
+          b ->
+          Graphics.Rendering.Diagrams.Core.Options b v ->
+          Graphics.Rendering.Diagrams.Core.QDiagram b v m' ->
+          Graphics.Rendering.Diagrams.Core.Result b v
+
+class (
+       Graphics.Rendering.Diagrams.Transform.HasLinearMap Graphics.Rendering.Diagrams.V.V t
+       ) =>
+  Graphics.Rendering.Diagrams.Transform.Transformable t where
+    Graphics.Rendering.Diagrams.Transform.transform ::
+      forall t.
+        (
+         Graphics.Rendering.Diagrams.Transform.Transformable t
+         ) =>
+        Graphics.Rendering.Diagrams.Transform.Transformation Graphics.Rendering.Diagrams.V.V t ->
+        t ->
+        t
+
+class (
+       Graphics.Rendering.Diagrams.Transform.Transformable t
+       ) =>
+  Graphics.Rendering.Diagrams.Core.Renderable t b where
+    Graphics.Rendering.Diagrams.Core.render ::
+      forall t b.
+        (
+         Graphics.Rendering.Diagrams.Core.Renderable t b
+         ) =>
+        b ->
+        t ->
+        Graphics.Rendering.Diagrams.Core.Render b Graphics.Rendering.Diagrams.V.V t
+
+class (
+       Diagrams.Path.PathLike p
+       ) =>
+  Diagrams.Path.Closeable p where
+    Diagrams.Path.open ::
+      forall p.
+        (
+         Diagrams.Path.Closeable p
+         ) =>
+        p ->
+        p
+    Diagrams.Path.close ::
+      forall p.
+        (
+         Diagrams.Path.Closeable p
+         ) =>
+        p ->
+        p
+
+class (
+       GHC.Classes.Ord Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+       ,
+       Data.VectorSpace.VectorSpace Graphics.Rendering.Diagrams.V.V a
+       ) =>
+  Graphics.Rendering.Diagrams.Trace.Traced a where
+    Graphics.Rendering.Diagrams.Trace.getTrace ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Trace.Traced a
+         ) =>
+        a ->
+        Graphics.Rendering.Diagrams.Trace.Trace Graphics.Rendering.Diagrams.V.V a
+
+class (
+       Data.Monoid.WithSemigroup.Monoid' p
+       ,
+       Data.VectorSpace.VectorSpace Graphics.Rendering.Diagrams.V.V p
+       ) =>
+  Diagrams.Path.PathLike p where
+    Diagrams.Path.pathLike ::
+      forall p.
+        (
+         Diagrams.Path.PathLike p
+         ) =>
+        Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V p ->
+        GHC.Types.Bool ->
+        [Diagrams.Segment.Segment Graphics.Rendering.Diagrams.V.V p] ->
+        p
+
+class (
+       Data.Monoid.Monoid m
+       ,
+       Data.Semigroup.Semigroup m
+       ) =>
+  Data.Monoid.WithSemigroup.Monoid' m where
+
+class (
+       Data.AdditiveGroup.AdditiveGroup v
+       ) =>
+  Data.VectorSpace.VectorSpace v where
+    (Data.VectorSpace.*^) ::
+      forall v.
+        (
+         Data.VectorSpace.VectorSpace v
+         ) =>
+        Data.VectorSpace.Scalar v ->
+        v ->
+        v
+
+class (
+       Data.AdditiveGroup.AdditiveGroup Data.AffineSpace.Diff p
+       ) =>
+  Data.AffineSpace.AffineSpace p where
+    (Data.AffineSpace..-.) ::
+      forall p.
+        (
+         Data.AffineSpace.AffineSpace p
+         ) =>
+        p ->
+        p ->
+        Data.AffineSpace.Diff p
+    (Data.AffineSpace..+^) ::
+      forall p.
+        (
+         Data.AffineSpace.AffineSpace p
+         ) =>
+        p ->
+        Data.AffineSpace.Diff p ->
+        p
+
+class (
+       Data.MemoTrie.HasTrie Data.Basis.Basis v
+       ,
+       Data.Basis.HasBasis v
+       ,
+       Data.VectorSpace.VectorSpace v
+       ) =>
+  Graphics.Rendering.Diagrams.Transform.HasLinearMap v where
+
+class (
+       Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+       ,
+       Data.VectorSpace.InnerSpace Graphics.Rendering.Diagrams.V.V a
+       ) =>
+  Graphics.Rendering.Diagrams.Envelope.Enveloped a where
+    Graphics.Rendering.Diagrams.Envelope.getEnvelope ::
+      forall a.
+        (
+         Graphics.Rendering.Diagrams.Envelope.Enveloped a
+         ) =>
+        a ->
+        Graphics.Rendering.Diagrams.Envelope.Envelope Graphics.Rendering.Diagrams.V.V a
+
+class (
+       Data.VectorSpace.VectorSpace v
+       ) =>
+  Data.VectorSpace.InnerSpace v where
+    (Data.VectorSpace.<.>) ::
+      forall v.
+        (
+         Data.VectorSpace.InnerSpace v
+         ) =>
+        v ->
+        v ->
+        Data.VectorSpace.Scalar v
+
+class (
+       Data.VectorSpace.VectorSpace Graphics.Rendering.Diagrams.V.V t
+       ) =>
+  Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t where
+    Graphics.Rendering.Diagrams.HasOrigin.moveOriginTo ::
+      forall t.
+        (
+         Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+         ) =>
+        Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V t ->
+        t ->
+        t
+
+
+
+data () =>
+  Dynamic' a =
+    Dynamic
+      Data.Active.era :: Data.Active.Era
+      Data.Active.runDynamic :: (Data.Active.Time -> a)
+  deriving ()
+
+data () =>
+  Data.Colour.Internal.AlphaColour a =
+    Data.Colour.Internal.RGBA
+      ! (Data.Colour.Internal.Colour a)
+      ! (Data.Colour.Chan.Chan Data.Colour.Internal.Alpha a)
+  deriving ()
+
+data () =>
+  Data.Colour.Internal.Colour a =
+    Data.Colour.Internal.RGB
+      ! (Data.Colour.Chan.Chan Data.Colour.Internal.Red a)
+      ! (Data.Colour.Chan.Chan Data.Colour.Internal.Green a)
+      ! (Data.Colour.Chan.Chan Data.Colour.Internal.Blue a)
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Core.NullBackend 
+  deriving ()
+
+data () =>
+  Prim' b v =
+    forall p. 
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable p b
+     ,
+     v ~ Graphics.Rendering.Diagrams.V.V p
+     ) =>
+      Prim
+        p
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Core.Subdiagram b v m =
+    Graphics.Rendering.Diagrams.Core.Subdiagram
+      Graphics.Rendering.Diagrams.Core.QDiagram b v m
+      Graphics.Rendering.Diagrams.Core.DownAnnots v
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Names.AName  =
+    forall a. 
+    (
+     Data.Typeable.Internal.Typeable a
+     ,
+     GHC.Show.Show a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+      Graphics.Rendering.Diagrams.Names.AName
+        a
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Style.Attribute v =
+    forall a. 
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+      Graphics.Rendering.Diagrams.Style.Attribute
+        a
+  | forall a'. 
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a'
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable a'
+     ,
+     Graphics.Rendering.Diagrams.V.V a' ~ v
+     ) =>
+      Graphics.Rendering.Diagrams.Style.TAttribute
+        a'
+  deriving ()
+
+data () =>
+  (:-:') u v =
+    (:-:)
+      (Data.LinearMap.:-*) u v
+      (Data.LinearMap.:-*) v u
+  deriving ()
+
+data () =>
+  Graphics.Rendering.Diagrams.Transform.Transformation v =
+    Graphics.Rendering.Diagrams.Transform.Transformation
+      (Graphics.Rendering.Diagrams.Transform.:-:) v v
+      (Graphics.Rendering.Diagrams.Transform.:-:) v v
+      v
+  deriving ()
+
+data () =>
+  Dashing'  =
+    Dashing
+      [GHC.Types.Double]
+      GHC.Types.Double
+  deriving ()
+
+data () =>
+  Diagrams.Attributes.LineCap  =
+    Diagrams.Attributes.LineCapButt
+  | Diagrams.Attributes.LineCapRound
+  | Diagrams.Attributes.LineCapSquare
+  deriving ()
+
+data () =>
+  Diagrams.Attributes.LineJoin  =
+    Diagrams.Attributes.LineJoinMiter
+  | Diagrams.Attributes.LineJoinRound
+  | Diagrams.Attributes.LineJoinBevel
+  deriving ()
+
+data () =>
+  Diagrams.Attributes.SomeColor  =
+    forall c. 
+    (
+     Diagrams.Attributes.Color c
+     ) =>
+      Diagrams.Attributes.SomeColor
+        c
+  deriving ()
+
+data () =>
+  Diagrams.Combinators.CatMethod  =
+    Diagrams.Combinators.Cat
+  | Diagrams.Combinators.Distrib
+  deriving ()
+
+data () =>
+  Diagrams.Combinators.CatOpts v =
+    Diagrams.Combinators.CatOpts
+      Diagrams.Combinators.catMethod :: Diagrams.Combinators.CatMethod
+      Diagrams.Combinators.sep :: Data.VectorSpace.Scalar v
+      Diagrams.Combinators.catOptsvProxy__ :: Diagrams.Util.Proxy v
+  deriving ()
+
+data () =>
+  Trail' v =
+    Trail
+      Diagrams.Path.trailSegments :: [Diagrams.Segment.Segment v]
+      Diagrams.Path.isClosed :: GHC.Types.Bool
+  deriving ()
+
+data () =>
+  Diagrams.Segment.AdjustMethod v =
+    Diagrams.Segment.ByParam
+      Data.VectorSpace.Scalar v
+  | Diagrams.Segment.ByAbsolute
+      Data.VectorSpace.Scalar v
+  | Diagrams.Segment.ToAbsolute
+      Data.VectorSpace.Scalar v
+  deriving ()
+
+data () =>
+  Diagrams.Segment.AdjustOpts v =
+    Diagrams.Segment.ALO
+      Diagrams.Segment.adjMethod :: Diagrams.Segment.AdjustMethod v
+      Diagrams.Segment.adjSide :: Diagrams.Segment.AdjustSide
+      Diagrams.Segment.adjEps :: Data.VectorSpace.Scalar v
+      Diagrams.Segment.adjOptsvProxy__ :: Diagrams.Util.Proxy v
+  deriving ()
+
+data () =>
+  Diagrams.Segment.AdjustSide  =
+    Diagrams.Segment.Start
+  | Diagrams.Segment.End
+  | Diagrams.Segment.Both
+  deriving ()
+
+data () =>
+  Diagrams.Segment.FixedSegment v =
+    Diagrams.Segment.FLinear
+      Data.AffineSpace.Point.Point v
+      Data.AffineSpace.Point.Point v
+  | Diagrams.Segment.FCubic
+      Data.AffineSpace.Point.Point v
+      Data.AffineSpace.Point.Point v
+      Data.AffineSpace.Point.Point v
+      Data.AffineSpace.Point.Point v
+  deriving ()
+
+data () =>
+  Diagrams.Segment.Segment v =
+    Diagrams.Segment.Linear
+      v
+  | Diagrams.Segment.Cubic
+      v
+      v
+      v
+  deriving ()
+
+data () =>
+  Diagrams.TwoD.Model.OriginOpts  =
+    Diagrams.TwoD.Model.OriginOpts
+      Diagrams.TwoD.Model.oColor :: Data.Colour.Internal.Colour GHC.Types.Double
+      Diagrams.TwoD.Model.oScale :: GHC.Types.Double
+      Diagrams.TwoD.Model.oMinSize :: GHC.Types.Double
+  deriving ()
+
+data () =>
+  Diagrams.TwoD.Path.FillRule  =
+    Diagrams.TwoD.Path.Winding
+  | Diagrams.TwoD.Path.EvenOdd
+  deriving ()
+
+data () =>
+  Diagrams.TwoD.Path.StrokeOpts a =
+    Diagrams.TwoD.Path.StrokeOpts
+      Diagrams.TwoD.Path.vertexNames :: [[a]]
+      Diagrams.TwoD.Path.queryFillRule :: Diagrams.TwoD.Path.FillRule
+  deriving ()
+
+data () =>
+  Diagrams.TwoD.Polygons.PolyOrientation  =
+    Diagrams.TwoD.Polygons.NoOrient
+  | Diagrams.TwoD.Polygons.OrientH
+  | Diagrams.TwoD.Polygons.OrientV
+  | Diagrams.TwoD.Polygons.OrientTo
+      Diagrams.TwoD.Types.R2
+  deriving ()
+
+data () =>
+  Diagrams.TwoD.Polygons.PolyType  =
+    forall a. 
+    (
+     Diagrams.TwoD.Types.Angle a
+     ) =>
+      Diagrams.TwoD.Polygons.PolyPolar
+        [a]
+        [GHC.Types.Double]
+  | forall a'. 
+    (
+     Diagrams.TwoD.Types.Angle a'
+     ) =>
+      Diagrams.TwoD.Polygons.PolySides
+        [a']
+        [GHC.Types.Double]
+  | Diagrams.TwoD.Polygons.PolyRegular
+      GHC.Types.Int
+      GHC.Types.Double
+  deriving ()
+
+data () =>
+  Diagrams.TwoD.Polygons.PolygonOpts  =
+    Diagrams.TwoD.Polygons.PolygonOpts
+      Diagrams.TwoD.Polygons.polyType :: Diagrams.TwoD.Polygons.PolyType
+      Diagrams.TwoD.Polygons.polyOrient :: Diagrams.TwoD.Polygons.PolyOrientation
+      Diagrams.TwoD.Polygons.polyCenter :: Diagrams.TwoD.Types.P2
+  deriving ()
+
+data () =>
+  Diagrams.TwoD.Polygons.StarOpts  =
+    Diagrams.TwoD.Polygons.StarFun
+      (GHC.Types.Int -> GHC.Types.Int)
+  | Diagrams.TwoD.Polygons.StarSkip
+      GHC.Types.Int
+  deriving ()
+
+data () =>
+  RoundedRectOpts'  =
+    RoundedRectOpts
+      Diagrams.TwoD.Shapes.radiusTL :: GHC.Types.Double
+      Diagrams.TwoD.Shapes.radiusTR :: GHC.Types.Double
+      Diagrams.TwoD.Shapes.radiusBL :: GHC.Types.Double
+      Diagrams.TwoD.Shapes.radiusBR :: GHC.Types.Double
+  deriving ()
+
+data () =>
+  Diagrams.TwoD.Size.SizeSpec2D  =
+    Diagrams.TwoD.Size.Width
+      GHC.Types.Double
+  | Diagrams.TwoD.Size.Height
+      GHC.Types.Double
+  | Diagrams.TwoD.Size.Dims
+      GHC.Types.Double
+      GHC.Types.Double
+  | Diagrams.TwoD.Size.Absolute
+  deriving ()
+
+data () =>
+  Proxy' a =
+    Proxy
+  deriving ()
+
+newtype () =>
+  Active' a =
+    Active
+      Data.Functor.Bind.MaybeApply Data.Active.Dynamic a
+  deriving ()
+
+newtype () =>
+  Duration'  =
+    Duration
+      Data.Active.unDuration :: GHC.Real.Rational
+  deriving ()
+
+newtype () =>
+  Era'  =
+    Era
+      (Data.Semigroup.Min Data.Active.Time, Data.Semigroup.Max Data.Active.Time)
+  deriving ()
+
+newtype () =>
+  Time'  =
+    Time
+      Data.Active.unTime :: GHC.Real.Rational
+  deriving ()
+
+newtype () =>
+  All'  =
+    All
+      Data.Monoid.getAll :: GHC.Types.Bool
+  deriving ()
+
+newtype () =>
+  Any'  =
+    Any
+      Data.Monoid.getAny :: GHC.Types.Bool
+  deriving ()
+
+newtype () =>
+  Dual' a =
+    Dual
+      Data.Monoid.getDual :: a
+  deriving ()
+
+newtype () =>
+  Endo' a =
+    Endo
+      Data.Monoid.appEndo :: (a -> a)
+  deriving ()
+
+newtype () =>
+  Product' a =
+    Product
+      Data.Monoid.getProduct :: a
+  deriving ()
+
+newtype () =>
+  Sum' a =
+    Sum
+      Data.Monoid.getSum :: a
+  deriving ()
+
+newtype () =>
+  Graphics.Rendering.Diagrams.Core.QDiagram b v m =
+    Graphics.Rendering.Diagrams.Core.QD
+      Graphics.Rendering.Diagrams.Core.unQD :: Data.Tree.DUBL.DUBLTree Graphics.Rendering.Diagrams.Core.DownAnnots v Graphics.Rendering.Diagrams.Core.UpAnnots b v m () Graphics.Rendering.Diagrams.Core.Prim b v
+  deriving ()
+
+newtype () =>
+  Graphics.Rendering.Diagrams.Core.SubMap b v m =
+    Graphics.Rendering.Diagrams.Core.SubMap
+      Data.Map.Map Graphics.Rendering.Diagrams.Names.Name [Graphics.Rendering.Diagrams.Core.Subdiagram b v m]
+  deriving ()
+
+newtype () =>
+  Envelope' v =
+    Envelope
+      Graphics.Rendering.Diagrams.Envelope.unEnvelope :: Data.Semigroup.Option (v -> Data.Semigroup.Max Data.VectorSpace.Scalar v)
+  deriving ()
+
+newtype () =>
+  Graphics.Rendering.Diagrams.Names.Name  =
+    Graphics.Rendering.Diagrams.Names.Name
+      [Graphics.Rendering.Diagrams.Names.AName]
+  deriving ()
+
+newtype () =>
+  Query' v m =
+    Query
+      Graphics.Rendering.Diagrams.Query.runQuery :: (Data.AffineSpace.Point.Point v -> m)
+  deriving ()
+
+newtype () =>
+  Graphics.Rendering.Diagrams.Style.Style v =
+    Graphics.Rendering.Diagrams.Style.Style
+      Data.Map.Map GHC.Base.String Graphics.Rendering.Diagrams.Style.Attribute v
+  deriving ()
+
+newtype () =>
+  Trace' v =
+    Trace
+      Graphics.Rendering.Diagrams.Trace.appTrace :: (Data.AffineSpace.Point.Point v -> v -> Data.Monoid.PosInf.PosInf Data.VectorSpace.Scalar v)
+  deriving ()
+
+newtype () =>
+  TransInv' t =
+    TransInv
+      Graphics.Rendering.Diagrams.Transform.unTransInv :: t
+  deriving ()
+
+newtype () =>
+  Diagrams.Attributes.DashingA  =
+    Diagrams.Attributes.DashingA
+      Data.Semigroup.Last Diagrams.Attributes.Dashing
+  deriving ()
+
+newtype () =>
+  FillColor'  =
+    FillColor
+      Data.Semigroup.Last Diagrams.Attributes.SomeColor
+  deriving ()
+
+newtype () =>
+  Diagrams.Attributes.LineCapA  =
+    Diagrams.Attributes.LineCapA
+      Data.Semigroup.Last Diagrams.Attributes.LineCap
+  deriving ()
+
+newtype () =>
+  LineColor'  =
+    LineColor
+      Data.Semigroup.Last Diagrams.Attributes.SomeColor
+  deriving ()
+
+newtype () =>
+  Diagrams.Attributes.LineJoinA  =
+    Diagrams.Attributes.LineJoinA
+      Data.Semigroup.Last Diagrams.Attributes.LineJoin
+  deriving ()
+
+newtype () =>
+  LineWidth'  =
+    LineWidth
+      Data.Semigroup.Last GHC.Types.Double
+  deriving ()
+
+newtype () =>
+  Diagrams.Attributes.Opacity  =
+    Diagrams.Attributes.Opacity
+      Data.Monoid.Product GHC.Types.Double
+  deriving ()
+
+newtype () =>
+  BoundingBox' v =
+    BoundingBox
+      Data.Semigroup.Option Diagrams.BoundingBox.NonEmptyBoundingBox v
+  deriving ()
+
+newtype () =>
+  Path' v =
+    Path
+      Diagrams.Path.pathTrails :: [(Data.AffineSpace.Point.Point v, Diagrams.Path.Trail v)]
+  deriving ()
+
+newtype () =>
+  CircleFrac'  =
+    CircleFrac
+      Diagrams.TwoD.Types.getCircleFrac :: GHC.Types.Double
+  deriving ()
+
+newtype () =>
+  Deg'  =
+    Deg
+      Diagrams.TwoD.Types.getDeg :: GHC.Types.Double
+  deriving ()
+
+newtype () =>
+  R2'  =
+    R2
+      Diagrams.TwoD.Types.unR2 :: (GHC.Types.Double, GHC.Types.Double)
+  deriving ()
+
+newtype () =>
+  Rad'  =
+    Rad
+      Diagrams.TwoD.Types.getRad :: GHC.Types.Double
+  deriving ()
+
+newtype () =>
+  First' a =
+    First
+      Data.Semigroup.getFirst :: a
+  deriving ()
+
+newtype () =>
+  Last' a =
+    Last
+      Data.Semigroup.getLast :: a
+  deriving ()
+
+newtype () =>
+  Max' a =
+    Max
+      Data.Semigroup.getMax :: a
+  deriving ()
+
+newtype () =>
+  Min' a =
+    Min
+      Data.Semigroup.getMin :: a
+  deriving ()
+
+newtype () =>
+  Data.Semigroup.Option a =
+    Data.Semigroup.Option
+      Data.Semigroup.getOption :: Data.Maybe.Maybe a
+  deriving ()
+
+newtype () =>
+  Data.Semigroup.WrappedMonoid m =
+    Data.Semigroup.WrapMonoid
+      Data.Semigroup.unwrapMonoid :: m
+  deriving ()
+
+newtype () =>
+  Data.AffineSpace.Point.Point v =
+    Data.AffineSpace.Point.P
+      v
+  deriving ()
+
+-- can't pretty-diff-ify:
+type Graphics.Rendering.Diagrams.Core.D v = Graphics.Rendering.Diagrams.Core.Diagram Graphics.Rendering.Diagrams.Core.NullBackend
+                                                                                     v
+
+-- can't pretty-diff-ify:
+type Graphics.Rendering.Diagrams.Core.Diagram b v = Graphics.Rendering.Diagrams.Core.QDiagram b
+                                                                                              v
+                                                                                              Data.Monoid.Any
+
+-- can't pretty-diff-ify:
+type Diagrams.Animation.Animation b v = Diagrams.Animation.QAnimation b
+                                                                      v
+                                                                      Data.Monoid.Any
+
+-- can't pretty-diff-ify:
+type Diagrams.Animation.QAnimation b v m = Data.Active.Active (Graphics.Rendering.Diagrams.Core.QDiagram b
+                                                                                                         v
+                                                                                                         m)
+
+-- can't pretty-diff-ify:
+type Diagrams.TwoD.Types.P2 = Data.AffineSpace.Point.Point Diagrams.TwoD.Types.R2
+
+-- can't pretty-diff-ify:
+type Diagrams.TwoD.Types.T2 = Graphics.Rendering.Diagrams.Transform.Transformation Diagrams.TwoD.Types.R2
+
+-- can't pretty-diff-ify:
+type family Graphics.Rendering.Diagrams.Core.Result b v :: * -> * -> *
+
+-- can't pretty-diff-ify:
+type family Graphics.Rendering.Diagrams.V.V a :: * -> *
+
+-- can't pretty-diff-ify:
+type family Data.AffineSpace.Diff p :: * -> *
+
+-- can't pretty-diff-ify:
+type family Data.VectorSpace.Scalar v :: * -> *
+
+-- can't pretty-diff-ify:
+data family Graphics.Rendering.Diagrams.Core.Options b v :: * -> * -> *
+
+-- can't pretty-diff-ify:
+data family Graphics.Rendering.Diagrams.Core.Render b v :: * -> * -> *
+
+infixr 5 (Data.Active.->>)
+(Data.Active.->>) ::
+  forall a.
+    (
+     Data.Semigroup.Semigroup a
+     ) =>
+    Data.Active.Active a ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.activeEnd
+Data.Active.activeEnd ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    a
+
+infixl 9 Data.Active.activeEra
+Data.Active.activeEra ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Maybe.Maybe Data.Active.Era
+
+infixl 9 Data.Active.activeStart
+Data.Active.activeStart ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    a
+
+infixl 9 Data.Active.after
+Data.Active.after ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.atTime
+Data.Active.atTime ::
+  forall a.
+    () =>
+    Data.Active.Time ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.backwards
+Data.Active.backwards ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.clamp
+Data.Active.clamp ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.clampAfter
+Data.Active.clampAfter ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.clampBefore
+Data.Active.clampBefore ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.discrete
+Data.Active.discrete ::
+  forall a.
+    () =>
+    [a] ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.duration
+Data.Active.duration ::
+  Data.Active.Era ->
+  Data.Active.Duration
+
+infixl 9 Data.Active.during
+Data.Active.during ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.end
+Data.Active.end ::
+  Data.Active.Era ->
+  Data.Active.Time
+
+infixl 9 Data.Active.era
+Data.Active.era ::
+  forall a.
+    () =>
+    Data.Active.Dynamic a ->
+    Data.Active.Era
+
+infixl 9 Data.Active.fromDuration
+Data.Active.fromDuration ::
+  forall a.
+    (
+     GHC.Real.Fractional a
+     ) =>
+    Data.Active.Duration ->
+    a
+
+infixl 9 Data.Active.fromDynamic
+Data.Active.fromDynamic ::
+  forall a.
+    () =>
+    Data.Active.Dynamic a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.fromTime
+Data.Active.fromTime ::
+  forall a.
+    (
+     GHC.Real.Fractional a
+     ) =>
+    Data.Active.Time ->
+    a
+
+infixl 9 Data.Active.interval
+Data.Active.interval ::
+  forall a.
+    (
+     GHC.Real.Fractional a
+     ) =>
+    Data.Active.Time ->
+    Data.Active.Time ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.isConstant
+Data.Active.isConstant ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    GHC.Types.Bool
+
+infixl 9 Data.Active.isDynamic
+Data.Active.isDynamic ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    GHC.Types.Bool
+
+infixl 9 Data.Active.mkActive
+Data.Active.mkActive ::
+  forall a.
+    () =>
+    Data.Active.Time ->
+    Data.Active.Time ->
+    (Data.Active.Time -> a) ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.mkDynamic
+Data.Active.mkDynamic ::
+  forall a.
+    () =>
+    Data.Active.Time ->
+    Data.Active.Time ->
+    (Data.Active.Time -> a) ->
+    Data.Active.Dynamic a
+
+infixl 9 Data.Active.mkEra
+Data.Active.mkEra ::
+  Data.Active.Time ->
+  Data.Active.Time ->
+  Data.Active.Era
+
+infixl 9 Data.Active.modActive
+Data.Active.modActive ::
+  forall a b.
+    () =>
+    (a -> b) ->
+    (Data.Active.Dynamic a -> Data.Active.Dynamic b) ->
+    Data.Active.Active a ->
+    Data.Active.Active b
+
+infixl 9 Data.Active.movie
+Data.Active.movie ::
+  forall a.
+    () =>
+    [Data.Active.Active a] ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.onActive
+Data.Active.onActive ::
+  forall a b.
+    () =>
+    (a -> b) ->
+    (Data.Active.Dynamic a -> b) ->
+    Data.Active.Active a ->
+    b
+
+infixl 9 Data.Active.onDynamic
+Data.Active.onDynamic ::
+  forall a b.
+    () =>
+    (Data.Active.Time -> Data.Active.Time -> (Data.Active.Time -> a) -> b) ->
+    Data.Active.Dynamic a ->
+    b
+
+infixl 9 Data.Active.runActive
+Data.Active.runActive ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Active.Time ->
+    a
+
+infixl 9 Data.Active.runDynamic
+Data.Active.runDynamic ::
+  forall a.
+    () =>
+    Data.Active.Dynamic a ->
+    Data.Active.Time ->
+    a
+
+infixl 9 Data.Active.setEra
+Data.Active.setEra ::
+  forall a.
+    () =>
+    Data.Active.Era ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.shift
+Data.Active.shift ::
+  forall a.
+    () =>
+    Data.Active.Duration ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.shiftDynamic
+Data.Active.shiftDynamic ::
+  forall a.
+    () =>
+    Data.Active.Duration ->
+    Data.Active.Dynamic a ->
+    Data.Active.Dynamic a
+
+infixl 9 Data.Active.simulate
+Data.Active.simulate ::
+  forall a.
+    () =>
+    GHC.Real.Rational ->
+    Data.Active.Active a ->
+    [a]
+
+infixl 9 Data.Active.snapshot
+Data.Active.snapshot ::
+  forall a.
+    () =>
+    Data.Active.Time ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.start
+Data.Active.start ::
+  Data.Active.Era ->
+  Data.Active.Time
+
+infixl 9 Data.Active.stretch
+Data.Active.stretch ::
+  forall a.
+    () =>
+    GHC.Real.Rational ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.stretchTo
+Data.Active.stretchTo ::
+  forall a.
+    () =>
+    Data.Active.Duration ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.toDuration
+Data.Active.toDuration ::
+  forall a.
+    (
+     GHC.Real.Real a
+     ) =>
+    a ->
+    Data.Active.Duration
+
+infixl 9 Data.Active.toTime
+Data.Active.toTime ::
+  forall a.
+    (
+     GHC.Real.Real a
+     ) =>
+    a ->
+    Data.Active.Time
+
+infixl 9 Data.Active.trim
+Data.Active.trim ::
+  forall a.
+    (
+     Data.Monoid.Monoid a
+     ) =>
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.trimAfter
+Data.Active.trimAfter ::
+  forall a.
+    (
+     Data.Monoid.Monoid a
+     ) =>
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.trimBefore
+Data.Active.trimBefore ::
+  forall a.
+    (
+     Data.Monoid.Monoid a
+     ) =>
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Data.Active.ui
+Data.Active.ui ::
+  forall a.
+    (
+     GHC.Real.Fractional a
+     ) =>
+    Data.Active.Active a
+
+infixl 9 (Data.Active.|>>)
+(Data.Active.|>>) ::
+  forall a.
+    () =>
+    Data.Active.Active a ->
+    Data.Active.Active a ->
+    Data.Active.Active a
+
+infixl 9 Control.Applicative.liftA
+Control.Applicative.liftA ::
+  forall (f :: * -> *) a b.
+    (
+     Control.Applicative.Applicative f
+     ) =>
+    (a -> b) ->
+    f a ->
+    f b
+
+infixl 9 Control.Applicative.liftA2
+Control.Applicative.liftA2 ::
+  forall (f :: * -> *) a b c.
+    (
+     Control.Applicative.Applicative f
+     ) =>
+    (a -> b -> c) ->
+    f a ->
+    f b ->
+    f c
+
+infixl 9 Control.Applicative.liftA3
+Control.Applicative.liftA3 ::
+  forall (f :: * -> *) a b c d.
+    (
+     Control.Applicative.Applicative f
+     ) =>
+    (a -> b -> c -> d) ->
+    f a ->
+    f b ->
+    f c ->
+    f d
+
+infixl 4 (Data.Functor.<$>)
+(Data.Functor.<$>) ::
+  forall (f :: * -> *) a b.
+    (
+     GHC.Base.Functor f
+     ) =>
+    (a -> b) ->
+    f a ->
+    f b
+
+infixl 9 Data.Monoid.appEndo
+Data.Monoid.appEndo ::
+  forall a.
+    () =>
+    Data.Monoid.Endo a ->
+    a ->
+    a
+
+infixl 9 Data.Monoid.getAll
+Data.Monoid.getAll ::
+  Data.Monoid.All ->
+  GHC.Types.Bool
+
+infixl 9 Data.Monoid.getAny
+Data.Monoid.getAny ::
+  Data.Monoid.Any ->
+  GHC.Types.Bool
+
+infixl 9 Data.Monoid.getDual
+Data.Monoid.getDual ::
+  forall a.
+    () =>
+    Data.Monoid.Dual a ->
+    a
+
+infixl 9 Data.Monoid.getProduct
+Data.Monoid.getProduct ::
+  forall a.
+    () =>
+    Data.Monoid.Product a ->
+    a
+
+infixl 9 Data.Monoid.getSum
+Data.Monoid.getSum ::
+  forall a.
+    () =>
+    Data.Monoid.Sum a ->
+    a
+
+infixl 9 Data.Colour.Internal.alphaChannel
+Data.Colour.Internal.alphaChannel ::
+  forall a.
+    () =>
+    Data.Colour.Internal.AlphaColour a ->
+    a
+
+infixl 9 Data.Colour.Internal.alphaColourConvert
+Data.Colour.Internal.alphaColourConvert ::
+  forall b a.
+    (
+     GHC.Real.Fractional b
+     ,
+     GHC.Real.Real a
+     ) =>
+    Data.Colour.Internal.AlphaColour a ->
+    Data.Colour.Internal.AlphaColour b
+
+infixl 9 Data.Colour.Internal.black
+Data.Colour.Internal.black ::
+  forall a.
+    (
+     GHC.Num.Num a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Internal.blend
+Data.Colour.Internal.blend ::
+  forall a (f :: * -> *).
+    (
+     GHC.Num.Num a
+     ,
+     Data.Colour.Internal.AffineSpace f
+     ) =>
+    a ->
+    f a ->
+    f a ->
+    f a
+
+infixl 9 Data.Colour.Internal.colourConvert
+Data.Colour.Internal.colourConvert ::
+  forall b a.
+    (
+     GHC.Real.Fractional b
+     ,
+     GHC.Real.Real a
+     ) =>
+    Data.Colour.Internal.Colour a ->
+    Data.Colour.Internal.Colour b
+
+infixl 9 Data.Colour.Internal.dissolve
+Data.Colour.Internal.dissolve ::
+  forall a.
+    (
+     GHC.Num.Num a
+     ) =>
+    a ->
+    Data.Colour.Internal.AlphaColour a ->
+    Data.Colour.Internal.AlphaColour a
+
+infixl 9 Data.Colour.Internal.opaque
+Data.Colour.Internal.opaque ::
+  forall a.
+    (
+     GHC.Num.Num a
+     ) =>
+    Data.Colour.Internal.Colour a ->
+    Data.Colour.Internal.AlphaColour a
+
+infixl 9 Data.Colour.Internal.transparent
+Data.Colour.Internal.transparent ::
+  forall a.
+    (
+     GHC.Num.Num a
+     ) =>
+    Data.Colour.Internal.AlphaColour a
+
+infixl 9 Data.Colour.Internal.withOpacity
+Data.Colour.Internal.withOpacity ::
+  forall a.
+    (
+     GHC.Num.Num a
+     ) =>
+    Data.Colour.Internal.Colour a ->
+    a ->
+    Data.Colour.Internal.AlphaColour a
+
+infixl 9 Data.Colour.Names.aliceblue
+Data.Colour.Names.aliceblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.antiquewhite
+Data.Colour.Names.antiquewhite ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.aqua
+Data.Colour.Names.aqua ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.aquamarine
+Data.Colour.Names.aquamarine ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.azure
+Data.Colour.Names.azure ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.beige
+Data.Colour.Names.beige ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.bisque
+Data.Colour.Names.bisque ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.blanchedalmond
+Data.Colour.Names.blanchedalmond ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.blue
+Data.Colour.Names.blue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.blueviolet
+Data.Colour.Names.blueviolet ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.brown
+Data.Colour.Names.brown ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.burlywood
+Data.Colour.Names.burlywood ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.cadetblue
+Data.Colour.Names.cadetblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.chartreuse
+Data.Colour.Names.chartreuse ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.chocolate
+Data.Colour.Names.chocolate ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.coral
+Data.Colour.Names.coral ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.cornflowerblue
+Data.Colour.Names.cornflowerblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.cornsilk
+Data.Colour.Names.cornsilk ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.crimson
+Data.Colour.Names.crimson ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.cyan
+Data.Colour.Names.cyan ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkblue
+Data.Colour.Names.darkblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkcyan
+Data.Colour.Names.darkcyan ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkgoldenrod
+Data.Colour.Names.darkgoldenrod ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkgray
+Data.Colour.Names.darkgray ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkgreen
+Data.Colour.Names.darkgreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkgrey
+Data.Colour.Names.darkgrey ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkkhaki
+Data.Colour.Names.darkkhaki ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkmagenta
+Data.Colour.Names.darkmagenta ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkolivegreen
+Data.Colour.Names.darkolivegreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkorange
+Data.Colour.Names.darkorange ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkorchid
+Data.Colour.Names.darkorchid ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkred
+Data.Colour.Names.darkred ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darksalmon
+Data.Colour.Names.darksalmon ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkseagreen
+Data.Colour.Names.darkseagreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkslateblue
+Data.Colour.Names.darkslateblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkslategray
+Data.Colour.Names.darkslategray ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkslategrey
+Data.Colour.Names.darkslategrey ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkturquoise
+Data.Colour.Names.darkturquoise ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.darkviolet
+Data.Colour.Names.darkviolet ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.deeppink
+Data.Colour.Names.deeppink ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.deepskyblue
+Data.Colour.Names.deepskyblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.dimgray
+Data.Colour.Names.dimgray ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.dimgrey
+Data.Colour.Names.dimgrey ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.dodgerblue
+Data.Colour.Names.dodgerblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.firebrick
+Data.Colour.Names.firebrick ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.floralwhite
+Data.Colour.Names.floralwhite ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.forestgreen
+Data.Colour.Names.forestgreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.fuchsia
+Data.Colour.Names.fuchsia ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.gainsboro
+Data.Colour.Names.gainsboro ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.ghostwhite
+Data.Colour.Names.ghostwhite ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.gold
+Data.Colour.Names.gold ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.goldenrod
+Data.Colour.Names.goldenrod ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.gray
+Data.Colour.Names.gray ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.green
+Data.Colour.Names.green ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.greenyellow
+Data.Colour.Names.greenyellow ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.grey
+Data.Colour.Names.grey ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.honeydew
+Data.Colour.Names.honeydew ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.hotpink
+Data.Colour.Names.hotpink ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.indianred
+Data.Colour.Names.indianred ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.indigo
+Data.Colour.Names.indigo ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.ivory
+Data.Colour.Names.ivory ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.khaki
+Data.Colour.Names.khaki ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lavender
+Data.Colour.Names.lavender ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lavenderblush
+Data.Colour.Names.lavenderblush ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lawngreen
+Data.Colour.Names.lawngreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lemonchiffon
+Data.Colour.Names.lemonchiffon ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightblue
+Data.Colour.Names.lightblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightcoral
+Data.Colour.Names.lightcoral ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightcyan
+Data.Colour.Names.lightcyan ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightgoldenrodyellow
+Data.Colour.Names.lightgoldenrodyellow ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightgray
+Data.Colour.Names.lightgray ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightgreen
+Data.Colour.Names.lightgreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightgrey
+Data.Colour.Names.lightgrey ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightpink
+Data.Colour.Names.lightpink ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightsalmon
+Data.Colour.Names.lightsalmon ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightseagreen
+Data.Colour.Names.lightseagreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightskyblue
+Data.Colour.Names.lightskyblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightslategray
+Data.Colour.Names.lightslategray ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightslategrey
+Data.Colour.Names.lightslategrey ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightsteelblue
+Data.Colour.Names.lightsteelblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lightyellow
+Data.Colour.Names.lightyellow ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.lime
+Data.Colour.Names.lime ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.limegreen
+Data.Colour.Names.limegreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.linen
+Data.Colour.Names.linen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.magenta
+Data.Colour.Names.magenta ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.maroon
+Data.Colour.Names.maroon ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumaquamarine
+Data.Colour.Names.mediumaquamarine ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumblue
+Data.Colour.Names.mediumblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumorchid
+Data.Colour.Names.mediumorchid ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumpurple
+Data.Colour.Names.mediumpurple ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumseagreen
+Data.Colour.Names.mediumseagreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumslateblue
+Data.Colour.Names.mediumslateblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumspringgreen
+Data.Colour.Names.mediumspringgreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumturquoise
+Data.Colour.Names.mediumturquoise ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mediumvioletred
+Data.Colour.Names.mediumvioletred ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.midnightblue
+Data.Colour.Names.midnightblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mintcream
+Data.Colour.Names.mintcream ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.mistyrose
+Data.Colour.Names.mistyrose ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.moccasin
+Data.Colour.Names.moccasin ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.navajowhite
+Data.Colour.Names.navajowhite ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.navy
+Data.Colour.Names.navy ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.oldlace
+Data.Colour.Names.oldlace ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.olive
+Data.Colour.Names.olive ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.olivedrab
+Data.Colour.Names.olivedrab ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.orange
+Data.Colour.Names.orange ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.orangered
+Data.Colour.Names.orangered ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.orchid
+Data.Colour.Names.orchid ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.palegoldenrod
+Data.Colour.Names.palegoldenrod ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.palegreen
+Data.Colour.Names.palegreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.paleturquoise
+Data.Colour.Names.paleturquoise ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.palevioletred
+Data.Colour.Names.palevioletred ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.papayawhip
+Data.Colour.Names.papayawhip ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.peachpuff
+Data.Colour.Names.peachpuff ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.peru
+Data.Colour.Names.peru ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.pink
+Data.Colour.Names.pink ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.plum
+Data.Colour.Names.plum ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.powderblue
+Data.Colour.Names.powderblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.purple
+Data.Colour.Names.purple ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.readColourName
+Data.Colour.Names.readColourName ::
+  forall (m :: * -> *) a.
+    (
+     GHC.Base.Monad m
+     ,
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    GHC.Base.String ->
+    m Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.red
+Data.Colour.Names.red ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.rosybrown
+Data.Colour.Names.rosybrown ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.royalblue
+Data.Colour.Names.royalblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.saddlebrown
+Data.Colour.Names.saddlebrown ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.salmon
+Data.Colour.Names.salmon ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.sandybrown
+Data.Colour.Names.sandybrown ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.seagreen
+Data.Colour.Names.seagreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.seashell
+Data.Colour.Names.seashell ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.sienna
+Data.Colour.Names.sienna ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.silver
+Data.Colour.Names.silver ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.skyblue
+Data.Colour.Names.skyblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.slateblue
+Data.Colour.Names.slateblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.slategray
+Data.Colour.Names.slategray ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.slategrey
+Data.Colour.Names.slategrey ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.snow
+Data.Colour.Names.snow ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.springgreen
+Data.Colour.Names.springgreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.steelblue
+Data.Colour.Names.steelblue ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.tan
+Data.Colour.Names.tan ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.teal
+Data.Colour.Names.teal ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.thistle
+Data.Colour.Names.thistle ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.tomato
+Data.Colour.Names.tomato ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.turquoise
+Data.Colour.Names.turquoise ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.violet
+Data.Colour.Names.violet ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.wheat
+Data.Colour.Names.wheat ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.white
+Data.Colour.Names.white ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.whitesmoke
+Data.Colour.Names.whitesmoke ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.yellow
+Data.Colour.Names.yellow ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 9 Data.Colour.Names.yellowgreen
+Data.Colour.Names.yellowgreen ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ,
+     GHC.Classes.Ord a
+     ) =>
+    Data.Colour.Internal.Colour a
+
+infixl 6 Graphics.Rendering.Diagrams.Core.atop
+Graphics.Rendering.Diagrams.Core.atop ::
+  forall v m b.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Semigroup.Semigroup m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.clearValue
+Graphics.Rendering.Diagrams.Core.clearValue ::
+  forall b v m.
+    () =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v Data.Monoid.Any
+
+infixl 9 Graphics.Rendering.Diagrams.Core.envelope
+Graphics.Rendering.Diagrams.Core.envelope ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Envelope.Envelope v
+
+infixl 9 Graphics.Rendering.Diagrams.Core.freeze
+Graphics.Rendering.Diagrams.Core.freeze ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.fromNames
+Graphics.Rendering.Diagrams.Core.fromNames ::
+  forall a b v m.
+    (
+     Graphics.Rendering.Diagrams.Names.IsName a
+     ) =>
+    [(a, Graphics.Rendering.Diagrams.Core.Subdiagram b v m)] ->
+    Graphics.Rendering.Diagrams.Core.SubMap b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.getSub
+Graphics.Rendering.Diagrams.Core.getSub ::
+  forall v b m.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.Subdiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.location
+Graphics.Rendering.Diagrams.Core.location ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.Subdiagram b v m ->
+    Data.AffineSpace.Point.Point v
+
+infixl 9 Graphics.Rendering.Diagrams.Core.lookupSub
+Graphics.Rendering.Diagrams.Core.lookupSub ::
+  forall n b v m.
+    (
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ) =>
+    n ->
+    Graphics.Rendering.Diagrams.Core.SubMap b v m ->
+    Data.Maybe.Maybe [Graphics.Rendering.Diagrams.Core.Subdiagram b v m]
+
+infixl 9 Graphics.Rendering.Diagrams.Core.mkQD
+Graphics.Rendering.Diagrams.Core.mkQD ::
+  forall b v m.
+    () =>
+    Graphics.Rendering.Diagrams.Core.Prim b v ->
+    Graphics.Rendering.Diagrams.Envelope.Envelope v ->
+    Graphics.Rendering.Diagrams.Trace.Trace v ->
+    Graphics.Rendering.Diagrams.Core.SubMap b v m ->
+    Graphics.Rendering.Diagrams.Query.Query v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.mkSubdiagram
+Graphics.Rendering.Diagrams.Core.mkSubdiagram ::
+  forall b v m.
+    () =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.Subdiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.namePoint
+Graphics.Rendering.Diagrams.Core.namePoint ::
+  forall v b n m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b v
+     ,
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    (Graphics.Rendering.Diagrams.Core.QDiagram b v m -> Data.AffineSpace.Point.Point v) ->
+    n ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.nameSub
+Graphics.Rendering.Diagrams.Core.nameSub ::
+  forall v b n m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Semigroup.Semigroup m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    (Graphics.Rendering.Diagrams.Core.QDiagram b v m -> Graphics.Rendering.Diagrams.Core.Subdiagram b v m) ->
+    n ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.named
+Graphics.Rendering.Diagrams.Core.named ::
+  forall v b n m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Semigroup.Semigroup m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    n ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.names
+Graphics.Rendering.Diagrams.Core.names ::
+  forall v b m.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.SubMap b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.nullPrim
+Graphics.Rendering.Diagrams.Core.nullPrim ::
+  forall v b.
+    (
+     Data.Monoid.Monoid Graphics.Rendering.Diagrams.Core.Render b v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.Prim b v
+
+infixl 9 Graphics.Rendering.Diagrams.Core.prims
+Graphics.Rendering.Diagrams.Core.prims ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    [(Graphics.Rendering.Diagrams.Core.Prim b v, (Data.Monoid.Split.Split Graphics.Rendering.Diagrams.Transform.Transformation v, Graphics.Rendering.Diagrams.Style.Style v))]
+
+infixl 9 Graphics.Rendering.Diagrams.Core.query
+Graphics.Rendering.Diagrams.Core.query ::
+  forall v m b.
+    (
+     Data.Monoid.Monoid m
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Query.Query v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.rawSub
+Graphics.Rendering.Diagrams.Core.rawSub ::
+  forall b v m.
+    () =>
+    Graphics.Rendering.Diagrams.Core.Subdiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.rememberAs
+Graphics.Rendering.Diagrams.Core.rememberAs ::
+  forall a b v m.
+    (
+     Graphics.Rendering.Diagrams.Names.IsName a
+     ) =>
+    a ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.SubMap b v m ->
+    Graphics.Rendering.Diagrams.Core.SubMap b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.resetValue
+Graphics.Rendering.Diagrams.Core.resetValue ::
+  forall m b v.
+    (
+     Data.Monoid.Monoid m
+     ,
+     GHC.Classes.Eq m
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v Data.Monoid.Any
+
+infixl 9 Graphics.Rendering.Diagrams.Core.sample
+Graphics.Rendering.Diagrams.Core.sample ::
+  forall v m b.
+    (
+     Data.Monoid.Monoid m
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Data.AffineSpace.Point.Point v ->
+    m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.setEnvelope
+Graphics.Rendering.Diagrams.Core.setEnvelope ::
+  forall b v m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Envelope.Envelope v ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.setTrace
+Graphics.Rendering.Diagrams.Core.setTrace ::
+  forall b v m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Trace.Trace v ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.subPoint
+Graphics.Rendering.Diagrams.Core.subPoint ::
+  forall v m b.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Semigroup.Semigroup m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Data.AffineSpace.Point.Point v ->
+    Graphics.Rendering.Diagrams.Core.Subdiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.trace
+Graphics.Rendering.Diagrams.Core.trace ::
+  forall v b m.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Trace.Trace v
+
+infixl 9 Graphics.Rendering.Diagrams.Core.value
+Graphics.Rendering.Diagrams.Core.value ::
+  forall m b v.
+    (
+     Data.Monoid.Monoid m
+     ) =>
+    m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v Data.Monoid.Any ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.withName
+Graphics.Rendering.Diagrams.Core.withName ::
+  forall n v b m.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    n ->
+    (Graphics.Rendering.Diagrams.Core.Subdiagram b v m -> Graphics.Rendering.Diagrams.Core.QDiagram b v m -> Graphics.Rendering.Diagrams.Core.QDiagram b v m) ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.withNameAll
+Graphics.Rendering.Diagrams.Core.withNameAll ::
+  forall n v b m.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    n ->
+    ([Graphics.Rendering.Diagrams.Core.Subdiagram b v m] -> Graphics.Rendering.Diagrams.Core.QDiagram b v m -> Graphics.Rendering.Diagrams.Core.QDiagram b v m) ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Core.withNames
+Graphics.Rendering.Diagrams.Core.withNames ::
+  forall n v b m.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName n
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    [n] ->
+    ([Graphics.Rendering.Diagrams.Core.Subdiagram b v m] -> Graphics.Rendering.Diagrams.Core.QDiagram b v m -> Graphics.Rendering.Diagrams.Core.QDiagram b v m) ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.appEnvelope
+Graphics.Rendering.Diagrams.Envelope.appEnvelope ::
+  forall v.
+    () =>
+    Graphics.Rendering.Diagrams.Envelope.Envelope v ->
+    Data.Maybe.Maybe (v -> Data.VectorSpace.Scalar v)
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.diameter
+Graphics.Rendering.Diagrams.Envelope.diameter ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.envelopeP
+Graphics.Rendering.Diagrams.Envelope.envelopeP ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.envelopeV
+Graphics.Rendering.Diagrams.Envelope.envelopeV ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.inEnvelope
+Graphics.Rendering.Diagrams.Envelope.inEnvelope ::
+  forall v.
+    () =>
+    (Data.Semigroup.Option (v -> Data.Semigroup.Max Data.VectorSpace.Scalar v) -> Data.Semigroup.Option (v -> Data.Semigroup.Max Data.VectorSpace.Scalar v)) ->
+    Graphics.Rendering.Diagrams.Envelope.Envelope v ->
+    Graphics.Rendering.Diagrams.Envelope.Envelope v
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.mkEnvelope
+Graphics.Rendering.Diagrams.Envelope.mkEnvelope ::
+  forall v.
+    () =>
+    (v -> Data.VectorSpace.Scalar v) ->
+    Graphics.Rendering.Diagrams.Envelope.Envelope v
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.onEnvelope
+Graphics.Rendering.Diagrams.Envelope.onEnvelope ::
+  forall v.
+    () =>
+    ((v -> Data.VectorSpace.Scalar v) -> v -> Data.VectorSpace.Scalar v) ->
+    Graphics.Rendering.Diagrams.Envelope.Envelope v ->
+    Graphics.Rendering.Diagrams.Envelope.Envelope v
+
+infixl 9 Graphics.Rendering.Diagrams.Envelope.radius
+Graphics.Rendering.Diagrams.Envelope.radius ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 Graphics.Rendering.Diagrams.HasOrigin.moveOriginBy
+Graphics.Rendering.Diagrams.HasOrigin.moveOriginBy ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+     ) =>
+    Graphics.Rendering.Diagrams.V.V t ->
+    t ->
+    t
+
+infixl 9 Graphics.Rendering.Diagrams.HasOrigin.moveTo
+Graphics.Rendering.Diagrams.HasOrigin.moveTo ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+     ) =>
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V t ->
+    t ->
+    t
+
+infixl 9 Graphics.Rendering.Diagrams.HasOrigin.place
+Graphics.Rendering.Diagrams.HasOrigin.place ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin t
+     ) =>
+    t ->
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V t ->
+    t
+
+infixl 9 Graphics.Rendering.Diagrams.Juxtapose.juxtaposeDefault
+Graphics.Rendering.Diagrams.Juxtapose.juxtaposeDefault ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    a ->
+    a
+
+infixr 5 (Graphics.Rendering.Diagrams.Names..>)
+(Graphics.Rendering.Diagrams.Names..>) ::
+  forall a1 a2.
+    (
+     Graphics.Rendering.Diagrams.Names.IsName a1
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName a2
+     ) =>
+    a1 ->
+    a2 ->
+    Graphics.Rendering.Diagrams.Names.Name
+
+infixl 9 Graphics.Rendering.Diagrams.Query.runQuery
+Graphics.Rendering.Diagrams.Query.runQuery ::
+  forall v m.
+    () =>
+    Graphics.Rendering.Diagrams.Query.Query v m ->
+    Data.AffineSpace.Point.Point v ->
+    m
+
+infixl 9 Graphics.Rendering.Diagrams.Style.applyAttr
+Graphics.Rendering.Diagrams.Style.applyAttr ::
+  forall a d.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ,
+     Graphics.Rendering.Diagrams.Style.HasStyle d
+     ) =>
+    a ->
+    d ->
+    d
+
+infixl 9 Graphics.Rendering.Diagrams.Style.applyTAttr
+Graphics.Rendering.Diagrams.Style.applyTAttr ::
+  forall a d.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ,
+     Graphics.Rendering.Diagrams.Style.HasStyle d
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Graphics.Rendering.Diagrams.V.V d
+     ) =>
+    a ->
+    d ->
+    d
+
+infixl 9 Graphics.Rendering.Diagrams.Style.combineAttr
+Graphics.Rendering.Diagrams.Style.combineAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+    a ->
+    Graphics.Rendering.Diagrams.Style.Style v ->
+    Graphics.Rendering.Diagrams.Style.Style v
+
+infixl 9 Graphics.Rendering.Diagrams.Style.getAttr
+Graphics.Rendering.Diagrams.Style.getAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+    Graphics.Rendering.Diagrams.Style.Style v ->
+    Data.Maybe.Maybe a
+
+infixl 9 Graphics.Rendering.Diagrams.Style.mkAttr
+Graphics.Rendering.Diagrams.Style.mkAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+    a ->
+    Graphics.Rendering.Diagrams.Style.Attribute v
+
+infixl 9 Graphics.Rendering.Diagrams.Style.mkTAttr
+Graphics.Rendering.Diagrams.Style.mkTAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ v
+     ) =>
+    a ->
+    Graphics.Rendering.Diagrams.Style.Attribute v
+
+infixl 9 Graphics.Rendering.Diagrams.Style.unwrapAttr
+Graphics.Rendering.Diagrams.Style.unwrapAttr ::
+  forall a v.
+    (
+     Graphics.Rendering.Diagrams.Style.AttributeClass a
+     ) =>
+    Graphics.Rendering.Diagrams.Style.Attribute v ->
+    Data.Maybe.Maybe a
+
+infixl 9 Graphics.Rendering.Diagrams.Trace.appTrace
+Graphics.Rendering.Diagrams.Trace.appTrace ::
+  forall v.
+    () =>
+    Graphics.Rendering.Diagrams.Trace.Trace v ->
+    Data.AffineSpace.Point.Point v ->
+    v ->
+    Data.Monoid.PosInf.PosInf Data.VectorSpace.Scalar v
+
+infixl 9 Graphics.Rendering.Diagrams.Trace.inTrace
+Graphics.Rendering.Diagrams.Trace.inTrace ::
+  forall v.
+    () =>
+    ((Data.AffineSpace.Point.Point v -> v -> Data.Monoid.PosInf.PosInf Data.VectorSpace.Scalar v) -> Data.AffineSpace.Point.Point v -> v -> Data.Monoid.PosInf.PosInf Data.VectorSpace.Scalar v) ->
+    Graphics.Rendering.Diagrams.Trace.Trace v ->
+    Graphics.Rendering.Diagrams.Trace.Trace v
+
+infixl 9 Graphics.Rendering.Diagrams.Trace.maxTraceP
+Graphics.Rendering.Diagrams.Trace.maxTraceP ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ) =>
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V a ->
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    Data.Maybe.Maybe Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 Graphics.Rendering.Diagrams.Trace.maxTraceV
+Graphics.Rendering.Diagrams.Trace.maxTraceV ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ) =>
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V a ->
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    Data.Maybe.Maybe Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 Graphics.Rendering.Diagrams.Trace.mkTrace
+Graphics.Rendering.Diagrams.Trace.mkTrace ::
+  forall v.
+    () =>
+    (Data.AffineSpace.Point.Point v -> v -> Data.Monoid.PosInf.PosInf Data.VectorSpace.Scalar v) ->
+    Graphics.Rendering.Diagrams.Trace.Trace v
+
+infixl 9 Graphics.Rendering.Diagrams.Trace.traceP
+Graphics.Rendering.Diagrams.Trace.traceP ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ) =>
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V a ->
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    Data.Maybe.Maybe Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 Graphics.Rendering.Diagrams.Trace.traceV
+Graphics.Rendering.Diagrams.Trace.traceV ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ) =>
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V a ->
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    Data.Maybe.Maybe Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 (Graphics.Rendering.Diagrams.Transform.<->)
+(Graphics.Rendering.Diagrams.Transform.<->) ::
+  forall u v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap u
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    (u -> v) ->
+    (v -> u) ->
+    (Graphics.Rendering.Diagrams.Transform.:-:) u v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.apply
+Graphics.Rendering.Diagrams.Transform.apply ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+    v ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.fromLinear
+Graphics.Rendering.Diagrams.Transform.fromLinear ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    (Graphics.Rendering.Diagrams.Transform.:-:) v v ->
+    (Graphics.Rendering.Diagrams.Transform.:-:) v v ->
+    Graphics.Rendering.Diagrams.Transform.Transformation v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.inv
+Graphics.Rendering.Diagrams.Transform.inv ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+    Graphics.Rendering.Diagrams.Transform.Transformation v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.lapp
+Graphics.Rendering.Diagrams.Transform.lapp ::
+  forall v u.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap u
+     ,
+     Data.VectorSpace.VectorSpace v
+     ,
+     Data.VectorSpace.Scalar u ~ Data.VectorSpace.Scalar v
+     ) =>
+    (Graphics.Rendering.Diagrams.Transform.:-:) u v ->
+    u ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.linv
+Graphics.Rendering.Diagrams.Transform.linv ::
+  forall u v.
+    () =>
+    (Graphics.Rendering.Diagrams.Transform.:-:) u v ->
+    (Graphics.Rendering.Diagrams.Transform.:-:) v u
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.papply
+Graphics.Rendering.Diagrams.Transform.papply ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+    Data.AffineSpace.Point.Point v ->
+    Data.AffineSpace.Point.Point v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.scale
+Graphics.Rendering.Diagrams.Transform.scale ::
+  forall t.
+    (
+     GHC.Real.Fractional Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V t
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     GHC.Classes.Eq Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V t
+     ) =>
+    Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V t ->
+    t ->
+    t
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.scaling
+Graphics.Rendering.Diagrams.Transform.scaling ::
+  forall v.
+    (
+     GHC.Real.Fractional Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Data.VectorSpace.Scalar v ->
+    Graphics.Rendering.Diagrams.Transform.Transformation v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.transl
+Graphics.Rendering.Diagrams.Transform.transl ::
+  forall v.
+    () =>
+    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+    v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.translate
+Graphics.Rendering.Diagrams.Transform.translate ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap Graphics.Rendering.Diagrams.V.V t
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ) =>
+    Graphics.Rendering.Diagrams.V.V t ->
+    t ->
+    t
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.translation
+Graphics.Rendering.Diagrams.Transform.translation ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    v ->
+    Graphics.Rendering.Diagrams.Transform.Transformation v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.transp
+Graphics.Rendering.Diagrams.Transform.transp ::
+  forall v.
+    () =>
+    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+    (Graphics.Rendering.Diagrams.Transform.:-:) v v
+
+infixl 9 Graphics.Rendering.Diagrams.Transform.unTransInv
+Graphics.Rendering.Diagrams.Transform.unTransInv ::
+  forall t.
+    () =>
+    Graphics.Rendering.Diagrams.Transform.TransInv t ->
+    t
+
+infixl 9 Diagrams.Align.align
+Diagrams.Align.align ::
+  forall a.
+    (
+     GHC.Num.Num Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+     ,
+     Diagrams.Align.Alignable a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    a
+
+infixl 9 Diagrams.Align.alignByDefault
+Diagrams.Align.alignByDefault ::
+  forall a.
+    (
+     GHC.Num.Num Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+     ,
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    a
+
+infixl 9 Diagrams.Align.center
+Diagrams.Align.center ::
+  forall a.
+    (
+     GHC.Num.Num Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+     ,
+     Diagrams.Align.Alignable a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    a
+
+infixl 9 Diagrams.Animation.animEnvelope
+Diagrams.Animation.animEnvelope ::
+  forall b v m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b v
+     ,
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Diagrams.Animation.QAnimation b v m ->
+    Diagrams.Animation.QAnimation b v m
+
+infixl 9 Diagrams.Animation.animEnvelope'
+Diagrams.Animation.animEnvelope' ::
+  forall b v m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b v
+     ,
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    GHC.Real.Rational ->
+    Diagrams.Animation.QAnimation b v m ->
+    Diagrams.Animation.QAnimation b v m
+
+infixl 9 Diagrams.Animation.animRect
+Diagrams.Animation.animRect ::
+  forall p b m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped p
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable p
+     ,
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    Diagrams.Animation.QAnimation b Diagrams.TwoD.Types.R2 m ->
+    p
+
+infixl 9 Diagrams.Animation.animRect'
+Diagrams.Animation.animRect' ::
+  forall p b m.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped p
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable p
+     ,
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Real.Rational ->
+    Diagrams.Animation.QAnimation b Diagrams.TwoD.Types.R2 m ->
+    p
+
+infixl 9 Diagrams.Attributes.dashing
+Diagrams.Attributes.dashing ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    [GHC.Types.Double] ->
+    GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.fc
+Diagrams.Attributes.fc ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    Data.Colour.Internal.Colour GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.fcA
+Diagrams.Attributes.fcA ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    Data.Colour.Internal.AlphaColour GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.fillColor
+Diagrams.Attributes.fillColor ::
+  forall c a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ,
+     Diagrams.Attributes.Color c
+     ) =>
+    c ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.getDashing
+Diagrams.Attributes.getDashing ::
+  Diagrams.Attributes.DashingA ->
+  Diagrams.Attributes.Dashing
+
+infixl 9 Diagrams.Attributes.getFillColor
+Diagrams.Attributes.getFillColor ::
+  Diagrams.Attributes.FillColor ->
+  Diagrams.Attributes.SomeColor
+
+infixl 9 Diagrams.Attributes.getLineCap
+Diagrams.Attributes.getLineCap ::
+  Diagrams.Attributes.LineCapA ->
+  Diagrams.Attributes.LineCap
+
+infixl 9 Diagrams.Attributes.getLineColor
+Diagrams.Attributes.getLineColor ::
+  Diagrams.Attributes.LineColor ->
+  Diagrams.Attributes.SomeColor
+
+infixl 9 Diagrams.Attributes.getLineJoin
+Diagrams.Attributes.getLineJoin ::
+  Diagrams.Attributes.LineJoinA ->
+  Diagrams.Attributes.LineJoin
+
+infixl 9 Diagrams.Attributes.getLineWidth
+Diagrams.Attributes.getLineWidth ::
+  Diagrams.Attributes.LineWidth ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.Attributes.getOpacity
+Diagrams.Attributes.getOpacity ::
+  Diagrams.Attributes.Opacity ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.Attributes.lc
+Diagrams.Attributes.lc ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    Data.Colour.Internal.Colour GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.lcA
+Diagrams.Attributes.lcA ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    Data.Colour.Internal.AlphaColour GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.lineCap
+Diagrams.Attributes.lineCap ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    Diagrams.Attributes.LineCap ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.lineColor
+Diagrams.Attributes.lineColor ::
+  forall c a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ,
+     Diagrams.Attributes.Color c
+     ) =>
+    c ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.lineJoin
+Diagrams.Attributes.lineJoin ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    Diagrams.Attributes.LineJoin ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.lineWidth
+Diagrams.Attributes.lineWidth ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.lw
+Diagrams.Attributes.lw ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.Attributes.opacity
+Diagrams.Attributes.opacity ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.BoundingBox.boundingBox
+Diagrams.BoundingBox.boundingBox ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     GHC.Classes.Ord Data.Basis.Basis Graphics.Rendering.Diagrams.V.V a
+     ,
+     Data.AdditiveGroup.AdditiveGroup Graphics.Rendering.Diagrams.V.V a
+     ,
+     Data.Basis.HasBasis Graphics.Rendering.Diagrams.V.V a
+     ) =>
+    a ->
+    Diagrams.BoundingBox.BoundingBox Graphics.Rendering.Diagrams.V.V a
+
+infixl 9 Diagrams.BoundingBox.boxExtents
+Diagrams.BoundingBox.boxExtents ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    v
+
+infixl 9 Diagrams.BoundingBox.boxFit
+Diagrams.BoundingBox.boxFit ::
+  forall a.
+    (
+     Data.Monoid.Monoid a
+     ,
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable a
+     ,
+     GHC.Classes.Ord Data.Basis.Basis Graphics.Rendering.Diagrams.V.V a
+     ) =>
+    Diagrams.BoundingBox.BoundingBox Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    a
+
+infixl 9 Diagrams.BoundingBox.boxTransform
+Diagrams.BoundingBox.boxTransform ::
+  forall v.
+    (
+     GHC.Real.Fractional Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     Data.AdditiveGroup.AdditiveGroup v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v ->
+    Data.Maybe.Maybe Graphics.Rendering.Diagrams.Transform.Transformation v
+
+infixl 9 Diagrams.BoundingBox.contains
+Diagrams.BoundingBox.contains ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Data.AffineSpace.Point.Point v ->
+    GHC.Types.Bool
+
+infixl 9 Diagrams.BoundingBox.contains'
+Diagrams.BoundingBox.contains' ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Data.AffineSpace.Point.Point v ->
+    GHC.Types.Bool
+
+infixl 9 Diagrams.BoundingBox.fromCorners
+Diagrams.BoundingBox.fromCorners ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Data.AffineSpace.Point.Point v ->
+    Data.AffineSpace.Point.Point v ->
+    Diagrams.BoundingBox.BoundingBox v
+
+infixl 9 Diagrams.BoundingBox.fromPoint
+Diagrams.BoundingBox.fromPoint ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Data.AffineSpace.Point.Point v ->
+    Diagrams.BoundingBox.BoundingBox v
+
+infixl 9 Diagrams.BoundingBox.fromPoints
+Diagrams.BoundingBox.fromPoints ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    [Data.AffineSpace.Point.Point v] ->
+    Diagrams.BoundingBox.BoundingBox v
+
+infixl 9 Diagrams.BoundingBox.getAllCorners
+Diagrams.BoundingBox.getAllCorners ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    [Data.AffineSpace.Point.Point v]
+
+infixl 9 Diagrams.BoundingBox.getCorners
+Diagrams.BoundingBox.getCorners ::
+  forall v.
+    () =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Data.Maybe.Maybe (Data.AffineSpace.Point.Point v, Data.AffineSpace.Point.Point v)
+
+infixl 9 Diagrams.BoundingBox.inside
+Diagrams.BoundingBox.inside ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v ->
+    GHC.Types.Bool
+
+infixl 9 Diagrams.BoundingBox.inside'
+Diagrams.BoundingBox.inside' ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v ->
+    GHC.Types.Bool
+
+infixl 9 Diagrams.BoundingBox.intersection
+Diagrams.BoundingBox.intersection ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v
+
+infixl 9 Diagrams.BoundingBox.intersections
+Diagrams.BoundingBox.intersections ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    [Diagrams.BoundingBox.BoundingBox v] ->
+    Diagrams.BoundingBox.BoundingBox v
+
+infixl 9 Diagrams.BoundingBox.outside
+Diagrams.BoundingBox.outside ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v ->
+    GHC.Types.Bool
+
+infixl 9 Diagrams.BoundingBox.outside'
+Diagrams.BoundingBox.outside' ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v ->
+    GHC.Types.Bool
+
+infixl 9 Diagrams.BoundingBox.union
+Diagrams.BoundingBox.union ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v ->
+    Diagrams.BoundingBox.BoundingBox v
+
+infixl 9 Diagrams.BoundingBox.unions
+Diagrams.BoundingBox.unions ::
+  forall v.
+    (
+     GHC.Classes.Ord Data.Basis.Basis v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup Data.VectorSpace.Scalar v
+     ,
+     Data.Basis.HasBasis v
+     ) =>
+    [Diagrams.BoundingBox.BoundingBox v] ->
+    Diagrams.BoundingBox.BoundingBox v
+
+infixl 9 Diagrams.Combinators.appends
+Diagrams.Combinators.appends ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ) =>
+    a ->
+    [(Graphics.Rendering.Diagrams.V.V a, a)] ->
+    a
+
+infixl 9 Diagrams.Combinators.beneath
+Diagrams.Combinators.beneath ::
+  forall v m b.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Diagrams.Combinators.beside
+Diagrams.Combinators.beside ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Semigroup.Semigroup a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    a ->
+    a
+
+infixl 9 Diagrams.Combinators.cat
+Diagrams.Combinators.cat ::
+  forall a.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+     ,
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ,
+     Data.VectorSpace.InnerSpace Graphics.Rendering.Diagrams.V.V a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    [a] ->
+    a
+
+infixl 9 Diagrams.Combinators.cat'
+Diagrams.Combinators.cat' ::
+  forall a.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+     ,
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ,
+     Data.VectorSpace.InnerSpace Graphics.Rendering.Diagrams.V.V a
+     ) =>
+    Graphics.Rendering.Diagrams.V.V a ->
+    Diagrams.Combinators.CatOpts Graphics.Rendering.Diagrams.V.V a ->
+    [a] ->
+    a
+
+infixl 9 Diagrams.Combinators.catMethod
+Diagrams.Combinators.catMethod ::
+  forall v.
+    () =>
+    Diagrams.Combinators.CatOpts v ->
+    Diagrams.Combinators.CatMethod
+
+infixl 9 Diagrams.Combinators.catOptsvProxy__
+Diagrams.Combinators.catOptsvProxy__ ::
+  forall v.
+    () =>
+    Diagrams.Combinators.CatOpts v ->
+    Diagrams.Util.Proxy v
+
+infixl 9 Diagrams.Combinators.decoratePath
+Diagrams.Combinators.decoratePath ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ) =>
+    Diagrams.Path.Path Graphics.Rendering.Diagrams.V.V a ->
+    [a] ->
+    a
+
+infixl 9 Diagrams.Combinators.decorateTrail
+Diagrams.Combinators.decorateTrail ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ) =>
+    Diagrams.Path.Trail Graphics.Rendering.Diagrams.V.V a ->
+    [a] ->
+    a
+
+infixl 9 Diagrams.Combinators.pad
+Diagrams.Combinators.pad ::
+  forall b v m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b v
+     ,
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Data.VectorSpace.Scalar v ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Diagrams.Combinators.phantom
+Diagrams.Combinators.phantom ::
+  forall b a m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Graphics.Rendering.Diagrams.V.V a
+     ,
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    a ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Graphics.Rendering.Diagrams.V.V a m
+
+infixl 9 Diagrams.Combinators.position
+Diagrams.Combinators.position ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ) =>
+    [(Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V a, a)] ->
+    a
+
+infixl 9 Diagrams.Combinators.sep
+Diagrams.Combinators.sep ::
+  forall v.
+    () =>
+    Diagrams.Combinators.CatOpts v ->
+    Data.VectorSpace.Scalar v
+
+infixl 9 Diagrams.Combinators.strut
+Diagrams.Combinators.strut ::
+  forall b v m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b v
+     ,
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    v ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b v m
+
+infixl 9 Diagrams.Combinators.withEnvelope
+Diagrams.Combinators.withEnvelope ::
+  forall a m b.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap Graphics.Rendering.Diagrams.V.V a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    a ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Graphics.Rendering.Diagrams.V.V a m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Graphics.Rendering.Diagrams.V.V a m
+
+infixl 9 Diagrams.Combinators.withTrace
+Diagrams.Combinators.withTrace ::
+  forall a m b.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar Graphics.Rendering.Diagrams.V.V a
+     ,
+     Graphics.Rendering.Diagrams.Trace.Traced a
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap Graphics.Rendering.Diagrams.V.V a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ,
+     Data.VectorSpace.InnerSpace Graphics.Rendering.Diagrams.V.V a
+     ) =>
+    a ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Graphics.Rendering.Diagrams.V.V a m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Graphics.Rendering.Diagrams.V.V a m
+
+infixl 9 Diagrams.CubicSpline.cubicSpline
+Diagrams.CubicSpline.cubicSpline ::
+  forall p.
+    (
+     GHC.Real.Fractional Graphics.Rendering.Diagrams.V.V p
+     ,
+     Diagrams.Path.PathLike p
+     ) =>
+    GHC.Types.Bool ->
+    [Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V p] ->
+    p
+
+infixl 9 Diagrams.Path.addClosingSegment
+Diagrams.Path.addClosingSegment ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Trail v ->
+    Diagrams.Path.Trail v
+
+infixl 9 Diagrams.Path.expandPath
+Diagrams.Path.expandPath ::
+  forall v.
+    (
+     GHC.Real.Fractional Data.VectorSpace.Scalar v
+     ,
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ,
+     GHC.Classes.Eq Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    Data.VectorSpace.Scalar v ->
+    Diagrams.Path.Path v ->
+    Diagrams.Path.Path v
+
+infixl 9 Diagrams.Path.explodePath
+Diagrams.Path.explodePath ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Data.VectorSpace.VectorSpace Graphics.Rendering.Diagrams.V.V p
+     ) =>
+    Diagrams.Path.Path Graphics.Rendering.Diagrams.V.V p ->
+    [[p]]
+
+infixl 9 Diagrams.Path.explodeTrail
+Diagrams.Path.explodeTrail ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Data.VectorSpace.VectorSpace Graphics.Rendering.Diagrams.V.V p
+     ) =>
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V p ->
+    Diagrams.Path.Trail Graphics.Rendering.Diagrams.V.V p ->
+    [p]
+
+infixl 9 Diagrams.Path.fixPath
+Diagrams.Path.fixPath ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Path v ->
+    [[Diagrams.Segment.FixedSegment v]]
+
+infixl 9 Diagrams.Path.fixTrail
+Diagrams.Path.fixTrail ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Data.AffineSpace.Point.Point v ->
+    Diagrams.Path.Trail v ->
+    [Diagrams.Segment.FixedSegment v]
+
+infixl 9 Diagrams.Path.fromOffsets
+Diagrams.Path.fromOffsets ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ) =>
+    [Graphics.Rendering.Diagrams.V.V p] ->
+    p
+
+infixl 9 Diagrams.Path.fromSegments
+Diagrams.Path.fromSegments ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ) =>
+    [Diagrams.Segment.Segment Graphics.Rendering.Diagrams.V.V p] ->
+    p
+
+infixl 9 Diagrams.Path.fromVertices
+Diagrams.Path.fromVertices ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ) =>
+    [Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V p] ->
+    p
+
+infixl 9 Diagrams.Path.isClosed
+Diagrams.Path.isClosed ::
+  forall v.
+    () =>
+    Diagrams.Path.Trail v ->
+    GHC.Types.Bool
+
+infixl 9 Diagrams.Path.pathCentroid
+Diagrams.Path.pathCentroid ::
+  forall v.
+    (
+     GHC.Real.Fractional Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    Diagrams.Path.Path v ->
+    Data.AffineSpace.Point.Point v
+
+infixl 9 Diagrams.Path.pathFromTrail
+Diagrams.Path.pathFromTrail ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Trail v ->
+    Diagrams.Path.Path v
+
+infixl 9 Diagrams.Path.pathFromTrailAt
+Diagrams.Path.pathFromTrailAt ::
+  forall v.
+    () =>
+    Diagrams.Path.Trail v ->
+    Data.AffineSpace.Point.Point v ->
+    Diagrams.Path.Path v
+
+infixl 9 Diagrams.Path.pathLikeFromTrail
+Diagrams.Path.pathLikeFromTrail ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ) =>
+    Diagrams.Path.Trail Graphics.Rendering.Diagrams.V.V p ->
+    p
+
+infixl 9 Diagrams.Path.pathOffsets
+Diagrams.Path.pathOffsets ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Path v ->
+    [v]
+
+infixl 9 Diagrams.Path.pathTrails
+Diagrams.Path.pathTrails ::
+  forall v.
+    () =>
+    Diagrams.Path.Path v ->
+    [(Data.AffineSpace.Point.Point v, Diagrams.Path.Trail v)]
+
+infixl 9 Diagrams.Path.pathVertices
+Diagrams.Path.pathVertices ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Path v ->
+    [[Data.AffineSpace.Point.Point v]]
+
+infixl 9 Diagrams.Path.reversePath
+Diagrams.Path.reversePath ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Path v ->
+    Diagrams.Path.Path v
+
+infixl 9 Diagrams.Path.reverseTrail
+Diagrams.Path.reverseTrail ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Trail v ->
+    Diagrams.Path.Trail v
+
+infixl 9 Diagrams.Path.segmentsFromVertices
+Diagrams.Path.segmentsFromVertices ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    [Data.AffineSpace.Point.Point v] ->
+    [Diagrams.Segment.Segment v]
+
+infixl 9 Diagrams.Path.trailOffset
+Diagrams.Path.trailOffset ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Trail v ->
+    v
+
+infixl 9 Diagrams.Path.trailOffsets
+Diagrams.Path.trailOffsets ::
+  forall v.
+    () =>
+    Diagrams.Path.Trail v ->
+    [v]
+
+infixl 9 Diagrams.Path.trailSegments
+Diagrams.Path.trailSegments ::
+  forall v.
+    () =>
+    Diagrams.Path.Trail v ->
+    [Diagrams.Segment.Segment v]
+
+infixl 9 Diagrams.Path.trailSegments'
+Diagrams.Path.trailSegments' ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Path.Trail v ->
+    [Diagrams.Segment.Segment v]
+
+infixl 9 Diagrams.Path.trailVertices
+Diagrams.Path.trailVertices ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Data.AffineSpace.Point.Point v ->
+    Diagrams.Path.Trail v ->
+    [Data.AffineSpace.Point.Point v]
+
+infixl 9 (Diagrams.Path.~~)
+(Diagrams.Path.~~) ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ) =>
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V p ->
+    Data.AffineSpace.Point.Point Graphics.Rendering.Diagrams.V.V p ->
+    p
+
+infixl 9 Diagrams.Segment.adjEps
+Diagrams.Segment.adjEps ::
+  forall v.
+    () =>
+    Diagrams.Segment.AdjustOpts v ->
+    Data.VectorSpace.Scalar v
+
+infixl 9 Diagrams.Segment.adjMethod
+Diagrams.Segment.adjMethod ::
+  forall v.
+    () =>
+    Diagrams.Segment.AdjustOpts v ->
+    Diagrams.Segment.AdjustMethod v
+
+infixl 9 Diagrams.Segment.adjOptsvProxy__
+Diagrams.Segment.adjOptsvProxy__ ::
+  forall v.
+    () =>
+    Diagrams.Segment.AdjustOpts v ->
+    Diagrams.Util.Proxy v
+
+infixl 9 Diagrams.Segment.adjSide
+Diagrams.Segment.adjSide ::
+  forall v.
+    () =>
+    Diagrams.Segment.AdjustOpts v ->
+    Diagrams.Segment.AdjustSide
+
+infixl 9 Diagrams.Segment.adjustSegment
+Diagrams.Segment.adjustSegment ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Envelope.OrderedField Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Diagrams.Segment.Segment v ->
+    Diagrams.Segment.AdjustOpts v ->
+    Diagrams.Segment.Segment v
+
+infixl 9 Diagrams.Segment.adjustSegmentToParams
+Diagrams.Segment.adjustSegmentToParams ::
+  forall v.
+    (
+     GHC.Real.Fractional Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    Diagrams.Segment.Segment v ->
+    Data.VectorSpace.Scalar v ->
+    Data.VectorSpace.Scalar v ->
+    Diagrams.Segment.Segment v
+
+infixl 9 Diagrams.Segment.arcLength
+Diagrams.Segment.arcLength ::
+  forall v.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Diagrams.Segment.Segment v ->
+    Data.VectorSpace.Scalar v ->
+    Data.VectorSpace.Scalar v
+
+infixl 9 Diagrams.Segment.arcLengthToParam
+Diagrams.Segment.arcLengthToParam ::
+  forall v.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar v
+     ,
+     GHC.Classes.Ord Data.VectorSpace.Scalar v
+     ,
+     Data.AdditiveGroup.AdditiveGroup v
+     ,
+     Data.VectorSpace.InnerSpace v
+     ) =>
+    Diagrams.Segment.Segment v ->
+    Data.VectorSpace.Scalar v ->
+    Data.VectorSpace.Scalar v ->
+    Data.VectorSpace.Scalar v
+
+infixl 9 Diagrams.Segment.atParam
+Diagrams.Segment.atParam ::
+  forall v.
+    (
+     GHC.Num.Num Data.VectorSpace.Scalar v
+     ,
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    Diagrams.Segment.Segment v ->
+    Data.VectorSpace.Scalar v ->
+    v
+
+infixl 9 Diagrams.Segment.bezier3
+Diagrams.Segment.bezier3 ::
+  forall v.
+    () =>
+    v ->
+    v ->
+    v ->
+    Diagrams.Segment.Segment v
+
+infixl 9 Diagrams.Segment.fAtParam
+Diagrams.Segment.fAtParam ::
+  forall v.
+    (
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    Diagrams.Segment.FixedSegment v ->
+    Data.VectorSpace.Scalar v ->
+    Data.AffineSpace.Point.Point v
+
+infixl 9 Diagrams.Segment.fromFixedSeg
+Diagrams.Segment.fromFixedSeg ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Segment.FixedSegment v ->
+    (Data.AffineSpace.Point.Point v, Diagrams.Segment.Segment v)
+
+infixl 9 Diagrams.Segment.mkFixedSeg
+Diagrams.Segment.mkFixedSeg ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Data.AffineSpace.Point.Point v ->
+    Diagrams.Segment.Segment v ->
+    Diagrams.Segment.FixedSegment v
+
+infixl 9 Diagrams.Segment.reverseSegment
+Diagrams.Segment.reverseSegment ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Diagrams.Segment.Segment v ->
+    Diagrams.Segment.Segment v
+
+infixl 9 Diagrams.Segment.segOffset
+Diagrams.Segment.segOffset ::
+  forall v.
+    () =>
+    Diagrams.Segment.Segment v ->
+    v
+
+infixl 9 Diagrams.Segment.splitAtParam
+Diagrams.Segment.splitAtParam ::
+  forall v.
+    (
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    Diagrams.Segment.Segment v ->
+    Data.VectorSpace.Scalar v ->
+    (Diagrams.Segment.Segment v, Diagrams.Segment.Segment v)
+
+infixl 9 Diagrams.Segment.straight
+Diagrams.Segment.straight ::
+  forall v.
+    () =>
+    v ->
+    Diagrams.Segment.Segment v
+
+infixl 9 Diagrams.Transform.conjugate
+Diagrams.Transform.conjugate ::
+  forall v.
+    (
+     Graphics.Rendering.Diagrams.Transform.HasLinearMap v
+     ) =>
+    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+    Graphics.Rendering.Diagrams.Transform.Transformation v ->
+    Graphics.Rendering.Diagrams.Transform.Transformation v
+
+infixl 9 Diagrams.Transform.under
+Diagrams.Transform.under ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable a
+     ) =>
+    (a -> a) ->
+    Graphics.Rendering.Diagrams.Transform.Transformation Graphics.Rendering.Diagrams.V.V a ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignB
+Diagrams.TwoD.Align.alignB ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignBL
+Diagrams.TwoD.Align.alignBL ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignBR
+Diagrams.TwoD.Align.alignBR ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignL
+Diagrams.TwoD.Align.alignL ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignR
+Diagrams.TwoD.Align.alignR ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignT
+Diagrams.TwoD.Align.alignT ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignTL
+Diagrams.TwoD.Align.alignTL ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignTR
+Diagrams.TwoD.Align.alignTR ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignX
+Diagrams.TwoD.Align.alignX ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.alignY
+Diagrams.TwoD.Align.alignY ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.centerX
+Diagrams.TwoD.Align.centerX ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.centerXY
+Diagrams.TwoD.Align.centerXY ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Align.centerY
+Diagrams.TwoD.Align.centerY ::
+  forall a.
+    (
+     Diagrams.Align.Alignable a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Arc.arc
+Diagrams.TwoD.Arc.arc ::
+  forall a p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Diagrams.TwoD.Types.Angle a
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a ->
+    p
+
+infixl 9 Diagrams.TwoD.Arc.wedge
+Diagrams.TwoD.Arc.wedge ::
+  forall a p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Diagrams.TwoD.Types.Angle a
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    a ->
+    a ->
+    p
+
+infixl 6 (Diagrams.TwoD.Combinators.===)
+(Diagrams.TwoD.Combinators.===) ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Semigroup.Semigroup a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Combinators.atAngle
+Diagrams.TwoD.Combinators.atAngle ::
+  forall a b.
+    (
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Diagrams.TwoD.Types.Angle b
+     ,
+     Data.Semigroup.Semigroup a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    b ->
+    a ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Combinators.bg
+Diagrams.TwoD.Combinators.bg ::
+  forall b.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.Path.Path Diagrams.TwoD.Types.R2 b
+     ) =>
+    Data.Colour.Internal.Colour GHC.Types.Double ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2 ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Combinators.boundingRect
+Diagrams.TwoD.Combinators.boundingRect ::
+  forall p a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.Envelope.Enveloped p
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable p
+     ,
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    p
+
+infixl 9 Diagrams.TwoD.Combinators.hcat
+Diagrams.TwoD.Combinators.hcat ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    [a] ->
+    a
+
+infixl 9 Diagrams.TwoD.Combinators.hcat'
+Diagrams.TwoD.Combinators.hcat' ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    Diagrams.Combinators.CatOpts Diagrams.TwoD.Types.R2 ->
+    [a] ->
+    a
+
+infixl 9 Diagrams.TwoD.Combinators.padX
+Diagrams.TwoD.Combinators.padX ::
+  forall b m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Diagrams.TwoD.Types.R2
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    GHC.Types.Double ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m
+
+infixl 9 Diagrams.TwoD.Combinators.padY
+Diagrams.TwoD.Combinators.padY ::
+  forall b m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Diagrams.TwoD.Types.R2
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    GHC.Types.Double ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m
+
+infixl 9 Diagrams.TwoD.Combinators.strutX
+Diagrams.TwoD.Combinators.strutX ::
+  forall b m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Diagrams.TwoD.Types.R2
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    GHC.Types.Double ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m
+
+infixl 9 Diagrams.TwoD.Combinators.strutY
+Diagrams.TwoD.Combinators.strutY ::
+  forall b m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Diagrams.TwoD.Types.R2
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    GHC.Types.Double ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m
+
+infixl 9 Diagrams.TwoD.Combinators.vcat
+Diagrams.TwoD.Combinators.vcat ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    [a] ->
+    a
+
+infixl 9 Diagrams.TwoD.Combinators.vcat'
+Diagrams.TwoD.Combinators.vcat' ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.HasOrigin.HasOrigin a
+     ,
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Monoid.WithSemigroup.Monoid' a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    Diagrams.Combinators.CatOpts Diagrams.TwoD.Types.R2 ->
+    [a] ->
+    a
+
+infixl 9 Diagrams.TwoD.Combinators.view
+Diagrams.TwoD.Combinators.view ::
+  forall b m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Diagrams.TwoD.Types.R2
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    Diagrams.TwoD.Types.P2 ->
+    Diagrams.TwoD.Types.R2 ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m
+
+infixl 6 (Diagrams.TwoD.Combinators.|||)
+(Diagrams.TwoD.Combinators.|||) ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Juxtapose.Juxtaposable a
+     ,
+     Data.Semigroup.Semigroup a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Ellipse.circle
+Diagrams.TwoD.Ellipse.circle ::
+  forall p.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable p
+     ,
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Ellipse.ellipse
+Diagrams.TwoD.Ellipse.ellipse ::
+  forall p.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable p
+     ,
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Ellipse.ellipseXY
+Diagrams.TwoD.Ellipse.ellipseXY ::
+  forall p.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable p
+     ,
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Ellipse.unitCircle
+Diagrams.TwoD.Ellipse.unitCircle ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    p
+
+infixl 9 Diagrams.TwoD.Image.image
+Diagrams.TwoD.Image.image ::
+  forall b.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.TwoD.Image.Image b
+     ) =>
+    GHC.IO.FilePath ->
+    GHC.Types.Double ->
+    GHC.Types.Double ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Model.oColor
+Diagrams.TwoD.Model.oColor ::
+  Diagrams.TwoD.Model.OriginOpts ->
+  Data.Colour.Internal.Colour GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Model.oMinSize
+Diagrams.TwoD.Model.oMinSize ::
+  Diagrams.TwoD.Model.OriginOpts ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Model.oScale
+Diagrams.TwoD.Model.oScale ::
+  Diagrams.TwoD.Model.OriginOpts ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Model.showLabels
+Diagrams.TwoD.Model.showLabels ::
+  forall b m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Diagrams.TwoD.Types.R2
+     ,
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.TwoD.Text.Text b
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 Data.Monoid.Any
+
+infixl 9 Diagrams.TwoD.Model.showOrigin
+Diagrams.TwoD.Model.showOrigin ::
+  forall b m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Diagrams.TwoD.Types.R2
+     ,
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.Path.Path Diagrams.TwoD.Types.R2 b
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m
+
+infixl 9 Diagrams.TwoD.Model.showOrigin'
+Diagrams.TwoD.Model.showOrigin' ::
+  forall b m.
+    (
+     Graphics.Rendering.Diagrams.Core.Backend b Diagrams.TwoD.Types.R2
+     ,
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.Path.Path Diagrams.TwoD.Types.R2 b
+     ,
+     Data.Monoid.WithSemigroup.Monoid' m
+     ) =>
+    Diagrams.TwoD.Model.OriginOpts ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m ->
+    Graphics.Rendering.Diagrams.Core.QDiagram b Diagrams.TwoD.Types.R2 m
+
+infixl 9 Diagrams.TwoD.Path.clipBy
+Diagrams.TwoD.Path.clipBy ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    Diagrams.Path.Path Diagrams.TwoD.Types.R2 ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Path.fillRule
+Diagrams.TwoD.Path.fillRule ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    Diagrams.TwoD.Path.FillRule ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Path.queryFillRule
+Diagrams.TwoD.Path.queryFillRule ::
+  forall a.
+    () =>
+    Diagrams.TwoD.Path.StrokeOpts a ->
+    Diagrams.TwoD.Path.FillRule
+
+infixl 9 Diagrams.TwoD.Path.stroke
+Diagrams.TwoD.Path.stroke ::
+  forall b.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.Path.Path Diagrams.TwoD.Types.R2 b
+     ) =>
+    Diagrams.Path.Path Diagrams.TwoD.Types.R2 ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Path.stroke'
+Diagrams.TwoD.Path.stroke' ::
+  forall b a.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.Path.Path Diagrams.TwoD.Types.R2 b
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName a
+     ) =>
+    Diagrams.TwoD.Path.StrokeOpts a ->
+    Diagrams.Path.Path Diagrams.TwoD.Types.R2 ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Path.strokeT
+Diagrams.TwoD.Path.strokeT ::
+  forall b.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.Path.Path Diagrams.TwoD.Types.R2 b
+     ) =>
+    Diagrams.Path.Trail Diagrams.TwoD.Types.R2 ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Path.strokeT'
+Diagrams.TwoD.Path.strokeT' ::
+  forall b a.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.Path.Path Diagrams.TwoD.Types.R2 b
+     ,
+     Graphics.Rendering.Diagrams.Names.IsName a
+     ) =>
+    Diagrams.TwoD.Path.StrokeOpts a ->
+    Diagrams.Path.Trail Diagrams.TwoD.Types.R2 ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Path.vertexNames
+Diagrams.TwoD.Path.vertexNames ::
+  forall a.
+    () =>
+    Diagrams.TwoD.Path.StrokeOpts a ->
+    [[a]]
+
+infixl 9 Diagrams.TwoD.Polygons.polyCenter
+Diagrams.TwoD.Polygons.polyCenter ::
+  Diagrams.TwoD.Polygons.PolygonOpts ->
+  Diagrams.TwoD.Types.P2
+
+infixl 9 Diagrams.TwoD.Polygons.polyOrient
+Diagrams.TwoD.Polygons.polyOrient ::
+  Diagrams.TwoD.Polygons.PolygonOpts ->
+  Diagrams.TwoD.Polygons.PolyOrientation
+
+infixl 9 Diagrams.TwoD.Polygons.polyType
+Diagrams.TwoD.Polygons.polyType ::
+  Diagrams.TwoD.Polygons.PolygonOpts ->
+  Diagrams.TwoD.Polygons.PolyType
+
+infixl 9 Diagrams.TwoD.Polygons.polyVertices
+Diagrams.TwoD.Polygons.polyVertices ::
+  Diagrams.TwoD.Polygons.PolygonOpts ->
+  [Diagrams.TwoD.Types.P2]
+
+infixl 9 Diagrams.TwoD.Polygons.polygon
+Diagrams.TwoD.Polygons.polygon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    Diagrams.TwoD.Polygons.PolygonOpts ->
+    p
+
+infixl 9 Diagrams.TwoD.Polygons.star
+Diagrams.TwoD.Polygons.star ::
+  Diagrams.TwoD.Polygons.StarOpts ->
+  [Diagrams.TwoD.Types.P2] ->
+  Diagrams.Path.Path Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Shapes.decagon
+Diagrams.TwoD.Shapes.decagon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.dodecagon
+Diagrams.TwoD.Shapes.dodecagon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.eqTriangle
+Diagrams.TwoD.Shapes.eqTriangle ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.hendecagon
+Diagrams.TwoD.Shapes.hendecagon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.hexagon
+Diagrams.TwoD.Shapes.hexagon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.hrule
+Diagrams.TwoD.Shapes.hrule ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.nonagon
+Diagrams.TwoD.Shapes.nonagon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.octagon
+Diagrams.TwoD.Shapes.octagon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.pentagon
+Diagrams.TwoD.Shapes.pentagon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.radiusBL
+Diagrams.TwoD.Shapes.radiusBL ::
+  Diagrams.TwoD.Shapes.RoundedRectOpts ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Shapes.radiusBR
+Diagrams.TwoD.Shapes.radiusBR ::
+  Diagrams.TwoD.Shapes.RoundedRectOpts ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Shapes.radiusTL
+Diagrams.TwoD.Shapes.radiusTL ::
+  Diagrams.TwoD.Shapes.RoundedRectOpts ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Shapes.radiusTR
+Diagrams.TwoD.Shapes.radiusTR ::
+  Diagrams.TwoD.Shapes.RoundedRectOpts ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Shapes.rect
+Diagrams.TwoD.Shapes.rect ::
+  forall p.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable p
+     ,
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.regPoly
+Diagrams.TwoD.Shapes.regPoly ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Int ->
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.roundedRect
+Diagrams.TwoD.Shapes.roundedRect ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    GHC.Types.Double ->
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.roundedRect'
+Diagrams.TwoD.Shapes.roundedRect' ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    GHC.Types.Double ->
+    Diagrams.TwoD.Shapes.RoundedRectOpts ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.septagon
+Diagrams.TwoD.Shapes.septagon ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.square
+Diagrams.TwoD.Shapes.square ::
+  forall p.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable p
+     ,
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.unitSquare
+Diagrams.TwoD.Shapes.unitSquare ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    p
+
+infixl 9 Diagrams.TwoD.Shapes.vrule
+Diagrams.TwoD.Shapes.vrule ::
+  forall p.
+    (
+     Diagrams.Path.PathLike p
+     ,
+     Graphics.Rendering.Diagrams.V.V p ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    p
+
+infixl 9 Diagrams.TwoD.Size.center2D
+Diagrams.TwoD.Size.center2D ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    Diagrams.TwoD.Types.P2
+
+infixl 9 Diagrams.TwoD.Size.extentX
+Diagrams.TwoD.Size.extentX ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    Data.Maybe.Maybe (GHC.Types.Double, GHC.Types.Double)
+
+infixl 9 Diagrams.TwoD.Size.extentY
+Diagrams.TwoD.Size.extentY ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    Data.Maybe.Maybe (GHC.Types.Double, GHC.Types.Double)
+
+infixl 9 Diagrams.TwoD.Size.height
+Diagrams.TwoD.Size.height ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Size.mkSizeSpec
+Diagrams.TwoD.Size.mkSizeSpec ::
+  Data.Maybe.Maybe GHC.Types.Double ->
+  Data.Maybe.Maybe GHC.Types.Double ->
+  Diagrams.TwoD.Size.SizeSpec2D
+
+infixl 9 Diagrams.TwoD.Size.size2D
+Diagrams.TwoD.Size.size2D ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    (GHC.Types.Double, GHC.Types.Double)
+
+infixl 9 Diagrams.TwoD.Size.width
+Diagrams.TwoD.Size.width ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped a
+     ,
+     Graphics.Rendering.Diagrams.V.V a ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Text.alignedText
+Diagrams.TwoD.Text.alignedText ::
+  forall b.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.TwoD.Text.Text b
+     ) =>
+    GHC.Types.Double ->
+    GHC.Types.Double ->
+    GHC.Base.String ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Text.baselineText
+Diagrams.TwoD.Text.baselineText ::
+  forall b.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.TwoD.Text.Text b
+     ) =>
+    GHC.Base.String ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Text.bold
+Diagrams.TwoD.Text.bold ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Text.font
+Diagrams.TwoD.Text.font ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    GHC.Base.String ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Text.fontSize
+Diagrams.TwoD.Text.fontSize ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    GHC.Types.Double ->
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Text.italic
+Diagrams.TwoD.Text.italic ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Text.oblique
+Diagrams.TwoD.Text.oblique ::
+  forall a.
+    (
+     Graphics.Rendering.Diagrams.Style.HasStyle a
+     ) =>
+    a ->
+    a
+
+infixl 9 Diagrams.TwoD.Text.text
+Diagrams.TwoD.Text.text ::
+  forall b.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.TwoD.Text.Text b
+     ) =>
+    GHC.Base.String ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Text.topLeftText
+Diagrams.TwoD.Text.topLeftText ::
+  forall b.
+    (
+     Graphics.Rendering.Diagrams.Core.Renderable Diagrams.TwoD.Text.Text b
+     ) =>
+    GHC.Base.String ->
+    Graphics.Rendering.Diagrams.Core.Diagram b Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Transform.reflectAbout
+Diagrams.TwoD.Transform.reflectAbout ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    Diagrams.TwoD.Types.P2 ->
+    Diagrams.TwoD.Types.R2 ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.reflectX
+Diagrams.TwoD.Transform.reflectX ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.reflectY
+Diagrams.TwoD.Transform.reflectY ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.reflectionAbout
+Diagrams.TwoD.Transform.reflectionAbout ::
+  Diagrams.TwoD.Types.P2 ->
+  Diagrams.TwoD.Types.R2 ->
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.reflectionX
+Diagrams.TwoD.Transform.reflectionX ::
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.reflectionY
+Diagrams.TwoD.Transform.reflectionY ::
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.rotate
+Diagrams.TwoD.Transform.rotate ::
+  forall t a.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Diagrams.TwoD.Types.Angle a
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    a ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.rotateAbout
+Diagrams.TwoD.Transform.rotateAbout ::
+  forall t a.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Diagrams.TwoD.Types.Angle a
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    Diagrams.TwoD.Types.P2 ->
+    a ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.rotateBy
+Diagrams.TwoD.Transform.rotateBy ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    Diagrams.TwoD.Types.CircleFrac ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.rotation
+Diagrams.TwoD.Transform.rotation ::
+  forall a.
+    (
+     Diagrams.TwoD.Types.Angle a
+     ) =>
+    a ->
+    Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.rotationAbout
+Diagrams.TwoD.Transform.rotationAbout ::
+  forall a.
+    (
+     Diagrams.TwoD.Types.Angle a
+     ) =>
+    Diagrams.TwoD.Types.P2 ->
+    a ->
+    Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.scaleToX
+Diagrams.TwoD.Transform.scaleToX ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped t
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.scaleToY
+Diagrams.TwoD.Transform.scaleToY ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped t
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.scaleUToX
+Diagrams.TwoD.Transform.scaleUToX ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped t
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.scaleUToY
+Diagrams.TwoD.Transform.scaleUToY ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Envelope.Enveloped t
+     ,
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.scaleX
+Diagrams.TwoD.Transform.scaleX ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.scaleY
+Diagrams.TwoD.Transform.scaleY ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.scalingX
+Diagrams.TwoD.Transform.scalingX ::
+  GHC.Types.Double ->
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.scalingY
+Diagrams.TwoD.Transform.scalingY ::
+  GHC.Types.Double ->
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.shearX
+Diagrams.TwoD.Transform.shearX ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.shearY
+Diagrams.TwoD.Transform.shearY ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.shearingX
+Diagrams.TwoD.Transform.shearingX ::
+  GHC.Types.Double ->
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.shearingY
+Diagrams.TwoD.Transform.shearingY ::
+  GHC.Types.Double ->
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.translateX
+Diagrams.TwoD.Transform.translateX ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.translateY
+Diagrams.TwoD.Transform.translateY ::
+  forall t.
+    (
+     Graphics.Rendering.Diagrams.Transform.Transformable t
+     ,
+     Graphics.Rendering.Diagrams.V.V t ~ Diagrams.TwoD.Types.R2
+     ) =>
+    GHC.Types.Double ->
+    t ->
+    t
+
+infixl 9 Diagrams.TwoD.Transform.translationX
+Diagrams.TwoD.Transform.translationX ::
+  GHC.Types.Double ->
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Transform.translationY
+Diagrams.TwoD.Transform.translationY ::
+  GHC.Types.Double ->
+  Diagrams.TwoD.Types.T2
+
+infixl 9 Diagrams.TwoD.Types.convertAngle
+Diagrams.TwoD.Types.convertAngle ::
+  forall a b.
+    (
+     Diagrams.TwoD.Types.Angle a
+     ,
+     Diagrams.TwoD.Types.Angle b
+     ) =>
+    a ->
+    b
+
+infixl 9 Diagrams.TwoD.Types.fullCircle
+Diagrams.TwoD.Types.fullCircle ::
+  forall a.
+    (
+     Diagrams.TwoD.Types.Angle a
+     ) =>
+    a
+
+infixl 9 Diagrams.TwoD.Types.getCircleFrac
+Diagrams.TwoD.Types.getCircleFrac ::
+  Diagrams.TwoD.Types.CircleFrac ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Types.getDeg
+Diagrams.TwoD.Types.getDeg ::
+  Diagrams.TwoD.Types.Deg ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Types.getRad
+Diagrams.TwoD.Types.getRad ::
+  Diagrams.TwoD.Types.Rad ->
+  GHC.Types.Double
+
+infixl 9 Diagrams.TwoD.Types.p2
+Diagrams.TwoD.Types.p2 ::
+  (GHC.Types.Double, GHC.Types.Double) ->
+  Diagrams.TwoD.Types.P2
+
+infixl 9 Diagrams.TwoD.Types.r2
+Diagrams.TwoD.Types.r2 ::
+  (GHC.Types.Double, GHC.Types.Double) ->
+  Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Types.unp2
+Diagrams.TwoD.Types.unp2 ::
+  Diagrams.TwoD.Types.P2 ->
+  (GHC.Types.Double, GHC.Types.Double)
+
+infixl 9 Diagrams.TwoD.Types.unr2
+Diagrams.TwoD.Types.unr2 ::
+  Diagrams.TwoD.Types.R2 ->
+  (GHC.Types.Double, GHC.Types.Double)
+
+infixl 9 Diagrams.TwoD.Vector.direction
+Diagrams.TwoD.Vector.direction ::
+  forall a.
+    (
+     Diagrams.TwoD.Types.Angle a
+     ) =>
+    Diagrams.TwoD.Types.R2 ->
+    a
+
+infixl 9 Diagrams.TwoD.Vector.e
+Diagrams.TwoD.Vector.e ::
+  forall a.
+    (
+     Diagrams.TwoD.Types.Angle a
+     ) =>
+    a ->
+    Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Vector.fromDirection
+Diagrams.TwoD.Vector.fromDirection ::
+  forall a.
+    (
+     Diagrams.TwoD.Types.Angle a
+     ) =>
+    a ->
+    Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Vector.unitX
+Diagrams.TwoD.Vector.unitX ::
+  Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Vector.unitY
+Diagrams.TwoD.Vector.unitY ::
+  Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Vector.unit_X
+Diagrams.TwoD.Vector.unit_X ::
+  Diagrams.TwoD.Types.R2
+
+infixl 9 Diagrams.TwoD.Vector.unit_Y
+Diagrams.TwoD.Vector.unit_Y ::
+  Diagrams.TwoD.Types.R2
+
+infixl 8 (Diagrams.Util.#)
+(Diagrams.Util.#) ::
+  forall a b.
+    () =>
+    a ->
+    (a -> b) ->
+    b
+
+infixl 9 Diagrams.Util.applyAll
+Diagrams.Util.applyAll ::
+  forall a.
+    () =>
+    [(a -> a)] ->
+    a ->
+    a
+
+infixl 9 Diagrams.Util.foldB
+Diagrams.Util.foldB ::
+  forall a.
+    () =>
+    (a -> a -> a) ->
+    a ->
+    [a] ->
+    a
+
+infixl 9 Diagrams.Util.iterateN
+Diagrams.Util.iterateN ::
+  forall a.
+    () =>
+    GHC.Types.Int ->
+    (a -> a) ->
+    a ->
+    [a]
+
+infixl 9 Diagrams.Util.tau
+Diagrams.Util.tau ::
+  forall a.
+    (
+     GHC.Float.Floating a
+     ) =>
+    a
+
+infixl 9 Diagrams.Util.with
+Diagrams.Util.with ::
+  forall d.
+    (
+     Data.Default.Default d
+     ) =>
+    d
+
+infixl 9 Data.Semigroup.cycle1
+Data.Semigroup.cycle1 ::
+  forall m.
+    (
+     Data.Semigroup.Semigroup m
+     ) =>
+    m ->
+    m
+
+infixl 9 Data.Semigroup.diff
+Data.Semigroup.diff ::
+  forall m.
+    (
+     Data.Semigroup.Semigroup m
+     ) =>
+    m ->
+    Data.Monoid.Endo m
+
+infixl 9 Data.Semigroup.getFirst
+Data.Semigroup.getFirst ::
+  forall a.
+    () =>
+    Data.Semigroup.First a ->
+    a
+
+infixl 9 Data.Semigroup.getLast
+Data.Semigroup.getLast ::
+  forall a.
+    () =>
+    Data.Semigroup.Last a ->
+    a
+
+infixl 9 Data.Semigroup.getMax
+Data.Semigroup.getMax ::
+  forall a.
+    () =>
+    Data.Semigroup.Max a ->
+    a
+
+infixl 9 Data.Semigroup.getMin
+Data.Semigroup.getMin ::
+  forall a.
+    () =>
+    Data.Semigroup.Min a ->
+    a
+
+infixl 9 Data.Semigroup.getOption
+Data.Semigroup.getOption ::
+  forall a.
+    () =>
+    Data.Semigroup.Option a ->
+    Data.Maybe.Maybe a
+
+infixl 9 Data.Semigroup.option
+Data.Semigroup.option ::
+  forall b a.
+    () =>
+    b ->
+    (a -> b) ->
+    Data.Semigroup.Option a ->
+    b
+
+infixl 9 Data.Semigroup.unwrapMonoid
+Data.Semigroup.unwrapMonoid ::
+  forall m.
+    () =>
+    Data.Semigroup.WrappedMonoid m ->
+    m
+
+infixl 6 (Data.AdditiveGroup.^-^)
+(Data.AdditiveGroup.^-^) ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    v ->
+    v ->
+    v
+
+infixl 9 Data.AdditiveGroup.inSum
+Data.AdditiveGroup.inSum ::
+  forall a b.
+    () =>
+    (a -> b) ->
+    Data.AdditiveGroup.Sum a ->
+    Data.AdditiveGroup.Sum b
+
+infixl 9 Data.AdditiveGroup.inSum2
+Data.AdditiveGroup.inSum2 ::
+  forall a b c.
+    () =>
+    (a -> b -> c) ->
+    Data.AdditiveGroup.Sum a ->
+    Data.AdditiveGroup.Sum b ->
+    Data.AdditiveGroup.Sum c
+
+infixl 9 Data.AdditiveGroup.sumV
+Data.AdditiveGroup.sumV ::
+  forall (f :: * -> *) v.
+    (
+     Data.Foldable.Foldable f
+     ,
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    f v ->
+    v
+
+infix 4 (Data.AffineSpace..-^)
+(Data.AffineSpace..-^) ::
+  forall p.
+    (
+     Data.AffineSpace.AffineSpace p
+     ) =>
+    p ->
+    Data.AffineSpace.Diff p ->
+    p
+
+infixl 9 Data.AffineSpace.alerp
+Data.AffineSpace.alerp ::
+  forall p.
+    (
+     Data.AffineSpace.AffineSpace p
+     ,
+     Data.VectorSpace.VectorSpace Data.AffineSpace.Diff p
+     ) =>
+    p ->
+    p ->
+    Data.VectorSpace.Scalar Data.AffineSpace.Diff p ->
+    p
+
+infixl 9 Data.AffineSpace.distance
+Data.AffineSpace.distance ::
+  forall p v s.
+    (
+     GHC.Float.Floating Data.VectorSpace.Scalar v
+     ,
+     Data.AffineSpace.AffineSpace p
+     ,
+     Data.VectorSpace.InnerSpace v
+     ,
+     s ~ Data.VectorSpace.Scalar v
+     ,
+     v ~ Data.AffineSpace.Diff p
+     ) =>
+    p ->
+    p ->
+    s
+
+infixl 9 Data.AffineSpace.distanceSq
+Data.AffineSpace.distanceSq ::
+  forall p v.
+    (
+     Data.AffineSpace.AffineSpace p
+     ,
+     Data.VectorSpace.InnerSpace v
+     ,
+     v ~ Data.AffineSpace.Diff p
+     ) =>
+    p ->
+    p ->
+    Data.VectorSpace.Scalar v
+
+infixl 7 (Data.VectorSpace.^*)
+(Data.VectorSpace.^*) ::
+  forall v s.
+    (
+     Data.VectorSpace.VectorSpace v
+     ,
+     s ~ Data.VectorSpace.Scalar v
+     ) =>
+    v ->
+    s ->
+    v
+
+infixr 7 (Data.VectorSpace.^/)
+(Data.VectorSpace.^/) ::
+  forall v s.
+    (
+     GHC.Real.Fractional s
+     ,
+     Data.VectorSpace.VectorSpace v
+     ,
+     s ~ Data.VectorSpace.Scalar v
+     ) =>
+    v ->
+    s ->
+    v
+
+infixl 9 Data.VectorSpace.lerp
+Data.VectorSpace.lerp ::
+  forall v.
+    (
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    v ->
+    v ->
+    Data.VectorSpace.Scalar v ->
+    v
+
+infixl 9 Data.VectorSpace.magnitude
+Data.VectorSpace.magnitude ::
+  forall v s.
+    (
+     GHC.Float.Floating s
+     ,
+     Data.VectorSpace.InnerSpace v
+     ,
+     s ~ Data.VectorSpace.Scalar v
+     ) =>
+    v ->
+    s
+
+infixl 9 Data.VectorSpace.magnitudeSq
+Data.VectorSpace.magnitudeSq ::
+  forall v s.
+    (
+     Data.VectorSpace.InnerSpace v
+     ,
+     s ~ Data.VectorSpace.Scalar v
+     ) =>
+    v ->
+    s
+
+infixl 9 Data.VectorSpace.normalized
+Data.VectorSpace.normalized ::
+  forall v s.
+    (
+     GHC.Float.Floating s
+     ,
+     Data.VectorSpace.InnerSpace v
+     ,
+     s ~ Data.VectorSpace.Scalar v
+     ) =>
+    v ->
+    v
+
+infixl 9 Data.VectorSpace.project
+Data.VectorSpace.project ::
+  forall v s.
+    (
+     GHC.Float.Floating s
+     ,
+     Data.VectorSpace.InnerSpace v
+     ,
+     s ~ Data.VectorSpace.Scalar v
+     ) =>
+    v ->
+    v ->
+    v
+
+infixl 9 (Data.AffineSpace.Point.*.)
+(Data.AffineSpace.Point.*.) ::
+  forall v.
+    (
+     Data.VectorSpace.VectorSpace v
+     ) =>
+    Data.VectorSpace.Scalar v ->
+    Data.AffineSpace.Point.Point v ->
+    Data.AffineSpace.Point.Point v
+
+infixl 9 Data.AffineSpace.Point.origin
+Data.AffineSpace.Point.origin ::
+  forall v.
+    (
+     Data.AdditiveGroup.AdditiveGroup v
+     ) =>
+    Data.AffineSpace.Point.Point v
+
