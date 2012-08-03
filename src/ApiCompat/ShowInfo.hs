@@ -6,7 +6,9 @@ import Data.Char                     ( isAlphaNum )
 import Data.Function                 ( on )
 import Data.Generics                 ( Data, Typeable, listify, everywhere )
 import Data.Generics.Aliases         ( extT )
-import Data.List                     ( sort, groupBy, intersperse )
+import Data.Maybe                    ( fromJust, listToMaybe )
+import Data.Ord                      ( comparing )
+import Data.List                     ( sort, sortBy, groupBy, intersperse )
 import qualified Data.Map as M
 import Language.Haskell.TH
 import Language.Haskell.TH.Lift      ( lift )
@@ -17,11 +19,6 @@ import Language.Haskell.TH.Syntax    (Name(..), NameFlavour(..))
 --TODO: remove contexts from methods
 --TODO: list instances next to classes / datatypes
 
-{-
-reifies :: [Name] -> Q (Maybe Info)
-reifies ns = recover (return Nothing) (Just . reify)
--}
-
 showInfos :: [(String, [Name])] -> ExpQ
 showInfos ms = lift . unlines . concat =<< mapM show_info ms
  where
@@ -30,20 +27,23 @@ showInfos ms = lift . unlines . concat =<< mapM show_info ms
     return
       $ [ "----------------------------------------"
         , "module " ++ m
-        ] ++ map (either id (("\n"++) . show . infoDoc)) (sort infos)
+        ] ++ map (either id (("\n"++) . show . infoDoc)) (sortBy comp infos)
           ++ [""]
   safe_reify n = recover (return . Left $ "-- Couldn't reify " ++ pprint n)
                          (Right <$> reify n)
+  comp (Left  _) _         = LT
+  comp (Right _) (Left  _) = GT
+  comp (Right l) (Right r) = comparing infoName l r
 
 infoDoc :: Info -> Doc
 infoDoc info = case info of
-  (ClassI d _)       -> dec $ deUnique d
+  (ClassI d _)       -> dec False $ deUnique d
 --(ClassOpI)         ->
-  (TyConI d)         -> dec $ deUnique d
-  (FamilyI d _)      -> dec $ deUnique d
+  (TyConI d)         -> dec False $ deUnique d
+  (FamilyI d _)      -> dec False $ deUnique d
 --(PrimTyConI n i b) ->
 --(DataConI )        ->
-  (VarI n t _ f)     -> vcat [fixity f n, dec . SigD n $ deUnique t]
+  (VarI n t _ f)     -> vcat [fixity f n, dec False . SigD n $ deUnique t]
 --(TyVarI n t)       ->
   _                  -> empty
  where
@@ -107,23 +107,34 @@ infoDoc info = case info of
     = vcat $ text (replicate (length s) ' ') <+> f x
            : map ((text s <+>) . f) xs
 
-  dec (ClassD ctx n tvs fds decs) = vnest (text "class" <+> context ctx)
+  dec _ (ClassD ctx n tvs fds decs) = vnest (text "class" <+> context ctx)
     [ vnest (hcat [name n, space, tyvars tvs, pp_fds, text " where"])
-            (map dec decs)
+            (map (dec True) decs)
     ]
    where
     pp_fds | [] <- fds = empty
            | otherwise = text "|" <+> commaize (map ppr fds)
 
-  dec (SigD n t) = name n <+> text "::" $$ nest 2 (typ t)
+  dec _ (SigD         n     t    ) = name n <+> text "::" $$ nest 2 (typ t)
 
-  dec (DataD    ctx n tvs cs ds) = datalike "data "    ctx n tvs  cs  ds
+  dec _ (DataD    ctx n tvs cs ds) = datalike "data "    ctx n tvs  cs  ds
 
-  dec (NewtypeD ctx n tvs cs ds) = datalike "newtype " ctx n tvs [cs] ds
+  dec _ (NewtypeD ctx n tvs cs ds) = datalike "newtype " ctx n tvs [cs] ds
 
---  dec (TySynD n tvs t) = hcat 
+  dec _ (TySynD       n tvs t    ) = text "type" <+> name n <+> tyvars tvs
+                                 <+> text "=" <+> flat_typ t
 
-  dec x = text $ "-- can't pretty-diff-ify:\n" ++ pprint x
+  dec inClass (FamilyD flavour n tvs k)
+    = text header <+> name n <+> tyvars tvs $$ kind
+   where
+    header
+      = (if inClass then id else (++" family"))
+      $ case flavour of
+          TypeFam -> "type"
+          DataFam -> "data"
+    kind = maybe empty (nest 2 . (text "::" <+>) . ppr) k
+
+  dec _ x = text $ "-- can't pretty-print:\n" ++ show x
 
   strict s = text $ case s of
     NotStrict -> ""
@@ -155,6 +166,12 @@ infoDoc info = case info of
       InfixL -> "l"
       InfixR -> "r"
       InfixN -> ""
+
+-- Utils
+
+tyRemoveForall :: Type -> Type
+tyRemoveForall (ForallT _ _ t) = t
+tyRemoveForall              t  = t
 
 tyUnApp :: Type -> [Type]
 tyUnApp = reverse . helper
@@ -194,3 +211,48 @@ deUnique d = everywhereMaybe (`M.lookup` rewrites) d
 allNames :: Data a => a -> [Name]
 allNames = map head . groupBy (==) . sort
          . listify (const True :: Name -> Bool)
+
+decName :: Dec -> Maybe Name
+decName (FunD         n _            ) = Just n
+decName (TySynD       n _ _          ) = Just n
+decName (FamilyD      _ n _ _        ) = Just n
+decName (NewtypeD     _ n _ _ _      ) = Just n
+decName (DataD        _ n _ _ _      ) = Just n
+decName (ClassD       _ n _ _ _      ) = Just n
+decName (InstanceD    _ t _          ) | ((ConT n):_) <- tyUnApp t = Just n
+                                       | otherwise                 = Nothing
+decName (DataInstD    _ n _ _ _      ) = Just n
+decName (NewtypeInstD _ n _ _ _      ) = Just n
+decName (ValD         p _ _          ) = listToMaybe $ patNames p
+decName (SigD         n _            ) = Just n
+decName (TySynInstD   n _ _          ) = Just n
+decName (ForeignD (ImportF _ _ _ n _)) = Just n
+decName (ForeignD (ExportF _   _ n _)) = Just n
+decName (PragmaD  (InlineP     n _  )) = Just n
+decName (PragmaD  (SpecialiseP n _ _)) = Just n
+
+patNames :: Pat -> [Name]
+patNames (VarP        n     ) = [n]
+patNames (TupP        p     ) = concatMap patNames p
+patNames (UnboxedTupP p     ) = concatMap patNames p
+patNames (InfixP      l _ r ) = patNames l ++ patNames r
+patNames (UInfixP     l _ r ) = patNames l ++ patNames r
+patNames (ParensP     p     ) = patNames p
+patNames (BangP       p     ) = patNames p
+patNames (TildeP      p     ) = patNames p
+patNames (AsP         n p   ) = n : patNames p
+patNames (RecP        _ f   ) = concatMap (patNames . snd) f
+patNames (ListP       p     ) = concatMap patNames p
+patNames (SigP        p _   ) = patNames p
+patNames (ViewP       _ p   ) = patNames p
+patNames _                    = []
+
+infoName :: Info -> Name
+infoName (ClassI     d _    ) = fromJust $ decName d
+infoName (ClassOpI   n _ _ _) = n
+infoName (TyConI     d      ) = fromJust $ decName d
+infoName (FamilyI    d _    ) = fromJust $ decName d
+infoName (PrimTyConI n _ _  ) = n
+infoName (DataConI   n _ _ _) = n
+infoName (VarI       n _ _ _) = n
+infoName (TyVarI     n _    ) = n
