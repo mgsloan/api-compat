@@ -1,0 +1,778 @@
+--- template-haskell-2.7.0.0.api	2012-08-28 00:12:33.378602396 -0700
++++ template-haskell-2.8.0.0.api	2012-08-27 23:55:40.746613777 -0700
+@@ -4,12 +4,18 @@
+ infixl 9 Language.Haskell.TH.Lib.appE
+ Language.Haskell.TH.Lib.appE ::
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
++infixl 9 Language.Haskell.TH.Lib.appK
++Language.Haskell.TH.Lib.appK ::
++  Language.Haskell.TH.Syntax.Kind ->
++  Language.Haskell.TH.Syntax.Kind ->
++  Language.Haskell.TH.Syntax.Kind
++
+ infixl 9 Language.Haskell.TH.Lib.appT
+ Language.Haskell.TH.Lib.appT ::
+   Language.Haskell.TH.Lib.TypeQ ->
+   Language.Haskell.TH.Lib.TypeQ ->
+   Language.Haskell.TH.Lib.TypeQ
+ 
+@@ -20,12 +26,16 @@
+ 
+ infixl 9 Language.Haskell.TH.Lib.arithSeqE
+ Language.Haskell.TH.Lib.arithSeqE ::
+   Language.Haskell.TH.Lib.RangeQ ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
++infixl 9 Language.Haskell.TH.Lib.arrowK
++Language.Haskell.TH.Lib.arrowK ::
++  Language.Haskell.TH.Syntax.Kind
++
+ infixl 9 Language.Haskell.TH.Lib.arrowT
+ Language.Haskell.TH.Lib.arrowT ::
+   Language.Haskell.TH.Lib.TypeQ
+ 
+ infixl 9 Language.Haskell.TH.Lib.asP
+ Language.Haskell.TH.Lib.asP ::
+@@ -88,12 +98,17 @@
+ 
+ infixl 9 Language.Haskell.TH.Lib.conE
+ Language.Haskell.TH.Lib.conE ::
+   Language.Haskell.TH.Syntax.Name ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
++infixl 9 Language.Haskell.TH.Lib.conK
++Language.Haskell.TH.Lib.conK ::
++  Language.Haskell.TH.Syntax.Name ->
++  Language.Haskell.TH.Syntax.Kind
++
+ infixl 9 Language.Haskell.TH.Lib.conP
+ Language.Haskell.TH.Lib.conP ::
+   Language.Haskell.TH.Syntax.Name ->
+   [Language.Haskell.TH.Lib.PatQ] ->
+   Language.Haskell.TH.Lib.PatQ
+ 
+@@ -106,12 +121,16 @@
+ Language.Haskell.TH.Lib.condE ::
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
++infixl 9 Language.Haskell.TH.Lib.constraintK
++Language.Haskell.TH.Lib.constraintK ::
++  Language.Haskell.TH.Syntax.Kind
++
+ infixl 9 Language.Haskell.TH.Lib.cxt
+ Language.Haskell.TH.Lib.cxt ::
+   [Language.Haskell.TH.Lib.PredQ] ->
+   Language.Haskell.TH.Lib.CxtQ
+ 
+ infixl 9 Language.Haskell.TH.Lib.dataD
+@@ -195,12 +214,19 @@
+   Language.Haskell.TH.Syntax.Safety ->
+   GHC.Base.String ->
+   Language.Haskell.TH.Syntax.Name ->
+   Language.Haskell.TH.Lib.TypeQ ->
+   Language.Haskell.TH.Lib.DecQ
+ 
++infixl 9 Language.Haskell.TH.Lib.forallC
++Language.Haskell.TH.Lib.forallC ::
++  [Language.Haskell.TH.Syntax.TyVarBndr] ->
++  Language.Haskell.TH.Lib.CxtQ ->
++  Language.Haskell.TH.Lib.ConQ ->
++  Language.Haskell.TH.Lib.ConQ
++
+ infixl 9 Language.Haskell.TH.Lib.forallT
+ Language.Haskell.TH.Lib.forallT ::
+   [Language.Haskell.TH.Syntax.TyVarBndr] ->
+   Language.Haskell.TH.Lib.CxtQ ->
+   Language.Haskell.TH.Lib.TypeQ ->
+   Language.Haskell.TH.Lib.TypeQ
+@@ -294,26 +320,12 @@
+ Language.Haskell.TH.Lib.infixP ::
+   Language.Haskell.TH.Lib.PatQ ->
+   Language.Haskell.TH.Syntax.Name ->
+   Language.Haskell.TH.Lib.PatQ ->
+   Language.Haskell.TH.Lib.PatQ
+ 
+-infixl 9 Language.Haskell.TH.Lib.inlineSpecNoPhase
+-Language.Haskell.TH.Lib.inlineSpecNoPhase ::
+-  GHC.Types.Bool ->
+-  GHC.Types.Bool ->
+-  Language.Haskell.TH.Lib.InlineSpecQ
+-
+-infixl 9 Language.Haskell.TH.Lib.inlineSpecPhase
+-Language.Haskell.TH.Lib.inlineSpecPhase ::
+-  GHC.Types.Bool ->
+-  GHC.Types.Bool ->
+-  GHC.Types.Bool ->
+-  GHC.Types.Int ->
+-  Language.Haskell.TH.Lib.InlineSpecQ
+-
+ infixl 9 Language.Haskell.TH.Lib.instanceD
+ Language.Haskell.TH.Lib.instanceD ::
+   Language.Haskell.TH.Lib.CxtQ ->
+   Language.Haskell.TH.Lib.TypeQ ->
+   [Language.Haskell.TH.Lib.DecQ] ->
+   Language.Haskell.TH.Lib.DecQ
+@@ -335,12 +347,17 @@
+ infixl 9 Language.Haskell.TH.Lib.lam1E
+ Language.Haskell.TH.Lib.lam1E ::
+   Language.Haskell.TH.Lib.PatQ ->
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
++infixl 9 Language.Haskell.TH.Lib.lamCaseE
++Language.Haskell.TH.Lib.lamCaseE ::
++  [Language.Haskell.TH.Lib.MatchQ] ->
++  Language.Haskell.TH.Lib.ExpQ
++
+ infixl 9 Language.Haskell.TH.Lib.lamE
+ Language.Haskell.TH.Lib.lamE ::
+   [Language.Haskell.TH.Lib.PatQ] ->
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
+@@ -357,12 +374,16 @@
+ 
+ infixl 9 Language.Haskell.TH.Lib.listE
+ Language.Haskell.TH.Lib.listE ::
+   [Language.Haskell.TH.Lib.ExpQ] ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
++infixl 9 Language.Haskell.TH.Lib.listK
++Language.Haskell.TH.Lib.listK ::
++  Language.Haskell.TH.Syntax.Kind
++
+ infixl 9 Language.Haskell.TH.Lib.listP
+ Language.Haskell.TH.Lib.listP ::
+   [Language.Haskell.TH.Lib.PatQ] ->
+   Language.Haskell.TH.Lib.PatQ
+ 
+ infixl 9 Language.Haskell.TH.Lib.listT
+@@ -376,19 +397,29 @@
+ 
+ infixl 9 Language.Haskell.TH.Lib.litP
+ Language.Haskell.TH.Lib.litP ::
+   Language.Haskell.TH.Syntax.Lit ->
+   Language.Haskell.TH.Lib.PatQ
+ 
++infixl 9 Language.Haskell.TH.Lib.litT
++Language.Haskell.TH.Lib.litT ::
++  Language.Haskell.TH.Lib.TyLitQ ->
++  Language.Haskell.TH.Lib.TypeQ
++
+ infixl 9 Language.Haskell.TH.Lib.match
+ Language.Haskell.TH.Lib.match ::
+   Language.Haskell.TH.Lib.PatQ ->
+   Language.Haskell.TH.Lib.BodyQ ->
+   [Language.Haskell.TH.Lib.DecQ] ->
+   Language.Haskell.TH.Lib.MatchQ
+ 
++infixl 9 Language.Haskell.TH.Lib.multiIfE
++Language.Haskell.TH.Lib.multiIfE ::
++  [Language.Haskell.TH.Syntax.Q (Language.Haskell.TH.Syntax.Guard, Language.Haskell.TH.Syntax.Exp)] ->
++  Language.Haskell.TH.Lib.ExpQ
++
+ infixl 9 Language.Haskell.TH.Lib.newtypeD
+ Language.Haskell.TH.Lib.newtypeD ::
+   Language.Haskell.TH.Lib.CxtQ ->
+   Language.Haskell.TH.Syntax.Name ->
+   [Language.Haskell.TH.Syntax.TyVarBndr] ->
+   Language.Haskell.TH.Lib.ConQ ->
+@@ -432,12 +463,17 @@
+   Language.Haskell.TH.Syntax.Q (Language.Haskell.TH.Syntax.Guard, Language.Haskell.TH.Syntax.Exp)
+ 
+ infixl 9 Language.Haskell.TH.Lib.notStrict
+ Language.Haskell.TH.Lib.notStrict ::
+   Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Strict
+ 
++infixl 9 Language.Haskell.TH.Lib.numTyLit
++Language.Haskell.TH.Lib.numTyLit ::
++  GHC.Integer.Type.Integer ->
++  Language.Haskell.TH.Lib.TyLitQ
++
+ infixl 9 Language.Haskell.TH.Lib.parS
+ Language.Haskell.TH.Lib.parS ::
+   [[Language.Haskell.TH.Lib.StmtQ]] ->
+   Language.Haskell.TH.Lib.StmtQ
+ 
+ infixl 9 Language.Haskell.TH.Lib.parensE
+@@ -461,21 +497,64 @@
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Syntax.Q (Language.Haskell.TH.Syntax.Guard, Language.Haskell.TH.Syntax.Exp)
+ 
+ infixl 9 Language.Haskell.TH.Lib.pragInlD
+ Language.Haskell.TH.Lib.pragInlD ::
+   Language.Haskell.TH.Syntax.Name ->
+-  Language.Haskell.TH.Lib.InlineSpecQ ->
++  Language.Haskell.TH.Syntax.Inline ->
++  Language.Haskell.TH.Syntax.RuleMatch ->
++  Language.Haskell.TH.Syntax.Phases ->
++  Language.Haskell.TH.Lib.DecQ
++
++infixl 9 Language.Haskell.TH.Lib.pragRuleD
++Language.Haskell.TH.Lib.pragRuleD ::
++  GHC.Base.String ->
++  [Language.Haskell.TH.Lib.RuleBndrQ] ->
++  Language.Haskell.TH.Lib.ExpQ ->
++  Language.Haskell.TH.Lib.ExpQ ->
++  Language.Haskell.TH.Syntax.Phases ->
+   Language.Haskell.TH.Lib.DecQ
+ 
+ infixl 9 Language.Haskell.TH.Lib.pragSpecD
+ Language.Haskell.TH.Lib.pragSpecD ::
+   Language.Haskell.TH.Syntax.Name ->
+   Language.Haskell.TH.Lib.TypeQ ->
++  Language.Haskell.TH.Syntax.Phases ->
++  Language.Haskell.TH.Lib.DecQ
++
++infixl 9 Language.Haskell.TH.Lib.pragSpecInlD
++Language.Haskell.TH.Lib.pragSpecInlD ::
++  Language.Haskell.TH.Syntax.Name ->
++  Language.Haskell.TH.Lib.TypeQ ->
++  Language.Haskell.TH.Syntax.Inline ->
++  Language.Haskell.TH.Syntax.Phases ->
++  Language.Haskell.TH.Lib.DecQ
++
++infixl 9 Language.Haskell.TH.Lib.pragSpecInstD
++Language.Haskell.TH.Lib.pragSpecInstD ::
++  Language.Haskell.TH.Lib.TypeQ ->
+   Language.Haskell.TH.Lib.DecQ
+ 
++infixl 9 Language.Haskell.TH.Lib.promotedConsT
++Language.Haskell.TH.Lib.promotedConsT ::
++  Language.Haskell.TH.Lib.TypeQ
++
++infixl 9 Language.Haskell.TH.Lib.promotedNilT
++Language.Haskell.TH.Lib.promotedNilT ::
++  Language.Haskell.TH.Lib.TypeQ
++
++infixl 9 Language.Haskell.TH.Lib.promotedT
++Language.Haskell.TH.Lib.promotedT ::
++  Language.Haskell.TH.Syntax.Name ->
++  Language.Haskell.TH.Lib.TypeQ
++
++infixl 9 Language.Haskell.TH.Lib.promotedTupleT
++Language.Haskell.TH.Lib.promotedTupleT ::
++  GHC.Types.Int ->
++  Language.Haskell.TH.Lib.TypeQ
++
+ infixl 9 Language.Haskell.TH.Lib.rationalL
+ Language.Haskell.TH.Lib.rationalL ::
+   GHC.Real.Rational ->
+   Language.Haskell.TH.Syntax.Lit
+ 
+ infixl 9 Language.Haskell.TH.Lib.recC
+@@ -499,12 +578,17 @@
+ infixl 9 Language.Haskell.TH.Lib.recUpdE
+ Language.Haskell.TH.Lib.recUpdE ::
+   Language.Haskell.TH.Lib.ExpQ ->
+   [Language.Haskell.TH.Syntax.Q (Language.Haskell.TH.Syntax.Name, Language.Haskell.TH.Syntax.Exp)] ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
++infixl 9 Language.Haskell.TH.Lib.ruleVar
++Language.Haskell.TH.Lib.ruleVar ::
++  Language.Haskell.TH.Syntax.Name ->
++  Language.Haskell.TH.Lib.RuleBndrQ
++
+ infixl 9 Language.Haskell.TH.Lib.safe
+ Language.Haskell.TH.Lib.safe ::
+   Language.Haskell.TH.Syntax.Safety
+ 
+ infixl 9 Language.Haskell.TH.Lib.sectionL
+ Language.Haskell.TH.Lib.sectionL ::
+@@ -539,16 +623,25 @@
+ infixl 9 Language.Haskell.TH.Lib.sigT
+ Language.Haskell.TH.Lib.sigT ::
+   Language.Haskell.TH.Lib.TypeQ ->
+   Language.Haskell.TH.Syntax.Kind ->
+   Language.Haskell.TH.Lib.TypeQ
+ 
++infixl 9 Language.Haskell.TH.Lib.starK
++Language.Haskell.TH.Lib.starK ::
++  Language.Haskell.TH.Syntax.Kind
++
+ infixl 9 Language.Haskell.TH.Lib.stdCall
+ Language.Haskell.TH.Lib.stdCall ::
+   Language.Haskell.TH.Syntax.Callconv
+ 
++infixl 9 Language.Haskell.TH.Lib.strTyLit
++Language.Haskell.TH.Lib.strTyLit ::
++  GHC.Base.String ->
++  Language.Haskell.TH.Lib.TyLitQ
++
+ infixl 9 Language.Haskell.TH.Lib.strictType
+ Language.Haskell.TH.Lib.strictType ::
+   Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Strict ->
+   Language.Haskell.TH.Lib.TypeQ ->
+   Language.Haskell.TH.Lib.StrictTypeQ
+ 
+@@ -561,13 +654,13 @@
+ Language.Haskell.TH.Lib.stringL ::
+   GHC.Base.String ->
+   Language.Haskell.TH.Syntax.Lit
+ 
+ infixl 9 Language.Haskell.TH.Lib.stringPrimL
+ Language.Haskell.TH.Lib.stringPrimL ::
+-  GHC.Base.String ->
++  [GHC.Word.Word8] ->
+   Language.Haskell.TH.Syntax.Lit
+ 
+ infixl 9 Language.Haskell.TH.Lib.tildeP
+ Language.Haskell.TH.Lib.tildeP ::
+   Language.Haskell.TH.Lib.PatQ ->
+   Language.Haskell.TH.Lib.PatQ
+@@ -579,12 +672,17 @@
+ 
+ infixl 9 Language.Haskell.TH.Lib.tupP
+ Language.Haskell.TH.Lib.tupP ::
+   [Language.Haskell.TH.Lib.PatQ] ->
+   Language.Haskell.TH.Lib.PatQ
+ 
++infixl 9 Language.Haskell.TH.Lib.tupleK
++Language.Haskell.TH.Lib.tupleK ::
++  GHC.Types.Int ->
++  Language.Haskell.TH.Syntax.Kind
++
+ infixl 9 Language.Haskell.TH.Lib.tupleT
+ Language.Haskell.TH.Lib.tupleT ::
+   GHC.Types.Int ->
+   Language.Haskell.TH.Lib.TypeQ
+ 
+ infixl 9 Language.Haskell.TH.Lib.tySynD
+@@ -602,12 +700,18 @@
+   Language.Haskell.TH.Lib.DecQ
+ 
+ infixl 9 Language.Haskell.TH.Lib.typeFam
+ Language.Haskell.TH.Lib.typeFam ::
+   Language.Haskell.TH.Syntax.FamFlavour
+ 
++infixl 9 Language.Haskell.TH.Lib.typedRuleVar
++Language.Haskell.TH.Lib.typedRuleVar ::
++  Language.Haskell.TH.Syntax.Name ->
++  Language.Haskell.TH.Lib.TypeQ ->
++  Language.Haskell.TH.Lib.RuleBndrQ
++
+ infixl 9 Language.Haskell.TH.Lib.uInfixE
+ Language.Haskell.TH.Lib.uInfixE ::
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ ->
+   Language.Haskell.TH.Lib.ExpQ
+@@ -632,12 +736,17 @@
+ 
+ infixl 9 Language.Haskell.TH.Lib.varE
+ Language.Haskell.TH.Lib.varE ::
+   Language.Haskell.TH.Syntax.Name ->
+   Language.Haskell.TH.Lib.ExpQ
+ 
++infixl 9 Language.Haskell.TH.Lib.varK
++Language.Haskell.TH.Lib.varK ::
++  Language.Haskell.TH.Syntax.Name ->
++  Language.Haskell.TH.Syntax.Kind
++
+ infixl 9 Language.Haskell.TH.Lib.varP
+ Language.Haskell.TH.Lib.varP ::
+   Language.Haskell.TH.Syntax.Name ->
+   Language.Haskell.TH.Lib.PatQ
+ 
+ infixl 9 Language.Haskell.TH.Lib.varStrictType
+@@ -785,30 +894,40 @@
+   Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Info
+ 
+ infixl 9 Language.Haskell.TH.Syntax.reifyInstances
+ Language.Haskell.TH.Syntax.reifyInstances ::
+   Language.Haskell.TH.Syntax.Name ->
+   [Language.Haskell.TH.Syntax.Type] ->
+-  Language.Haskell.TH.Syntax.Q [Language.Haskell.TH.Syntax.Dec]
++  Language.Haskell.TH.Syntax.Q [Language.Haskell.TH.Syntax.InstanceDec]
+ 
+ infixl 9 Language.Haskell.TH.Syntax.report
+ Language.Haskell.TH.Syntax.report ::
+   GHC.Types.Bool ->
+   GHC.Base.String ->
+   Language.Haskell.TH.Syntax.Q ()
+ 
++infixl 9 Language.Haskell.TH.Syntax.reportError
++Language.Haskell.TH.Syntax.reportError ::
++  GHC.Base.String ->
++  Language.Haskell.TH.Syntax.Q ()
++
++infixl 9 Language.Haskell.TH.Syntax.reportWarning
++Language.Haskell.TH.Syntax.reportWarning ::
++  GHC.Base.String ->
++  Language.Haskell.TH.Syntax.Q ()
++
+ infixl 9 Language.Haskell.TH.Syntax.runIO
+ Language.Haskell.TH.Syntax.runIO ::
+   forall a.
+     () =>
+     GHC.Types.IO a ->
+     Language.Haskell.TH.Syntax.Q a
+ 
+ infixl 9 Language.Haskell.TH.Syntax.runQ
+ Language.Haskell.TH.Syntax.runQ ::
+-  forall (m :: * -> *) a.
++  forall a (m :: * -> *).
+     (
+      Language.Haskell.TH.Syntax.Quasi m
+      ) =>
+     Language.Haskell.TH.Syntax.Q a ->
+     m a
+ 
+@@ -819,12 +938,22 @@
+ 
+ infixl 9 Language.Haskell.TH.Syntax.tupleTypeName
+ Language.Haskell.TH.Syntax.tupleTypeName ::
+   GHC.Types.Int ->
+   Language.Haskell.TH.Syntax.Name
+ 
++infixl 9 Language.Haskell.TH.Syntax.unboxedTupleDataName
++Language.Haskell.TH.Syntax.unboxedTupleDataName ::
++  GHC.Types.Int ->
++  Language.Haskell.TH.Syntax.Name
++
++infixl 9 Language.Haskell.TH.Syntax.unboxedTupleTypeName
++Language.Haskell.TH.Syntax.unboxedTupleTypeName ::
++  GHC.Types.Int ->
++  Language.Haskell.TH.Syntax.Name
++
+ type Language.Haskell.TH.Lib.BodyQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Body
+ 
+ type Language.Haskell.TH.Lib.ClauseQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Clause
+ 
+ type Language.Haskell.TH.Lib.ConQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Con
+ 
+@@ -839,26 +968,28 @@
+ type Language.Haskell.TH.Lib.FieldPatQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.FieldPat
+ 
+ type Language.Haskell.TH.Lib.GuardQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Guard
+ 
+ type Language.Haskell.TH.Lib.InfoQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Info
+ 
+-type Language.Haskell.TH.Lib.InlineSpecQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.InlineSpec
+-
+ type Language.Haskell.TH.Lib.MatchQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Match
+ 
+ type Language.Haskell.TH.Lib.PatQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Pat
+ 
+ type Language.Haskell.TH.Lib.PredQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Pred
+ 
+ type Language.Haskell.TH.Lib.RangeQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Range
+ 
++type Language.Haskell.TH.Lib.RuleBndrQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.RuleBndr
++
+ type Language.Haskell.TH.Lib.StmtQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Stmt
+ 
+ type Language.Haskell.TH.Lib.StrictTypeQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.StrictType
+ 
++type Language.Haskell.TH.Lib.TyLitQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.TyLit
++
+ type Language.Haskell.TH.Lib.TypeQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.Type
+ 
+ type Language.Haskell.TH.Lib.VarStrictTypeQ = Language.Haskell.TH.Syntax.Q Language.Haskell.TH.Syntax.VarStrictType
+ 
+ class () =>
+   Language.Haskell.TH.Ppr.Ppr a where
+@@ -874,12 +1005,14 @@
+         (
+          Language.Haskell.TH.Ppr.Ppr a
+          ) =>
+         [a] ->
+         Language.Haskell.TH.PprLib.Doc
+ 
++type Language.Haskell.TH.Syntax.Arity = GHC.Types.Int
++
+ data () =>
+   Language.Haskell.TH.Syntax.Body  =
+     Language.Haskell.TH.Syntax.GuardedB
+       [(Language.Haskell.TH.Syntax.Guard, Language.Haskell.TH.Syntax.Exp)]
+   | Language.Haskell.TH.Syntax.NormalB
+       Language.Haskell.TH.Syntax.Exp
+@@ -956,12 +1089,15 @@
+       [Language.Haskell.TH.Syntax.Dec]
+   | Language.Haskell.TH.Syntax.SigD
+       Language.Haskell.TH.Syntax.Name
+       Language.Haskell.TH.Syntax.Type
+   | Language.Haskell.TH.Syntax.ForeignD
+       Language.Haskell.TH.Syntax.Foreign
++  | Language.Haskell.TH.Syntax.InfixD
++      Language.Haskell.TH.Syntax.Fixity
++      Language.Haskell.TH.Syntax.Name
+   | Language.Haskell.TH.Syntax.PragmaD
+       Language.Haskell.TH.Syntax.Pragma
+   | Language.Haskell.TH.Syntax.FamilyD
+       Language.Haskell.TH.Syntax.FamFlavour
+       Language.Haskell.TH.Syntax.Name
+       [Language.Haskell.TH.Syntax.TyVarBndr]
+@@ -1005,20 +1141,24 @@
+       Language.Haskell.TH.Syntax.Exp
+   | Language.Haskell.TH.Syntax.ParensE
+       Language.Haskell.TH.Syntax.Exp
+   | Language.Haskell.TH.Syntax.LamE
+       [Language.Haskell.TH.Syntax.Pat]
+       Language.Haskell.TH.Syntax.Exp
++  | Language.Haskell.TH.Syntax.LamCaseE
++      [Language.Haskell.TH.Syntax.Match]
+   | Language.Haskell.TH.Syntax.TupE
+       [Language.Haskell.TH.Syntax.Exp]
+   | Language.Haskell.TH.Syntax.UnboxedTupE
+       [Language.Haskell.TH.Syntax.Exp]
+   | Language.Haskell.TH.Syntax.CondE
+       Language.Haskell.TH.Syntax.Exp
+       Language.Haskell.TH.Syntax.Exp
+       Language.Haskell.TH.Syntax.Exp
++  | Language.Haskell.TH.Syntax.MultiIfE
++      [(Language.Haskell.TH.Syntax.Guard, Language.Haskell.TH.Syntax.Exp)]
+   | Language.Haskell.TH.Syntax.LetE
+       [Language.Haskell.TH.Syntax.Dec]
+       Language.Haskell.TH.Syntax.Exp
+   | Language.Haskell.TH.Syntax.CaseE
+       Language.Haskell.TH.Syntax.Exp
+       [Language.Haskell.TH.Syntax.Match]
+@@ -1100,53 +1240,48 @@
+     Language.Haskell.TH.Syntax.ClassI
+       Language.Haskell.TH.Syntax.Dec
+       [Language.Haskell.TH.Syntax.InstanceDec]
+   | Language.Haskell.TH.Syntax.ClassOpI
+       Language.Haskell.TH.Syntax.Name
+       Language.Haskell.TH.Syntax.Type
+-      Language.Haskell.TH.Syntax.Name
++      Language.Haskell.TH.Syntax.ParentName
+       Language.Haskell.TH.Syntax.Fixity
+   | Language.Haskell.TH.Syntax.TyConI
+       Language.Haskell.TH.Syntax.Dec
+   | Language.Haskell.TH.Syntax.FamilyI
+       Language.Haskell.TH.Syntax.Dec
+       [Language.Haskell.TH.Syntax.InstanceDec]
+   | Language.Haskell.TH.Syntax.PrimTyConI
+       Language.Haskell.TH.Syntax.Name
+-      GHC.Types.Int
+-      GHC.Types.Bool
++      Language.Haskell.TH.Syntax.Arity
++      Language.Haskell.TH.Syntax.Unlifted
+   | Language.Haskell.TH.Syntax.DataConI
+       Language.Haskell.TH.Syntax.Name
+       Language.Haskell.TH.Syntax.Type
+-      Language.Haskell.TH.Syntax.Name
++      Language.Haskell.TH.Syntax.ParentName
+       Language.Haskell.TH.Syntax.Fixity
+   | Language.Haskell.TH.Syntax.VarI
+       Language.Haskell.TH.Syntax.Name
+       Language.Haskell.TH.Syntax.Type
+       Data.Maybe.Maybe Language.Haskell.TH.Syntax.Dec
+       Language.Haskell.TH.Syntax.Fixity
+   | Language.Haskell.TH.Syntax.TyVarI
+       Language.Haskell.TH.Syntax.Name
+       Language.Haskell.TH.Syntax.Type
+   deriving ()
+ 
+ data () =>
+-  Language.Haskell.TH.Syntax.InlineSpec  =
+-    Language.Haskell.TH.Syntax.InlineSpec
+-      GHC.Types.Bool
+-      GHC.Types.Bool
+-      Data.Maybe.Maybe (GHC.Types.Bool, GHC.Types.Int)
++  Language.Haskell.TH.Syntax.Inline  =
++    Language.Haskell.TH.Syntax.NoInline
++  | Language.Haskell.TH.Syntax.Inline
++  | Language.Haskell.TH.Syntax.Inlinable
+   deriving ()
+ 
+-data () =>
+-  Language.Haskell.TH.Syntax.Kind  =
+-    Language.Haskell.TH.Syntax.StarK
+-  | Language.Haskell.TH.Syntax.ArrowK
+-      Language.Haskell.TH.Syntax.Kind
+-      Language.Haskell.TH.Syntax.Kind
+-  deriving ()
++type Language.Haskell.TH.Syntax.InstanceDec = Language.Haskell.TH.Syntax.Dec
++
++type Language.Haskell.TH.Syntax.Kind = Language.Haskell.TH.Syntax.Type
+ 
+ data () =>
+   Language.Haskell.TH.Syntax.Lit  =
+     Language.Haskell.TH.Syntax.CharL
+       GHC.Types.Char
+   | Language.Haskell.TH.Syntax.StringL
+@@ -1161,13 +1296,13 @@
+       GHC.Integer.Type.Integer
+   | Language.Haskell.TH.Syntax.FloatPrimL
+       GHC.Real.Rational
+   | Language.Haskell.TH.Syntax.DoublePrimL
+       GHC.Real.Rational
+   | Language.Haskell.TH.Syntax.StringPrimL
+-      GHC.Base.String
++      [GHC.Word.Word8]
+   deriving ()
+ 
+ data () =>
+   Language.Haskell.TH.Syntax.Loc  =
+     Language.Haskell.TH.Syntax.Loc
+       Language.Haskell.TH.Syntax.loc_filename :: GHC.Base.String
+@@ -1185,23 +1320,25 @@
+       [Language.Haskell.TH.Syntax.Dec]
+   deriving ()
+ 
+ data () =>
+   Name'  =
+     Name
+-      Language.Haskell.TH.Syntax.Internals.OccName
++      Language.Haskell.TH.Syntax.OccName
+       Language.Haskell.TH.Syntax.NameFlavour
+   deriving ()
+ 
+ data () =>
+   Language.Haskell.TH.Syntax.NameSpace  =
+     Language.Haskell.TH.Syntax.VarName
+   | Language.Haskell.TH.Syntax.DataName
+   | Language.Haskell.TH.Syntax.TcClsName
+   deriving ()
+ 
++type Language.Haskell.TH.Syntax.ParentName = Language.Haskell.TH.Syntax.Name
++
+ data () =>
+   Language.Haskell.TH.Syntax.Pat  =
+     Language.Haskell.TH.Syntax.LitP
+       Language.Haskell.TH.Syntax.Lit
+   | Language.Haskell.TH.Syntax.VarP
+       Language.Haskell.TH.Syntax.Name
+@@ -1241,20 +1378,40 @@
+   | Language.Haskell.TH.Syntax.ViewP
+       Language.Haskell.TH.Syntax.Exp
+       Language.Haskell.TH.Syntax.Pat
+   deriving ()
+ 
+ data () =>
++  Language.Haskell.TH.Syntax.Phases  =
++    Language.Haskell.TH.Syntax.AllPhases
++  | Language.Haskell.TH.Syntax.FromPhase
++      GHC.Types.Int
++  | Language.Haskell.TH.Syntax.BeforePhase
++      GHC.Types.Int
++  deriving ()
++
++data () =>
+   Language.Haskell.TH.Syntax.Pragma  =
+     Language.Haskell.TH.Syntax.InlineP
+       Language.Haskell.TH.Syntax.Name
+-      Language.Haskell.TH.Syntax.InlineSpec
++      Language.Haskell.TH.Syntax.Inline
++      Language.Haskell.TH.Syntax.RuleMatch
++      Language.Haskell.TH.Syntax.Phases
+   | Language.Haskell.TH.Syntax.SpecialiseP
+       Language.Haskell.TH.Syntax.Name
+       Language.Haskell.TH.Syntax.Type
+-      Data.Maybe.Maybe Language.Haskell.TH.Syntax.InlineSpec
++      Data.Maybe.Maybe Language.Haskell.TH.Syntax.Inline
++      Language.Haskell.TH.Syntax.Phases
++  | Language.Haskell.TH.Syntax.SpecialiseInstP
++      Language.Haskell.TH.Syntax.Type
++  | Language.Haskell.TH.Syntax.RuleP
++      GHC.Base.String
++      [Language.Haskell.TH.Syntax.RuleBndr]
++      Language.Haskell.TH.Syntax.Exp
++      Language.Haskell.TH.Syntax.Exp
++      Language.Haskell.TH.Syntax.Phases
+   deriving ()
+ 
+ data () =>
+   Language.Haskell.TH.Syntax.Pred  =
+     Language.Haskell.TH.Syntax.ClassP
+       Language.Haskell.TH.Syntax.Name
+@@ -1287,12 +1444,27 @@
+       Language.Haskell.TH.Syntax.Exp
+       Language.Haskell.TH.Syntax.Exp
+       Language.Haskell.TH.Syntax.Exp
+   deriving ()
+ 
+ data () =>
++  Language.Haskell.TH.Syntax.RuleBndr  =
++    Language.Haskell.TH.Syntax.RuleVar
++      Language.Haskell.TH.Syntax.Name
++  | Language.Haskell.TH.Syntax.TypedRuleVar
++      Language.Haskell.TH.Syntax.Name
++      Language.Haskell.TH.Syntax.Type
++  deriving ()
++
++data () =>
++  Language.Haskell.TH.Syntax.RuleMatch  =
++    Language.Haskell.TH.Syntax.ConLike
++  | Language.Haskell.TH.Syntax.FunLike
++  deriving ()
++
++data () =>
+   Language.Haskell.TH.Syntax.Safety  =
+     Language.Haskell.TH.Syntax.Unsafe
+   | Language.Haskell.TH.Syntax.Safe
+   | Language.Haskell.TH.Syntax.Interruptible
+   deriving ()
+ 
+@@ -1314,12 +1486,20 @@
+     Language.Haskell.TH.Syntax.IsStrict
+   | Language.Haskell.TH.Syntax.NotStrict
+   | Language.Haskell.TH.Syntax.Unpacked
+   deriving ()
+ 
+ data () =>
++  Language.Haskell.TH.Syntax.TyLit  =
++    Language.Haskell.TH.Syntax.NumTyLit
++      GHC.Integer.Type.Integer
++  | Language.Haskell.TH.Syntax.StrTyLit
++      GHC.Base.String
++  deriving ()
++
++data () =>
+   Language.Haskell.TH.Syntax.TyVarBndr  =
+     Language.Haskell.TH.Syntax.PlainTV
+       Language.Haskell.TH.Syntax.Name
+   | Language.Haskell.TH.Syntax.KindedTV
+       Language.Haskell.TH.Syntax.Name
+       Language.Haskell.TH.Syntax.Kind
+@@ -1328,24 +1508,36 @@
+ data () =>
+   Language.Haskell.TH.Syntax.Type  =
+     Language.Haskell.TH.Syntax.ForallT
+       [Language.Haskell.TH.Syntax.TyVarBndr]
+       Language.Haskell.TH.Syntax.Cxt
+       Language.Haskell.TH.Syntax.Type
++  | Language.Haskell.TH.Syntax.AppT
++      Language.Haskell.TH.Syntax.Type
++      Language.Haskell.TH.Syntax.Type
++  | Language.Haskell.TH.Syntax.SigT
++      Language.Haskell.TH.Syntax.Type
++      Language.Haskell.TH.Syntax.Kind
+   | Language.Haskell.TH.Syntax.VarT
+       Language.Haskell.TH.Syntax.Name
+   | Language.Haskell.TH.Syntax.ConT
+       Language.Haskell.TH.Syntax.Name
++  | Language.Haskell.TH.Syntax.PromotedT
++      Language.Haskell.TH.Syntax.Name
+   | Language.Haskell.TH.Syntax.TupleT
+       GHC.Types.Int
+   | Language.Haskell.TH.Syntax.UnboxedTupleT
+       GHC.Types.Int
+   | Language.Haskell.TH.Syntax.ArrowT
+   | Language.Haskell.TH.Syntax.ListT
+-  | Language.Haskell.TH.Syntax.AppT
+-      Language.Haskell.TH.Syntax.Type
+-      Language.Haskell.TH.Syntax.Type
+-  | Language.Haskell.TH.Syntax.SigT
+-      Language.Haskell.TH.Syntax.Type
+-      Language.Haskell.TH.Syntax.Kind
++  | Language.Haskell.TH.Syntax.PromotedTupleT
++      GHC.Types.Int
++  | Language.Haskell.TH.Syntax.PromotedNilT
++  | Language.Haskell.TH.Syntax.PromotedConsT
++  | Language.Haskell.TH.Syntax.StarT
++  | Language.Haskell.TH.Syntax.ConstraintT
++  | Language.Haskell.TH.Syntax.LitT
++      Language.Haskell.TH.Syntax.TyLit
+   deriving ()
+ 
++type Language.Haskell.TH.Syntax.Unlifted = GHC.Types.Bool
++
