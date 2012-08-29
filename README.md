@@ -1,4 +1,4 @@
-To use, do something this after loading ApiCompat.GetApi:
+To use, do something like this after loading ApiCompat.GetApi:
 
 ```haskell
 import ApiCompat.GetApi
