@@ -1,4 +1,4 @@
-{-# LANGUAGE PatternGuards, ParallelListComp, TemplateHaskell #-}
+{-# LANGUAGE PatternGuards, ParallelListComp, TemplateHaskell, CPP #-}
 module ApiCompat.ShowInfo where
 
 import Control.Applicative           ( (<$>) )
@@ -213,23 +213,29 @@ allNames = map head . groupBy (==) . sort
          . listify (const True :: Name -> Bool)
 
 decName :: Dec -> Maybe Name
-decName (FunD         n _            ) = Just n
-decName (TySynD       n _ _          ) = Just n
-decName (FamilyD      _ n _ _        ) = Just n
-decName (NewtypeD     _ n _ _ _      ) = Just n
-decName (DataD        _ n _ _ _      ) = Just n
-decName (ClassD       _ n _ _ _      ) = Just n
-decName (InstanceD    _ t _          ) | ((ConT n):_) <- tyUnApp t = Just n
-                                       | otherwise                 = Nothing
-decName (DataInstD    _ n _ _ _      ) = Just n
-decName (NewtypeInstD _ n _ _ _      ) = Just n
-decName (ValD         p _ _          ) = listToMaybe $ patNames p
-decName (SigD         n _            ) = Just n
-decName (TySynInstD   n _ _          ) = Just n
-decName (ForeignD (ImportF _ _ _ n _)) = Just n
-decName (ForeignD (ExportF _   _ n _)) = Just n
-decName (PragmaD  (InlineP     n _  )) = Just n
-decName (PragmaD  (SpecialiseP n _ _)) = Just n
+decName (FunD         n _            )  = Just n
+decName (TySynD       n _ _          )  = Just n
+decName (FamilyD      _ n _ _        )  = Just n
+decName (NewtypeD     _ n _ _ _      )  = Just n
+decName (DataD        _ n _ _ _      )  = Just n
+decName (ClassD       _ n _ _ _      )  = Just n
+decName (InstanceD    _ t _          )  | ((ConT n):_) <- tyUnApp t = Just n
+                                        | otherwise                 = Nothing
+decName (DataInstD    _ n _ _ _      )  = Just n
+decName (NewtypeInstD _ n _ _ _      )  = Just n
+decName (ValD         p _ _          )  = listToMaybe $ patNames p
+decName (SigD         n _            )  = Just n
+decName (TySynInstD   n _ _          )  = Just n
+decName (ForeignD (ImportF _ _ _ n _))  = Just n
+decName (ForeignD (ExportF _   _ n _))  = Just n
+#if __GLASGOW_HASKELL__ < 706
+decName (PragmaD (InlineP n _      ))   = Just n
+decName (PragmaD (SpecialiseP n _ _))   = Just n
+#else
+decName (PragmaD (InlineP     n _ _ _)) = Just n
+decName (PragmaD (SpecialiseP n _ _ _)) = Just n
+#endif
+decName _                               = Nothing
 
 patNames :: Pat -> [Name]
 patNames (VarP        n     ) = [n]
