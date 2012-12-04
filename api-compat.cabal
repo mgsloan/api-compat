@@ -30,6 +30,6 @@ Library
                      process,
                      syb,
                      template-haskell >= 2.7.0,
-                     th-orphans == 0.5.*,
+                     th-orphans == 0.6.*,
                      th-lift == 0.5.*,
                      hint
